@@ -40,7 +40,7 @@ class Settings:
         - print_settings(): Prints the current settings.
         - print_all_settings(): Prints all settings, including those not recommended for printing.
     """
-    
+
     def __init__(self, extension="SiOz") -> None:
         """
         Initializes a Settings object with default settings.
@@ -50,7 +50,7 @@ class Settings:
             - extension (str): The extension of the project.
         """
         self.load_default_settings(extension)
-        
+
     def load_default_settings(self, extension) -> None:
         """
         Loads default settings based on the extension.
@@ -74,7 +74,7 @@ class Settings:
         self.lbox : Parameter = Parameter("lbox", 0.0)                                              # Box length
         self.temperature : Parameter = Parameter("temperature", 0.0)                                # Temperature of the system
         self.pressure : Parameter = Parameter("pressure", 0.0)                                      # Pressure of the system
-        self.version : Parameter = Parameter("version", "0.1.0")                                    # Version of the software
+        self.version : Parameter = Parameter("version", "0.1.10")                                    # Version of the software
         self.quiet : Parameter = Parameter("quiet", False)                                          # Do not print any settings
         self.overwrite_results : Parameter = Parameter("overwrite_results", False)                  # Overwrite files by default
         self.print_clusters_positions : Parameter = Parameter("print_clusters_positions", False)    # Print the positions of the clusters
@@ -91,9 +91,9 @@ class Settings:
             self.cutoffs : Parameter = default_settings["cutoffs"]                              # All the cutoffs of each pair of atoms.
         else:
             raise ValueError(f"Extension '{extension}' is not supported.")
-        
+
         self.settings_to_print : str = '' # Settings to print on the console.
-                    
+
     def print_settings(self) -> None:
         """
         Prints the current settings.
@@ -113,7 +113,7 @@ class Settings:
         for atom in self.structure.get_value():
             settings_output += f"\t\t  {'Species'.ljust(max_attr_length)} \u279c\t {atom['element']:2}\t|\tNumber of atoms \u279c\t {atom['number']}\n"
         settings_output += f"{separator}\n"
-        settings_output += f"\t\tExport directory   \u279c\t {self.export_directory.get_value()}\n"
+        settings_output += f"\t\tExport directory   \u279c\t {self._output_directory}\n"
         settings_output += f"{separator}\n"
         settings_output += f"\t\tCluster settings:\n"
         max_attr_length = max(len(str(k)) for k,v in self.cluster_settings.get_value().items())
@@ -126,8 +126,8 @@ class Settings:
             self.settings_to_print = settings_output
         else:
             self.settings_to_print = settings_output
-            
-        
+
+
     def print_all_settings(self) -> None:
         """
         Prints all settings, including those not recommended for printing.
@@ -138,4 +138,3 @@ class Settings:
         print(separator)
         for p, v in self.__dict__.items():
             print(f"\t\t{v.get_name().ljust(max_attr_length)} ➜ {v.get_value()}")
-        

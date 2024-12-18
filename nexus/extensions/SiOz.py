@@ -331,13 +331,20 @@ def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
             if connectivity == 2: # 2 oxygens are shared by 'silicon' and 'second_silicon'
                 silicon.number_of_edges += 1
 
-        if silicon.number_of_edges >= 2:
-            ES_SiO6.append(silicon)
-            if criteria == 'bond':
-                dict_concentrations["SiO6-SiO6-stishovite"].append(silicon.id)
-            elif criteria == 'distance':
-                dict_concentrations["Si6-Si6-stishovite"].append(silicon.id)
-    
+        if silicon.number_of_edges >= 2 and silicon.coordination == 6:
+            for oxygen in [atom for atom in silicon.get_neighbours() if atom.get_element() == 'O']:
+                for second_silicon in [atom for atom in oxygen.get_neighbours() if atom.get_element() == 'Si']:
+                    if second_silicon.id != silicon.id:
+                        if second_silicon.number_of_edges >= 2 and second_silicon.coordination == 6:
+                            ES_SiO6.append(silicon)
+                            ES_SiO6.append(second_silicon)
+                            if criteria == 'bond':
+                                dict_concentrations["SiO6-SiO6-stishovite"].append(silicon.id)
+                                dict_concentrations["SiO6-SiO6-stishovite"].append(second_silicon.id)
+                            elif criteria == 'distance':
+                                dict_concentrations["Si6-Si6-stishovite"].append(silicon.id)
+                                dict_concentrations["Si6-Si6-stishovite"].append(second_silicon.id)
+
     if quiet == False:
         progress_bar = tqdm(oxygens, desc="Calculating the concentrations SiOz-SiOz sites", colour='BLUE', leave=False)
         color_gradient = generate_color_gradient(len(oxygens))
@@ -405,7 +412,6 @@ def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
             dict_concentrations[key] = len(np.unique(value)) / number_of_Si 
         elif key[0] == 'O':
             dict_concentrations[key] = len(np.unique(value)) / number_of_O
-    
     return dict_concentrations
 
 def find_extra_clusters(atoms:list, box:Box, counter_c:int, settings:object) -> None:
@@ -558,8 +564,8 @@ def find_extra_clusters(atoms:list, box:Box, counter_c:int, settings:object) -> 
         current_cluster.calculate_gyration_radius()
         current_cluster.calculate_percolation_probability()
         
-        if settings.print_clusters_positions.get_value():
-            current_cluster.write_coordinates(settings._output_directory)
+        # if settings.print_clusters_positions.get_value():
+        #     current_cluster.write_coordinates(settings._output_directory)
 
         local_clusters.append(current_cluster)
         counter_c += 1

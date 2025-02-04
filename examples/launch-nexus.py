@@ -2,7 +2,7 @@
 import nexus
 
 # Load trajectory data
-trajectory = "tests/inputs/1008/sio2-1008at-1frame/pos10.xyz"
+trajectory = "tests/inputs/SiO2/1008/sio2-1008at-11frames/pos10.xyz"
 
 # Initialize settings
 settings = nexus.settings.Settings(extension="SiOz")
@@ -43,7 +43,8 @@ settings.print_clusters_positions.set_value(True)
 # Set cluster settings
 settings.cluster_settings.set_cluster_parameter("connectivity", ["Si", "O", "Si"])
 settings.cluster_settings.set_cluster_parameter("criteria", "bond")
-settings.cluster_settings.set_cluster_parameter("polyhedra", [[4, 4], [5, 5], [6, 6]])
+# settings.cluster_settings.set_cluster_parameter("polyhedra", [[4, 4], [5, 5], [6, 6]])
+settings.cluster_settings.set_cluster_parameter("polyhedra", [])
 
 # Execute the main function with the provided settings
 nexus.main(settings)

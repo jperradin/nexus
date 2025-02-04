@@ -5,7 +5,8 @@ build/
 nexus_cat.egg-info/
 dist/
 archive_dist/
-tests/results/quick-test/
+tests/results/
+tests/inputs/aSi/
 reference-check/
 nexus_test/
 my_tests/

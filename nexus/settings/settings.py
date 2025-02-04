@@ -74,13 +74,13 @@ class Settings:
         self.lbox : Parameter = Parameter("lbox", 0.0)                                              # Box length
         self.temperature : Parameter = Parameter("temperature", 0.0)                                # Temperature of the system
         self.pressure : Parameter = Parameter("pressure", 0.0)                                      # Pressure of the system
-        self.version : Parameter = Parameter("version", "0.1.10")                                    # Version of the software
+        self.version : Parameter = Parameter("version", "0.1.11")                                    # Version of the software
         self.quiet : Parameter = Parameter("quiet", False)                                          # Do not print any settings
         self.overwrite_results : Parameter = Parameter("overwrite_results", False)                  # Overwrite files by default
         self.print_clusters_positions : Parameter = Parameter("print_clusters_positions", False)    # Print the positions of the clusters
         self.max_size : Parameter = Parameter("max_size", 100)                                      # Maximum size of the clusters for the cluster size distribution
 
-        self.supported_extensions : Parameter = Parameter("extensions", ["SiOz"]) # Update the list when adding a new extension
+        self.supported_extensions : Parameter = Parameter("extensions", ["SiOz", "SiSi", "OO"]) # Update the list when adding a new extension
 
         if extension in self.supported_extensions.get_value():
             module = importlib.import_module(f"nexus.extensions.{extension}")
@@ -92,7 +92,7 @@ class Settings:
         else:
             raise ValueError(f"Extension '{extension}' is not supported.")
 
-        self.settings_to_print : str = '' # Settings to print on the console.
+        self.settings_to_print : str = '' # Settings to print on the terminal.
 
     def print_settings(self) -> None:
         """

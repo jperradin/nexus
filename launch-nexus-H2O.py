@@ -6,16 +6,16 @@ import nexus
 #     No need to provide the lattice vectors, the code will automatically detect them
 #     with the keyword 'Lattice' in the XYZ file.
 #     The code will crash if the file is not an extended XYZ file
-trajectory = "./tests/inputs/aSi/compress_GAP-18_10GPa.xyz"
+trajectory = "./tests/inputs/H2O/waterM2825-5kbar.xyz"
 
 # Initialize settings
-settings = nexus.settings.Settings(extension="SiSi")
+settings = nexus.settings.Settings(extension="OO")
 settings.quiet.set_value(False)
 # Set project name, this will be used to name the output directory in the export directory
-settings.project_name.set_value("quick-test-aSi-10GPa")
+settings.project_name.set_value("quick-test-H2O")
 
 # Set extension
-settings.extension.set_value("SiSi")
+settings.extension.set_value("OO")
 
 # Set export directory
 settings.export_directory.set_value(f"tests/results")
@@ -26,7 +26,7 @@ settings.path_to_xyz_file.set_value(trajectory)
 # Set number of atoms
 # /!\ This value must be the same as the number of atoms in the XYZ file.
 #     If the number of atoms is not provided, or the value provided is wrong, the code will crash.
-settings.number_of_atoms.set_value(100000)
+settings.number_of_atoms.set_value(2825)
 
 # Set range of frames
 # settings.range_of_frames.set_value([2, 5]) # Only frames 2 to 5 will be processed
@@ -41,15 +41,15 @@ settings.header.set_value(2)
 #     If the number of atoms is not provided, or the value provided is wrong, the code will crash.
 settings.structure.set_value(
     [
-        {"element": "Si", "number": 100000},
+        {"element": "Si", "number": 2825},
     ]
 )
 
 # Set temperature in Kelvin (optional but recommended for the recap. of the results)
-settings.temperature.set_value(500)
+settings.temperature.set_value(0)
 
 # Set pressure in GPa (optional but recommended for the recap. of the results)
-settings.pressure.set_value(0.0)
+settings.pressure.set_value(0.05)
 
 # Set to print cluster positions (optional, default is False, if set to True, the user will be prompted to confirm the action)
 # uncomment the following to remove the warning
@@ -62,7 +62,7 @@ settings.overwrite_results.set_value(True)
 # Set cluster analysis criteria (bond or distance)
 settings.cluster_settings.set_cluster_parameter("criteria", "distance")
 # Set cluster connectivities to look for
-settings.cluster_settings.set_cluster_parameter("connectivity", ["Si", "Si"])
+settings.cluster_settings.set_cluster_parameter("connectivity", ["O", "O"])
 # Set polyhedra to look for
 # settings.cluster_settings.set_cluster_parameter(
 #     'polyhedra', [[4, 4], [5, 5], [6, 6]]

@@ -53,7 +53,7 @@ git clone git@github.com:JulienPerradin/nexus.git
 Then you can use pip, it will install dependencies and the main package in your Python environment:
 
 ```bash
-pip install nexus-cat==0.1.12
+pip install nexus-cat
 ```
 
 

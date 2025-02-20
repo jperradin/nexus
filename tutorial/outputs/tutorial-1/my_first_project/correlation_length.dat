@@ -3,3 +3,8 @@
    2.14627 +/- 0.00000    # SiO5-SiO5
    4.31413 +/- 0.00000    # SiO6-SiO6
    4.65319 +/- 0.00000    # SiO6-SiO6-stishovite
+# Concentration ➜ Correlation length +/- Error
+  0.440476 ➜    6.03026 +/- 0.00000    # SiO4-SiO4
+  0.410714 ➜    2.14627 +/- 0.00000    # SiO5-SiO5
+  0.148810 ➜    4.31413 +/- 0.00000    # SiO6-SiO6
+  0.038690 ➜    4.65319 +/- 0.00000    # SiO6-SiO6-stishovite

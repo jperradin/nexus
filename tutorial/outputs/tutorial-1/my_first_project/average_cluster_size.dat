@@ -3,3 +3,8 @@
   2.000000 +/- 0.00000    # SiO5-SiO5
   4.365854 +/- 0.00000    # SiO6-SiO6
   3.769231 +/- 0.00000    # SiO6-SiO6-stishovite
+# Concentration ➜ Average cluster size +/- Error
+  0.440476 ➜   8.684211 +/- 0.00000    # SiO4-SiO4
+  0.410714 ➜   2.000000 +/- 0.00000    # SiO5-SiO5
+  0.148810 ➜   4.365854 +/- 0.00000    # SiO6-SiO6
+  0.038690 ➜   3.769231 +/- 0.00000    # SiO6-SiO6-stishovite

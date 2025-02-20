@@ -1,9 +1,11 @@
 .. _index:
 
+==================================
 Welcome to Nexus-Cat Documentation
-==============================
+==================================
 
 Contents:
+=========
 
 .. toctree::
     :maxdepth: 2
@@ -12,9 +14,7 @@ Contents:
     introduction
     getting_started
     installation
-    usage
-    api
-    faq
+    extensions
 
 Indices and tables
 ==================

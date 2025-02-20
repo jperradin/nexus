@@ -10,6 +10,7 @@ Contents:
     :caption: Table of Contents
 
     introduction
+    getting_started
     installation
     usage
     api
@@ -22,7 +23,3 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 * :ref:`py-modindex`
-
-Modules
-=======
-introduction.rst

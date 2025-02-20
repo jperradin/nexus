@@ -6,7 +6,7 @@
   [![PyPI version](https://badge.fury.io/py/nexus-cat.svg)](https://badge.fury.io/py/nexus-cat)
   [![Documentation Status](https://readthedocs.org/projects/nexus-cat/badge/?version=latest)](https://nexus-cat.readthedocs.io/en/latest/)
 
-  <img alt="NEXUS-CAT" width=280 src="./assets/Logo_Nexus-CAT_RVB_1.png" />
+  <img alt="NEXUS-CAT" width=400 src="./assets/Logo_Nexus-CAT_RVB_1.png" />
 </div>
 
 ## Description and features

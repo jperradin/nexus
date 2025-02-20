@@ -1,7 +1,15 @@
-# Nexus - Cluster Analysis Toolkit
+<div align="center">
 
+  # NEXUS-CAT
+  ##### Cluster Analysis Toolkit
+  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+  [![PyPI version](https://badge.fury.io/py/nexus-cat.svg)](https://badge.fury.io/py/nexus-cat)
+  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5520737.svg)](https://doi.org/10.5281/zenodo.5520737)
+  [![Documentation Status](https://readthedocs.org/projects/nexus-cat/badge/?version=latest)](https://nexus-cat.readthedocs.io/en/latest/?badge=latest)
+  [![Build Status](https://travis-ci.com/JulienPerradin/nexus.svg?branch=main)](https://travis-ci.com/Jul
 
-[!./assets/Logo_Nexus-CAT_RVB/Logo_Nexus-CAT_RVB_300ppi_PNG/Logo_Nexus-CAT_RVB_1.png]
+  <img alt="NEXUS-CAT" src="./assets/Logo_Nexus-CAT_RVB_1.png" />
+</div>
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 

@@ -10,13 +10,13 @@
 </div>
 
 ## ⇁ TOC
-- [⇁ TOC](#-toc)
-- [⇁ Description and features](#-description-and-features)
-- [⇁ Installation](#-installation)
-- [⇁ Usage with an example](#-usage-with-an-example)
-- [⇁ Documentation](#-documentation)
-- [⇁ Contributing](#-contributing)
-- [⇁ License](#-license)
+- [Description and features](#-description-and-features)
+- [Installation](#-installation)
+- [Getting started](#-getting-started)
+- [Documentation](#-documentation)
+- [Contributing](#-contributing)
+- [License](#-license)
+
 ## ⇁ Description and features
 
 `nexus-cat` is a package designed to find clusters of connected polyhedra in an atomistic simulation trajectory. It provides functionality to analyze cluster properties according to the percolation theory:
@@ -65,7 +65,7 @@ pip install nexus-cat
 ```
 
 
-## ⇁ Usage with an example
+## ⇁ Getting started
 
 As a first example you can follow the steps of the jupyter notebook `tutorial.ipynb`
 

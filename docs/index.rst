@@ -22,3 +22,7 @@ Indices and tables
 * :ref:`modindex`
 * :ref:`search`
 * :ref:`py-modindex`
+
+Modules
+=======
+introduction.rst

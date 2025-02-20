@@ -1,5 +1,8 @@
 # Nexus - Cluster Analysis Toolkit
 
+
+[!./assets/Logo_Nexus-CAT_RVB/Logo_Nexus-CAT_RVB_300ppi_PNG/Logo_Nexus-CAT_RVB_1.png]
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Description and features

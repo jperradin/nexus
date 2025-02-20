@@ -26,8 +26,8 @@ Here is a non-exhaustive list of the percolation properties that can be calculat
     \langle s(p) \rangle = \sum_s \frac{s^2 n_s(p)}{\sum_s s n_s(p)}
 ..
 
-    - with :math:`n_s` the number of clusters of size :math:`s` (i.e., number of polyhedra in the cluster).
-    - 1-sized clusters and percolating clusters are not taken into account in the calculation.
+        - with :math:`n_s` the number of clusters of size :math:`s` (i.e., number of polyhedra in the cluster).
+        - 1-sized clusters and percolating clusters are not taken into account in the calculation.
 
 - **Biggest cluster size** :math:`s_{\max}`:  
 Largest cluster size in the system, regardless of the percolation threshold.
@@ -42,8 +42,8 @@ Largest cluster size in the system excluding the percolating cluster.
     R_s^2 = \frac{1}{2s^2} \sum_{i,j} |\overrightarrow{r_i} - \overrightarrow{r_j}|^2
 ..
 
-- with :math:`r_i` the **unwrapped** coordinates of atom :math:`i` in the cluster of size :math:`s`.
-- 1-sized clusters and percolating clusters are not taken into account in the calculation.
+        - with :math:`r_i` the **unwrapped** coordinates of atom :math:`i` in the cluster of size :math:`s`.
+        - 1-sized clusters and percolating clusters are not taken into account in the calculation.
 
 - **Correlation length** :math:`\xi`:
 
@@ -52,8 +52,8 @@ Largest cluster size in the system excluding the percolating cluster.
     \xi^2 = \frac{\sum_s 2 R_s^2 s^2 n_s(p)}{\sum_s s^2 n_s(p)}
 ..
 
-    - with :math:`n_s` the number and :math:`R_s` the average gyration radius of clusters of size :math:`s` (i.e., number of polyhedra in the cluster).
-    - 1-sized clusters and percolating clusters are not taken into account in the calculation.
+        - with :math:`n_s` the number and :math:`R_s` the average gyration radius of clusters of size :math:`s` (i.e., number of polyhedra in the cluster).
+        - 1-sized clusters and percolating clusters are not taken into account in the calculation.
 
 - **Percolation probability** :math:`\Pi`:
 
@@ -66,8 +66,8 @@ Largest cluster size in the system excluding the percolating cluster.
     \end{cases}
 .. 
 
-    - with :math:`L_{\text{box}}` the length of the simulation box.
-    - **Note**: The percolation probability is calculated for each direction of the simulation box; a cluster can percolate in 1D, 2D, or 3D.
+        - with :math:`L_{\text{box}}` the length of the simulation box.
+        - **Note**: The percolation probability is calculated for each direction of the simulation box; a cluster can percolate in 1D, 2D, or 3D.
 
 - **Order parameter** :math:`P_{\infty}`:
 
@@ -80,5 +80,5 @@ Largest cluster size in the system excluding the percolating cluster.
     \end{cases}
 .. 
 
-    - with :math:`s_{\max}` the number of polyhedra in the biggest cluster, and :math:`N` the total number of **connected** polyhedra in the system (excluding 1-sized clusters).
-    - **Note**: The order parameter is calculated with :math:`\Pi` in 1D.
+        - with :math:`s_{\max}` the number of polyhedra in the biggest cluster, and :math:`N` the total number of **connected** polyhedra in the system (excluding 1-sized clusters).
+        - **Note**: The order parameter is calculated with :math:`\Pi` in 1D.

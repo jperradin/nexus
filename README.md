@@ -9,7 +9,15 @@
   <img alt="NEXUS-CAT" width=400 src="./assets/Logo_Nexus-CAT_RVB_1.png" />
 </div>
 
-## Description and features
+## ⇁ TOC
+- [⇁ TOC](#-toc)
+- [⇁ Description and features](#-description-and-features)
+- [⇁ Installation](#-installation)
+- [⇁ Usage with an example](#-usage-with-an-example)
+- [⇁ Documentation](#-documentation)
+- [⇁ Contributing](#-contributing)
+- [⇁ License](#-license)
+## ⇁ Description and features
 
 `nexus-cat` is a package designed to find clusters of connected polyhedra in an atomistic simulation trajectory. It provides functionality to analyze cluster properties according to the percolation theory:
 - *Note: Here the notion of size refers to the number of polyhedra in a cluster, not the physical size of the cluster, ie its radius nor its volume.*
@@ -43,7 +51,7 @@ P_∞ = \begin{cases}0 & \text{if } \Pi = 0 \\\frac{s_{max}}{N} & \text{if } \Pi
   - with $s_{max}$ the number of polyhedra in the biggest cluster, $N$ the total number of **connected** polyhedra in the system (1 sized clusters excluded).
   - Note : the order parameter is calculated with $\Pi$ in 1D. 
 
-## Installation
+## ⇁ Installation
 
 To install `nexus`, first clone this repository as you please, for example with SSH:
 
@@ -57,24 +65,21 @@ pip install nexus-cat
 ```
 
 
-## Usage with an example
+## ⇁ Usage with an example
 
 As a first example you can follow the steps of the jupyter notebook `tutorial.ipynb`
 
 Please refer to the documentation for more informations on how to use the package.
 
-## Documentation
+## ⇁ Documentation
 
 The documentation is available [here](https://nexus-cat.readthedocs.io/en/latest/)
 
-## Contributing
+## ⇁ Contributing
 
 Contributions to `NEXUS-CAT` are welcome! You can contribute by submitting bug reports, feature requests, new extension requests, or pull requests through GitHub.
 
-## License
+## ⇁ License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
 
-## Contact
-
-For questions or inquiries, you can contact me at (julien.perradin@umontpellier.fr).

@@ -4,13 +4,10 @@
   ##### Cluster Analysis Toolkit
   [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
   [![PyPI version](https://badge.fury.io/py/nexus-cat.svg)](https://badge.fury.io/py/nexus-cat)
-  [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5520737.svg)](https://doi.org/10.5281/zenodo.5520737)
-  [![Documentation Status](https://readthedocs.org/projects/nexus-cat/badge/?version=latest)](https://nexus-cat.readthedocs.io/en/latest/?badge=latest)
+  [![Documentation Status](https://readthedocs.org/projects/nexus-cat/badge/?version=latest)](https://nexus-cat.readthedocs.io/en/latest/)
 
-  <img alt="NEXUS-CAT" src="./assets/Logo_Nexus-CAT_RVB_1.png" />
+  <img alt="NEXUS-CAT" width=280 src="./assets/Logo_Nexus-CAT_RVB_1.png" />
 </div>
-
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 ## Description and features
 
@@ -56,30 +53,23 @@ git clone git@github.com:JulienPerradin/nexus.git
 Then you can use pip, it will install dependencies and the main package in your Python environment:
 
 ```bash
-pip install nexus-cat==0.1.6
+pip install nexus-cat==0.1.12
 ```
 
 
 ## Usage with an example
 
-As a first example you can run the script `launch-nexus-quick-test.py`:
+As a first example you can follow the steps of the jupyter notebook `tutorial.ipynb`
 
-```bash
-cd nexus/ 
-python examples/launch-nexus-quick-test.py
-```
-
-This script will run the analysis on a small 1008 atoms SiO2 glass (300K, 10GPa) located here : `tests/inputs/SiO2/1008/pos10.xyz` and will output the results in the `tests/results/quick-test` directory.
-
-Please refer to the documentation for more informations on how to use the package. You will also find more examples in the `examples` folder.
+Please refer to the documentation for more informations on how to use the package.
 
 ## Documentation
 
-The documentation is available [here](https://github.com/JulienPerradin/nexus/tree/main/doc)
+The documentation is available [here](https://nexus-cat.readthedocs.io/en/latest/)
 
 ## Contributing
 
-Contributions to NEXUS-CAT are welcome! You can contribute by submitting bug reports, feature requests, new extension requests, or pull requests through GitHub.
+Contributions to `NEXUS-CAT` are welcome! You can contribute by submitting bug reports, feature requests, new extension requests, or pull requests through GitHub.
 
 ## License
 
@@ -87,4 +77,4 @@ This project is licensed under the [MIT License](https://opensource.org/licenses
 
 ## Contact
 
-For questions or inquiries, you can contact us at (julien.perradin@umontpellier.fr).
+For questions or inquiries, you can contact me at (julien.perradin@umontpellier.fr).

@@ -5,8 +5,8 @@ build/
 nexus_cat.egg-info/
 dist/
 archive_dist/
-tests/results/
-tests/inputs/aSi/
+tests/
+tutorial/outputs/
 reference-check/
 nexus_test/
 my_tests/
@@ -15,3 +15,4 @@ my_tests/
 ./assets/Logo_Nexus-CAT_RVB_3.jpg
 ./assets/Logo_Nexus-CAT_RVB_2.png
 ./assets/Logo_Nexus-CAT_RVB_3.png
+launch-nexus-quick-test.py

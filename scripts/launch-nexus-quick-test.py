@@ -63,17 +63,11 @@ settings.print_clusters_positions.set_value(True)
 settings.overwrite_results.set_value(True)
 
 # Set cluster analysis criteria (bond or distance)
-settings.cluster_settings.set_cluster_parameter(
-    'criteria', 'bond'
-)
+settings.cluster_settings.set_cluster_parameter("criteria", "bond")
 # Set cluster connectivities to look for
-settings.cluster_settings.set_cluster_parameter(
-    'connectivity', ['Si', 'O', 'Si']
-)
+settings.cluster_settings.set_cluster_parameter("connectivity", ["Si", "O", "Si"])
 # Set polyhedra to look for
-settings.cluster_settings.set_cluster_parameter(
-    'polyhedra', [[4, 4], [5, 5], [6, 6]]
-)
+settings.cluster_settings.set_cluster_parameter("polyhedra", [[4, 4], [5, 5], [6, 6]])
 
 
 # Run the main function with the provided settings : 'bond' criteria

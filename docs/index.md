@@ -8,6 +8,7 @@ introduction
 installation
 getting_started
 features
+extensions
 usage_examples
 api_reference
 contributing

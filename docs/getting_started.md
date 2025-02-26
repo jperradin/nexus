@@ -24,16 +24,28 @@ This section will guide you through the initial setup and usage of Nexus-CAT.
 
     Nexus-CAT reads lattice properties directly from the trajectory file.
 
-2. Initialize the settings using the extention `SiOz`.
+    (Next versions of Nexus-CAT will handle trajectory file format automatically)
+
+2. Create a python script and import nexus 
 
     ```python
     import nexus
+    ```
 
+3. Initialize the settings using the extention `SiOz`.
 
+    The core of the program of Nexus-CAT works alongside extensions. 
+    They contain the necessary settings and functions to analyze the trajectory file.
+    The `SiOz` extension is used to analyze SiO2 systems (refer to the [extensions](extensions.rst) section for more information).
+
+    ```python
     # Initialize the settings object
     extension = "SiOz"
     settings = nexus.settings.Settings(extension)
+    ```
 
+4. Set up the input/output and structure settings
+    ```python
     # Set the trajectory file
     settings.project_name.set_value("quick_start") 
     settings.export_directory.set_value("./export")
@@ -50,7 +62,14 @@ This section will guide you through the initial setup and usage of Nexus-CAT.
         {"element": "Si", "number": 336},
         {"element": "O", "number": 672},     # each element can be added separately
     ])
+    ```
 
+5. Set up the cluster settings
+
+    In this example, we will set the cluster analysis criteria to `bond`, the connectivities to look for to `['Si', 'O', 'Si']`, and the polyhedra to look for to `[[4, 4], [5, 5], [6, 6]]`.
+    Which means we are looking for SiO4-SiO4, SiO5-SiO5, and SiO6-SiO6 clusters where the connectivities between SiOz polyhedra are bridges formed by the Si-O-Si bonds.
+
+    ```python
     # Set cluster analysis criteria (bond or distance)
     settings.cluster_settings.set_cluster_parameter(
         'criteria', 'bond'
@@ -63,24 +82,27 @@ This section will guide you through the initial setup and usage of Nexus-CAT.
     settings.cluster_settings.set_cluster_parameter(
         'polyhedra', [[4, 4], [5, 5], [6, 6]]
     )
-
-    # Run the analysis through the main function using the provided settings object
-    nexus.main(settings)
-
-    print(f"Results are saved here \u279c {settings._output_directory}\n\n") # _output_directory is the combined path of export_directory and project_name
-    
     ```
 
-3. Run the script and check the results in the export directory.
+6. Run the analysis through the main function using the provided settings object
+
+    ```python
+    nexus.main(settings)
+
+    # _output_directory is the combined path of export_directory and project_name
+    print(f"Results are saved here \u279c {settings._output_directory}\n\n") 
+    ```
+
+7. Run the script and check the results in the export directory.
 
     ```bash
     python quick_start.py
     ```
 
-4. View the results in the specified export directory.
+8. View the results in the specified export directory.
 
     ```bash
     ls export/quick_start/
     ```
 
-For more detailed examples, see the [usage_examples](usage_examples.rst) section.
+For different and more advanced examples, see the [usage_examples](usage_examples.rst) section.

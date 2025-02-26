@@ -46,5 +46,5 @@ def get_connectivity(cluster_settings) -> list:
     """
     Return the connectivity between the atoms.
     """
-    return ['Na-Na'] #TODO finish this function and the rest of the extension #PRIO2
+    return ['Na-Na']
     

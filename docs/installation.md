@@ -25,7 +25,7 @@ To install Nexus-CAT, follow these steps:
 3. Verify the installation:
 
     ```bash
-    python -c "import nexus; print(nexus.__version__)"
+    python -c "import nexus"
     ```
 
 You have successfully installed Nexus-CAT on your system. For more details, refer to the [Getting Started](getting_started.rst) guide.

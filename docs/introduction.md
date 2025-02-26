@@ -14,4 +14,4 @@ Welcome to the Nexus-CAT Python package documentation. Nexus-CAT is a **Cluster 
 
 The goal of Nexus-CAT is to provide a user-friendly, efficient, and flexible toolkit for researchers working with atomistic simulations. It supports various extensions for analyzing different systems and cluster connectivities.
 
-For more details, visit the [GitHub repository](https://github.com/JulienPerradin/nexus).
+For more details, visit the [GitHub repository](https://github.com/jperradin/nexus).

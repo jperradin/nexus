@@ -53,7 +53,7 @@ print(f"Results are saved here \u279c {settings._output_directory}\n\n") # _outp
 
 ### Example 2: Parallel Processing of Multiple Files
 
-reference: [Parallel Processing](https://github.com/JulienPerradin/nexus/blob/f630a7e87da3ea4a1e2028fee54de1002c6fd4d3/scripts/launch-nexus-parallel-multiple-files.py)
+reference: [Parallel Processing](https://github.com/jperradin/nexus/blob/f630a7e87da3ea4a1e2028fee54de1002c6fd4d3/scripts/launch-nexus-parallel-multiple-files.py)
 
 ```python
 import nexus

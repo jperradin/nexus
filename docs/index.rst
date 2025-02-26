@@ -12,9 +12,13 @@ Contents:
     :caption: Table of Contents
 
     introduction
-    getting_started
     installation
-    extensions
+    getting_started
+    features
+    usage_examples
+    api_reference
+    contributing
+    licence
 
 Indices and tables
 ==================

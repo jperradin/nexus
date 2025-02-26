@@ -1,3 +1,61 @@
+Usage Examples
+==============
+
+This section provides practical examples of how to use Nexus-CAT for cluster analysis.
+
+### Example 1: Basic Run with SiOz / SiSi / OO Extension 
+
+reference: [Getting Started](getting_started.rst)
+```python
+import nexus
+
+
+# Initialize the settings object
+extension = "SiOz" # or "SiSi" or "OO"
+settings = nexus.settings.Settings(extension)
+
+# Set the trajectory file
+settings.project_name.set_value("quick_start") 
+settings.export_directory.set_value("./export")
+
+# Load the trajectory file
+trajectory = "./path/to/trajectory.xyz"         # path of trajectory file
+settings.path_to_xyz_file.set_value(trajectory) # set the path to the trajectory file
+settings.number_of_atoms.set_value(100)         # set the number of atoms in the trajectory file
+settings.header.set_value(2)                    # set the number of header lines in the trajectory file
+settings.range_of_frames.set_value([0, 1])      # set the range of frames to be analyzed \[start, end\]
+
+# Set structure informations
+settings.structure.set_value([
+    {"element": "Si", "number": 336},
+    {"element": "O", "number": 672},     # each element can be added separately
+])
+
+# Set cluster analysis criteria (bond or distance)
+settings.cluster_settings.set_cluster_parameter(
+    'criteria', 'bond'
+)
+# Set cluster connectivities to look for
+settings.cluster_settings.set_cluster_parameter(
+    'connectivity', ['Si', 'O', 'Si']
+)
+# Set polyhedra to look for
+settings.cluster_settings.set_cluster_parameter(
+    'polyhedra', [[4, 4], [5, 5], [6, 6]]
+)
+
+# Run the analysis through the main function using the provided settings object
+nexus.main(settings)
+
+print(f"Results are saved here \u279c {settings._output_directory}\n\n") # _output_directory is the combined path of export_directory and project_name
+
+```
+
+### Example 2: Parallel Processing of Multiple Files
+
+reference: [Parallel Processing](https://github.com/JulienPerradin/nexus/blob/f630a7e87da3ea4a1e2028fee54de1002c6fd4d3/scripts/launch-nexus-parallel-multiple-files.py)
+
+```python
 import nexus
 import os
 from tqdm import tqdm
@@ -120,4 +178,7 @@ with ProcessPoolExecutor(max_workers=8) as executor:
 # Print success message (if it appears, everything went well)
 print("\n\n\t\tAll trajectories have been processed successfully.")
 print(f"\n\t\tResults are saved here \u279c {settings.export_directory.get_value()}\n\n")
-    
+```
+
+For more examples, please refer to the `scripts` folder in the repository.
+

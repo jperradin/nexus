@@ -36,7 +36,8 @@ This section will guide you through the initial setup and usage of Nexus-CAT.
 
     The core of the program of Nexus-CAT works alongside extensions. 
     They contain the necessary settings and functions to analyze the trajectory file.
-    The `SiOz` extension is used to analyze SiO2 systems (refer to the [extensions](extensions.rst) section for more information).
+    The `SiOz` extension is used to analyze SiO2 systems with z being the coordination number of Si atoms.
+    (Refer to the [extensions](extensions.rst) section for more information).
 
     ```python
     # Initialize the settings object
@@ -67,7 +68,7 @@ This section will guide you through the initial setup and usage of Nexus-CAT.
 5. Set up the cluster settings
 
     In this example, we will set the cluster analysis criteria to `bond`, the connectivities to look for to `['Si', 'O', 'Si']`, and the polyhedra to look for to `[[4, 4], [5, 5], [6, 6]]`.
-    Which means we are looking for SiO4-SiO4, SiO5-SiO5, and SiO6-SiO6 clusters where the connectivities between SiOz polyhedra are bridges formed by the Si-O-Si bonds.
+    Which means we are looking for SiO$_4$-SiO$_4$, SiO$_5$-SiO$_5$, and SiO$_6$-SiO$_6$ clusters where the connectivities between SiO$_z$ polyhedra are bridges formed by the Si-O-Si bonds.
 
     ```python
     # Set cluster analysis criteria (bond or distance)

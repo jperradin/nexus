@@ -129,6 +129,7 @@ def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
     """
 
     # Initialize the lists
+    O2 = []
     O3 = []
     O4 = []
     O5 = []
@@ -137,13 +138,15 @@ def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
     O8 = []
     O9 = []
 
-    LD = []  # z <= 4
-    HD = []  # 4 < z < 8
+    LD = []   # z <= 4
+    HD = []   # 4 < z < 8
     VHD = []  # z >= 8
-    HV = []  # z > 4
+    HV = []   # z > 4
 
     if criteria == "distance":
         dict_concentrations = {
+            "O2-O2": [],
+            "O2-O3": [],
             "O3-O3": [],
             "O3-O4": [],
             "O4-O4": [],
@@ -173,6 +176,8 @@ def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
             ]
         )
         coordination_OO.append(counter)
+        if counter == 2:
+            O2.append(atom)
         if counter == 3:
             O3.append(atom)
         if counter == 4:
@@ -197,7 +202,7 @@ def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
             HV.append(atom)
 
     _debug_histogram_proportion_OO = np.histogram(
-        coordination_OO, bins=[3, 4, 5, 6, 7, 8, 9, 10], density=True
+        coordination_OO, bins=[2, 3, 4, 5, 6, 7, 8, 9, 10], density=True
     )
 
     if quiet == False:
@@ -221,6 +226,12 @@ def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
             counter += 1
 
         for neighbor in atom.get_neighbours():
+            if atom.coordination == 2 and neighbor.coordination == 2:
+                dict_concentrations["O2-O2"].append(atom.id)
+                dict_concentrations["O2-O2"].append(neighbor.id)
+            if atom.coordination == 2 and neighbor.coordination == 3:
+                dict_concentrations["O2-O3"].append(atom.id)
+                dict_concentrations["O2-O3"].append(neighbor.id)
             if atom.coordination == 3 and neighbor.coordination == 3:
                 dict_concentrations["O3-O3"].append(atom.id)
                 dict_concentrations["O3-O3"].append(neighbor.id)
@@ -338,9 +349,11 @@ def find_extra_clusters(
         if root_1 != root_2:
             root_2.parent = root_1
 
+    # Get cluster settings and criteria
     cluster_settings = settings.cluster_settings.get_value()
     criteria = cluster_settings["criteria"]
 
+    # Ensure criteria is 'distance'
     if criteria != "distance":
         raise ValueError(
             f"Criteria {criteria} not supported. Criteria must be 'distance'."
@@ -351,8 +364,8 @@ def find_extra_clusters(
         chain = [node_1, node_2]
         connectivities = ["LD", "HD", "VHD", "HV"]
 
+    # Initialize networking atoms dictionary
     networking_atoms = {}
-
     networking_atoms["LD"] = [atom for atom in atoms if (atom.get_coordination() <= 4)]
     networking_atoms["HD"] = [
         atom for atom in atoms if (4 < atom.get_coordination() < 8)
@@ -362,10 +375,12 @@ def find_extra_clusters(
 
     local_clusters = []
 
+    # Iterate over each connectivity type
     for key in networking_atoms.keys():
         current_network = networking_atoms[key]
         number_of_nodes = 0
 
+        # Generate color gradient for progress bar
         color_gradient = generate_color_gradient(len(current_network))
         if not settings.quiet.get_value():
             progress_bar = tqdm(
@@ -378,6 +393,7 @@ def find_extra_clusters(
             progress_bar = current_network
         colour = 0
 
+        # Union-find algorithm to group atoms into clusters
         for atom in progress_bar:
             # Update progress_bar
             if not settings.quiet.get_value():
@@ -396,10 +412,12 @@ def find_extra_clusters(
         clusters_found = {}
         current_local_clusters = []
 
+        # Group atoms by their root
         for atom in current_network:
             root = find(atom)
             clusters_found.setdefault(root.id, []).append(atom)
 
+        # Generate color gradient for progress bar
         color_gradient = generate_color_gradient(len(clusters_found))
         if not settings.quiet.get_value():
             progress_bar = tqdm(
@@ -427,6 +445,7 @@ def find_extra_clusters(
                 root = find(atom)
                 break
 
+            # Create a new Cluster object
             current_cluster = Cluster(
                 box=box,
                 connectivity=key,
@@ -435,12 +454,14 @@ def find_extra_clusters(
                 size=len(cluster),
             )
 
+            # Add atoms to the cluster
             for atom in cluster:
                 atom.set_cluster(counter_c, key)
                 current_cluster.add_atom(atom)
                 if len(cluster) > 1:
                     number_of_nodes += 1
 
+            # Calculate cluster properties
             current_cluster.calculate_unwrapped_positions(
                 criteria, chain, settings.quiet.get_value()
             )
@@ -460,6 +481,7 @@ def find_extra_clusters(
         if number_of_nodes == 0:
             number_of_nodes = 1
 
+        # Finalize cluster properties
         for cluster in current_local_clusters:
             cluster.number_of_nodes = number_of_nodes
             cluster.calculate_order_parameter()

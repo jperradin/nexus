@@ -476,6 +476,7 @@ def find_extra_clusters(
         if number_of_nodes == 0:
             number_of_nodes = 1
 
+        # Finalize cluster properties
         for cluster in current_local_clusters:
             cluster.number_of_nodes = number_of_nodes
             cluster.calculate_order_parameter()

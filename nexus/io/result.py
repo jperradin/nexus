@@ -26,6 +26,18 @@ import os
 # Internal imports
 from .make_lines_unique import make_lines_unique
 
+__all__ = [
+    'Result',
+    'AverageClusterSize',
+    'BiggestClusterSize',
+    'SpanningClusterSize',
+    'ClusterSizeDistribution',
+    'GyrationRadiusDistribution',
+    'CorrelationLength',
+    'OrderParameter',
+    'PercolationProbability'
+]
+
 class Result:
     """
     Represents a generic result.

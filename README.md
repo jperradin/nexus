@@ -21,15 +21,15 @@
 
 `nexus-cat` is a package designed to find clusters of connected polyhedra in an atomistic simulation trajectory. It provides functionality to analyze cluster properties according to the percolation theory:
 - *Note: Here the notion of size refers to the number of polyhedra in a cluster, not the physical size of the cluster, ie its radius nor its volume.*
-- **Average cluster size** $\langle s \rangle$: $$\langle s(p) \rangle = \sum_s \frac{s^2n_s(p)}{\sum_s s n_s(p)}$$ 
+- **Average cluster size** $\langle s \rangle$: $\langle s(p) \rangle = \sum_s \frac{s^2n_s(p)}{\sum_s s n_s(p)}$
   - with $n_s$ the number of clusters of size $s$ (ie number of polyhedra in the cluster).
   - 1 sized clusters and percolating clusters are not taken into account in the calculation.
-- **Biggest cluster size** $s_{max} $: largest cluster size in the system no matter the percolation threshold.
+- **Biggest cluster size** $s_{max}$: largest cluster size in the system no matter the percolation threshold.
 - **Spanning cluster size** $s_{\infty}$ : largest cluster size in the system excluding the percolating cluster.
-- **Gyration radius** $R_g$ : $$R_s² = \frac{1}{2s^2}\sum_{i,j}|\overrightarrow{r_i}-\overrightarrow{r_j}|^2$$
+- **Gyration radius** $R_g$ : $R_s² = \frac{1}{2s^2}\sum_{i,j}|\overrightarrow{r_i}-\overrightarrow{r_j}|^2$
   - with $r_i$ the **unwrapped** coordinates of the atom $_i$ in the cluster of size $s$. 
   - 1 sized clusters and percolating clusters are not taken into account in the calculation.
-- **Correlation length** $\xi$ : $$\xi^2 = \frac{\sum_s 2R_s²s²n_s(p)}{\sum_ss²n_s(p)}$$
+- **Correlation length** $\xi$ : $\xi^2 = \frac{\sum_s 2R_s²s²n_s(p)}{\sum_ss²n_s(p)}$
   - with $n_s$ the number, $R_s$ the average gyration radius of clusters of size $s$ (ie number of polyhedra in the cluster).
   - 1 sized clusters and percolating clusters are not taken into account in the calculation.
 - **Percolation probability** $\Pi$ :
@@ -64,12 +64,9 @@ Then you can use pip, it will install dependencies and the main package in your 
 pip install nexus-cat
 ```
 
-
 ## ⇁ Getting started
 
-As a first example you can follow the steps of the jupyter notebook `tutorial.ipynb`
-
-Please refer to the documentation for more informations on how to use the package.
+As a first example you can follow the steps of the [Getting started](https://nexus-cat.readthedocs.io/en/latest/getting_started.html) section of the documentation.
 
 ## ⇁ Documentation
 
@@ -77,7 +74,7 @@ The documentation is available [here](https://nexus-cat.readthedocs.io/en/latest
 
 ## ⇁ Contributing
 
-Contributions to `NEXUS-CAT` are welcome! You can contribute by submitting bug reports, feature requests, new extension requests, or pull requests through GitHub.
+Contributions to `Nexus-CAT` are welcome! You can contribute by submitting bug reports, feature requests, new extension requests, or pull requests through GitHub.
 
 ## ⇁ License
 

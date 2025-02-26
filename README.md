@@ -56,7 +56,7 @@ P_∞ = \begin{cases}0 & \text{if } \Pi = 0 \\\frac{s_{max}}{N} & \text{if } \Pi
 To install `nexus`, first clone this repository as you please, for example with SSH:
 
 ```bash
-git clone git@github.com:JulienPerradin/nexus.git
+git clone git@github.com:jperradin/nexus.git
 ```
 Then you can use pip, it will install dependencies and the main package in your Python environment:
 

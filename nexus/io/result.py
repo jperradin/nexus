@@ -1,8 +1,29 @@
-# external imports
+"""
+Module: result
+--------------
+
+This module defines various classes to represent and handle different types of results
+related to cluster size analysis. Each class provides methods to calculate specific 
+metrics and write the results to files.
+
+Classes:
+--------
+    - Result: Base class for all result types.
+    - AverageClusterSize: Represents a result for average cluster sizes.
+    - BiggestClusterSize: Represents a result for the biggest cluster size.
+    - SpanningClusterSize: Represents a result for the spanning cluster size.
+    - ClusterSizeDistribution: Represents a result for the cluster size distribution.
+    - GyrationRadiusDistribution: Represents a result for the gyration radius distribution.
+    - CorrelationLength: Represents a result for the correlation length.
+    - OrderParameter: Represents a result for the order parameter.
+    - PercolationProbability: Represents a result for the percolation probability.
+"""
+
+# External imports
 import numpy as np
 import os
 
-# internal imports
+# Internal imports
 from .make_lines_unique import make_lines_unique
 
 class Result:
@@ -11,12 +32,12 @@ class Result:
 
     Attributes:
     -----------
-        - property (str): The property name.
-        - info (str): Additional information about the result.
-        - init_frame (int): The initial frame.
-        - timeline (list): List of data points over time.
-        - result (float): The computed result.
-        - error (float): The error associated with the result.
+        property (str): The property name.
+        info (str): Additional information about the result.
+        init_frame (int): The initial frame.
+        timeline (list): List of data points over time.
+        result (float): The computed result.
+        error (float): The error associated with the result.
     """
     def __init__(self, name, info, init_frame) -> None:
         """
@@ -24,9 +45,9 @@ class Result:
 
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
-            - init_frame (int): The initial frame.
+            name (str): The property name.
+            info (str): Additional information about the result.
+            init_frame (int): The initial frame.
         """
         self.property : str = name
         self.info : str = info
@@ -43,8 +64,8 @@ class AverageClusterSize(Result):
 
     Attributes:
     -----------
-        - average_size (float): The computed average cluster size.
-        - filepath (str): The path to the output file.
+        average_size (float): The computed average cluster size.
+        filepath (str): The path to the output file.
     """
     def __init__(self, name: str, info: str, init_frame: int) -> None:
         """
@@ -52,8 +73,8 @@ class AverageClusterSize(Result):
 
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
+            name (str): The property name.
+            info (str): Additional information about the result.
         """
         super().__init__(name, info, init_frame)
         self.average_size = 0
@@ -61,11 +82,12 @@ class AverageClusterSize(Result):
     
     def add_to_timeline(self, value, concentration) -> None:
         """
-        Appends a data to the timeline.
+        Appends a data point to the timeline.
 
         Parameters:
         -----------
-            - value: The data to add.
+            value: The data point to add.
+            concentration: The concentration associated with the data point.
         """
         self.timeline.append(value)
         self.timeline_c.append(concentration)
@@ -101,8 +123,9 @@ class AverageClusterSize(Result):
 
         Parameters:
         -----------
-            - path_to_directory (str): The directory where the output file will be saved.
-            - number_of_frames (int): The number of frames used in averaging.
+            overwrite (bool): Whether to overwrite the existing file.
+            path_to_directory (str): The directory where the output file will be saved.
+            number_of_frames (int): The number of frames used in averaging.
         """
         filename = "average_cluster_size.dat"
         if not os.path.exists(path_to_directory):
@@ -136,8 +159,9 @@ class BiggestClusterSize(Result):
     Represents a result for the biggest cluster size.
 
     Attributes:
-        - biggest_size (float): The computed biggest cluster size.
-        - filepath (str): The path to the output file.
+    -----------
+        biggest_size (float): The computed biggest cluster size.
+        filepath (str): The path to the output file.
     """
     def __init__(self, name: str, info: str, init_frame: int) -> None:
         """
@@ -145,8 +169,8 @@ class BiggestClusterSize(Result):
 
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
+            name (str): The property name.
+            info (str): Additional information about the result.
         """
         super().__init__(name, info, init_frame)
         self.biggest_size = 0
@@ -158,7 +182,8 @@ class BiggestClusterSize(Result):
 
         Parameters:
         -----------
-            - value: The data point to add.
+            value: The data point to add.
+            concentration: The concentration associated with the data point.
         """
         self.timeline.append(value)
         self.timeline_c.append(concentration)
@@ -184,8 +209,9 @@ class BiggestClusterSize(Result):
 
         Parameters:
         -----------
-            - path_to_directory (str): The directory where the output file will be saved.
-            - number_of_frames (int): The number of frames used in averaging.
+            overwrite (bool): Whether to overwrite the existing file.
+            path_to_directory (str): The directory where the output file will be saved.
+            number_of_frames (int): The number of frames used in averaging.
         """
         filename = "biggest_cluster_size.dat"
         if not os.path.exists(path_to_directory):
@@ -219,8 +245,9 @@ class SpanningClusterSize(Result):
     Represents a result for the spanning cluster size.
 
     Attributes:
-        - spanning_size (float): The computed spanning cluster size.
-        - filepath (str): The path to the output file.
+    -----------
+        spanning_size (float): The computed spanning cluster size.
+        filepath (str): The path to the output file.
     """
     def __init__(self, name: str, info: str, init_frame: int) -> None:
         """
@@ -228,8 +255,8 @@ class SpanningClusterSize(Result):
 
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
+            name (str): The property name.
+            info (str): Additional information about the result.
         """
         super().__init__(name, info, init_frame)
         self.spanning_size = 0
@@ -241,7 +268,8 @@ class SpanningClusterSize(Result):
 
         Parameters:
         -----------
-            - value: The data point to add.
+            value: The data point to add.
+            concentration: The concentration associated with the data point.
         """
         self.timeline.append(value)
         self.timeline_c.append(concentration)
@@ -267,8 +295,9 @@ class SpanningClusterSize(Result):
 
         Parameters:
         -----------
-            - path_to_directory (str): The directory where the output file will be saved.
-            - number_of_frames (int): The number of frames used in averaging.
+            overwrite (bool): Whether to overwrite the existing file.
+            path_to_directory (str): The directory where the output file will be saved.
+            number_of_frames (int): The number of frames used in averaging.
         """
         filename = "spanning_cluster_size.dat"
         if not os.path.exists(path_to_directory):
@@ -303,8 +332,8 @@ class ClusterSizeDistribution(Result):
     
     Attributes:
     -----------
-        - distribution (dict): The computed cluster size distribution.
-        - filepath (str): The path to the output file.
+        distribution (dict): The computed cluster size distribution.
+        filepath (str): The path to the output file.
     """
     def __init__(self, name: str, info: str, init_frame: int) -> None:
         """
@@ -312,12 +341,9 @@ class ClusterSizeDistribution(Result):
 
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
-            - init_frame (int): The initial frame.
-            - distribution (dict): The computed cluster size distribution.
-            - filepath (str): The path to the output file.
-            - timeline (dict): The timeline data.
+            name (str): The property name.
+            info (str): Additional information about the result.
+            init_frame (int): The initial frame.
         """
         super().__init__(name, info, init_frame)
         self.distribution = {}
@@ -327,6 +353,12 @@ class ClusterSizeDistribution(Result):
     def add_to_timeline(self, frame: int, value: list, concentration: float) -> None:
         """
         Appends a data point to the timeline.
+
+        Parameters:
+        -----------
+            frame (int): The frame number.
+            value (list): The data point to add.
+            concentration (float): The concentration associated with the data point.
         """
         self.timeline[frame] = value
         self.timeline_c.append(concentration)
@@ -357,8 +389,8 @@ class ClusterSizeDistribution(Result):
 
         Parameters:
         -----------
-            - path_to_directory (str): The directory where the output file will be saved.
-            - number_of_frames (int): The number of frames used in averaging.
+            path_to_directory (str): The directory where the output file will be saved.
+            number_of_frames (int): The number of frames used in averaging.
         """
         filename = f"cluster_size_distribution-{self.info}.dat"
         if not os.path.exists(path_to_directory):
@@ -399,8 +431,8 @@ class GyrationRadiusDistribution(Result):
     
     Attributes:
     -----------
-        - distribution (dict): The computed gyration radius distribution.
-        - filepath (str): The path to the output file.
+        distribution (dict): The computed gyration radius distribution.
+        filepath (str): The path to the output file.
     """
     def __init__(self, name, info, init_frame) -> None:
         """
@@ -408,12 +440,9 @@ class GyrationRadiusDistribution(Result):
         
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
-            - init_frame (int): The initial frame.
-            - distribution (dict): The computed gyration radius distribution.
-            - filepath (str): The path to the output file.
-            - timeline (dict): The timeline data.
+            name (str): The property name.
+            info (str): Additional information about the result.
+            init_frame (int): The initial frame.
         """
         super().__init__(name, info, init_frame)
         self.distribution_rgyr = {}
@@ -423,6 +452,12 @@ class GyrationRadiusDistribution(Result):
     def add_to_timeline(self, frame: int, value: list, concentration: float) -> None:
         """
         Appends a data point to the timeline.
+
+        Parameters:
+        -----------
+            frame (int): The frame number.
+            value (list): The data point to add.
+            concentration (float): The concentration associated with the data point.
         """
         self.timeline[frame] = value
         self.timeline_c.append(concentration)
@@ -446,11 +481,11 @@ class GyrationRadiusDistribution(Result):
     def write_file_header(self, path_to_directory, number_of_frames) -> None:
         """
         Initializes the output file with a header.
-        
+
         Parameters:
         -----------
-            - path_to_directory (str): The directory where the output file will be saved.
-            - number_of_frames (int): The number of frames used in averaging.
+            path_to_directory (str): The directory where the output file will be saved.
+            number_of_frames (int): The number of frames used in averaging.
         """
         filename = f"gyration_radius_distribution-{self.info}.dat"
         if not os.path.exists(path_to_directory):
@@ -508,8 +543,8 @@ class CorrelationLength(Result):
     
     Attributes:
     -----------
-        - corre_length (float): The computed correlation length.
-        - filepath (str): The path to the output file.
+        corre_length (float): The computed correlation length.
+        filepath (str): The path to the output file.
     """
     def __init__(self, name, info, init_frame) -> None:
         """
@@ -517,12 +552,9 @@ class CorrelationLength(Result):
         
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
-            - init_frame (int): The initial frame.
-            - corre_length (float): The computed correlation length.
-            - filepath (str): The path to the output file.
-            - timeline (list): The timeline data.
+            name (str): The property name.
+            info (str): Additional information about the result.
+            init_frame (int): The initial frame.
         """
         super().__init__(name, info, init_frame)
         self.corre_length = 0.
@@ -532,6 +564,12 @@ class CorrelationLength(Result):
     def add_to_timeline(self, frame, value, concentration) -> None:
         """
         Appends a data point to the timeline.
+
+        Parameters:
+        -----------
+            frame (int): The frame number.
+            value: The data point to add.
+            concentration: The concentration associated with the data point.
         """
         self.timeline[frame] = value
         self.timeline_c.append(concentration)
@@ -586,11 +624,12 @@ class CorrelationLength(Result):
     def write_file_header(self, overwrite, path_to_directory, number_of_frames) -> None:
         """
         Initializes the output file with a header.
-        
+
         Parameters:
         -----------
-            - path_to_directory (str): The directory where the output file will be saved.
-            - number_of_frames (int): The number of frames used in averaging.
+            overwrite (bool): Whether to overwrite the existing file.
+            path_to_directory (str): The directory where the output file will be saved.
+            number_of_frames (int): The number of frames used in averaging.
         """
         filename = f"correlation_length.dat"
         if not os.path.exists(path_to_directory):
@@ -626,8 +665,8 @@ class OrderParameter(Result):
     
     Attributes:
     -----------
-        - order_parameter (float): The computed order parameter.
-        - filepath (str): The path to the output file.
+        order_parameter (float): The computed order parameter.
+        filepath (str): The path to the output file.
     """
     def __init__(self, name, info, init_frame) -> None:
         """
@@ -635,12 +674,9 @@ class OrderParameter(Result):
         
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
-            - init_frame (int): The initial frame.
-            - order_parameter (float): The computed order parameter.
-            - filepath (str): The path to the output file.
-            - timeline (list): The timeline data.
+            name (str): The property name.
+            info (str): Additional information about the result.
+            init_frame (int): The initial frame.
         """
         super().__init__(name, info, init_frame)
         self.order_parameter = 0.
@@ -650,6 +686,12 @@ class OrderParameter(Result):
     def add_to_timeline(self, frame: int, value: list, concentration: float) -> None:
         """
         Appends a data point to the timeline.
+
+        Parameters:
+        -----------
+            frame (int): The frame number.
+            value (list): The data point to add.
+            concentration (float): The concentration associated with the data point.
         """
         self.timeline[frame] = value
         self.timeline_c.append(concentration)
@@ -669,11 +711,12 @@ class OrderParameter(Result):
     def write_file_header(self, overwrite, path_to_directory, number_of_frames) -> None:
         """
         Initializes the output file with a header.
-        
+
         Parameters:
         -----------
-            - path_to_directory (str): The directory where the output file will be saved.
-            - number_of_frames (int): The number of frames used in averaging.
+            overwrite (bool): Whether to overwrite the existing file.
+            path_to_directory (str): The directory where the output file will be saved.
+            number_of_frames (int): The number of frames used in averaging.
         """
         filename = f"order_parameter.dat"
         if not os.path.exists(path_to_directory):
@@ -710,8 +753,8 @@ class PercolationProbability(Result):
     
     Attributes:
     -----------
-        - percolation_probability (float): The computed percolation probability.
-        - filepath (str): The path to the output file.
+        percolation_probability (float): The computed percolation probability.
+        filepath (str): The path to the output file.
     """
     def __init__(self, name, info, init_frame) -> None:
         """
@@ -719,12 +762,9 @@ class PercolationProbability(Result):
         
         Parameters:
         -----------
-            - name (str): The property name.
-            - info (str): Additional information about the result.
-            - init_frame (int): The initial frame.
-            - percolation_probability (float): The computed percolation probability.
-            - filepath (str): The path to the output file.
-            - timeline (list): The timeline data.
+            name (str): The property name.
+            info (str): Additional information about the result.
+            init_frame (int): The initial frame.
         """
         super().__init__(name, info, init_frame)
         self.percolation_probability = 0.
@@ -734,6 +774,12 @@ class PercolationProbability(Result):
     def add_to_timeline(self, frame: int, value:list, concentration: float) -> None:
         """
         Appends a data point to the timeline.
+
+        Parameters:
+        -----------
+            frame (int): The frame number.
+            value (list): The data point to add.
+            concentration (float): The concentration associated with the data point.
         """
         self.timeline[frame] = value
         self.timeline_c.append(concentration)
@@ -753,11 +799,12 @@ class PercolationProbability(Result):
     def write_file_header(self, overwrite, path_to_directory, number_of_frames) -> None:
         """
         Initializes the output file with a header.
-        
+
         Parameters:
         -----------
-            - path_to_directory (str): The directory where the output file will be saved.
-            - number_of_frames (int): The number of frames used in averaging.
+            overwrite (bool): Whether to overwrite the existing file.
+            path_to_directory (str): The directory where the output file will be saved.
+            number_of_frames (int): The number of frames used in averaging.
         """
         filename = f"percolation_probability.dat"
         if not os.path.exists(path_to_directory):

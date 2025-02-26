@@ -1,22 +1,30 @@
+"""
+Module: read_lattices_properties
+Description: This module provides a function to read lattice properties from a trajectory file and store them in a Box object.
+"""
+
 import numpy as np
 
 def read_lattices_properties(box, file_path, keyword="Lattice") -> None:
-    r"""
+    """
     Create the Box object for each frame in the trajectory file.
     
     Parameters
     ----------
-        - box (Box) : Box object to store the lattice properties.
-        - file_path (str) : Path to the trajectory file containing the lattice properties.
+    box : Box
+        Box object to store the lattice properties.
+    file_path : str
+        Path to the trajectory file containing the lattice properties.
+    keyword : str, optional
+        Keyword to identify lattice property lines in the file (default is "Lattice").
         
-    Returns:
-    --------
-        - None.
+    Returns
+    -------
+    None
     """
     # Open the file once to read the data
     with open(file_path, "r") as f:
         data = f.readlines()
-    f.close()
     
     # Saving the lattice properties only
     lattices = [line for line in data if keyword in line]

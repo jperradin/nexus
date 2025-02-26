@@ -1,26 +1,33 @@
+"""
+Cutoff module for the Nexus project.
+
+This module defines the Cutoff class, which manages cutoff distances for pairs of elements.
+
+Classes:
+    - Cutoff: Manages cutoff distances for pairs of elements.
+"""
+
 class Cutoff:
     """
     Manages cutoff distances for pairs of elements.
 
     Attributes:
-    -----------
-        - cutoffs (dict): Dictionary containing the cutoffs for each pair of elements.
-        - pairs (list): List of pairs of elements.
-        - values (list): List of cutoff values.
+        cutoffs (dict): Dictionary containing the cutoffs for each pair of elements.
+        pairs (list): List of pairs of elements.
+        values (list): List of cutoff values.
 
     Methods:
-        - __init__: Initializes a Cutoff object.
-        - get_cutoff: Returns the cutoff for the pair of elements.
-        - get_max_cutoff: Returns the maximum cutoff in the system.
+        __init__: Initializes a Cutoff object.
+        get_cutoff: Returns the cutoff for the pair of elements.
+        get_max_cutoff: Returns the maximum cutoff in the system.
     """
     
     def __init__(self, cutoffs) -> None:
         """
         Initializes the Cutoff object.
-        
+
         Parameters:
-        -----------
-        - cutoffs (dict): Dictionary containing the cutoffs for each pair of elements.
+            cutoffs (dict): Dictionary containing the cutoffs for each pair of elements.
         """
         self.cutoffs : dict = cutoffs   # dictionnary of the cutoffs 
         self.pairs : list = []          # list of the pairs of atoms
@@ -69,4 +76,3 @@ class Cutoff:
         - float: Maximum cutoff in the system.
         """
         return max(self.values)
-            

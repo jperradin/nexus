@@ -1,13 +1,30 @@
-# internal imports
+"""
+Main module for the Nexus project.
+
+This module serves as the entry point for the Nexus application.
+It initializes the necessary components and orchestrates the workflow.
+
+Imports:
+    - Standard libraries
+    - Third-party libraries
+    - Internal modules
+
+Functions:
+    - main: The main function that initializes and runs the application.
+"""
+
+# Standard library imports
+import os
+import importlib
+
+# Third-party imports
+import numpy as np
+from tqdm import tqdm
+
+# Internal imports
 from . import io
 from . import core
 from .utils.generate_color_gradient import generate_color_gradient
-
-# external imports
-import numpy as np
-from tqdm import tqdm
-import os
-import importlib
 
 def main(settings):
     """
@@ -250,5 +267,4 @@ def main(settings):
     if settings.print_clusters_positions.get_value():
         # Generating a list.txt file with the paths of the all-in-one unwrapped clusters files.
         unwrapped_clusters_dir_path = os.path.join(settings._output_directory, 'unwrapped_clusters')
-        io.write_list_of_files(unwrapped_clusters_dir_path) 
-        
+        io.write_list_of_files(unwrapped_clusters_dir_path)

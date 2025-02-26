@@ -1,18 +1,30 @@
+"""
+Module: parameter
+-----------------
+
+This module defines classes to represent and handle parameters for the application.
+
+Classes:
+--------
+    - Parameter: Represents a generic parameter with a name and value.
+    - ClusterParameter: Represents a parameter specific to cluster settings.
+"""
+
 class Parameter:
     """
     The Parameter class represents a parameter with a name and a value.
 
     Attributes:
     -----------
-        - name (str) : Name of the parameter.
-        - value () : Value associated with the parameter.
+        name (str): Name of the parameter.
+        value: Value associated with the parameter.
 
     Methods:
     --------
-        - __init__(self, name, value) : Initializes a Parameter object with a name and value.
-        - get_name(self) : Returns the name of the parameter.
-        - get_value(self) : Returns the value associated with the parameter.
-        - set_value(self, new_value) : Sets a new value for the parameter.
+        __init__(self, name, value): Initializes a Parameter object with a name and value.
+        get_name(self): Returns the name of the parameter.
+        get_value(self): Returns the value associated with the parameter.
+        set_value(self, new_value): Sets a new value for the parameter.
     """
 
     def __init__(self, name, value) -> None:
@@ -21,10 +33,10 @@ class Parameter:
 
         Parameters:
         -----------
-            - name (str) : Name of the parameter.
-            - value () : Value associated with the parameter.
+            name (str): Name of the parameter.
+            value: Value associated with the parameter.
         """
-        self.name : str = name
+        self.name: str = name
         self.value = value
         self.disable_warnings = False
     
@@ -50,7 +62,7 @@ class Parameter:
         
         Returns:
         --------
-            - str : Name of the parameter.
+            str: Name of the parameter.
         """
         return self.name
 
@@ -60,7 +72,7 @@ class Parameter:
         
         Returns:
         --------
-            - value () : Value associated with the Parameter.
+            value: Value associated with the Parameter.
         """
         return self.value
 
@@ -70,18 +82,17 @@ class Parameter:
 
         Parameters:
         -----------
-            - new_value (bool or any): The new value to be set for the parameter.
+            new_value: The new value to be set for the parameter.
         
         Raises:
         -------
-            - ValueError: If the value provided is invalid for the parameter.
+            ValueError: If the value provided is invalid for the parameter.
 
         Note:
         -----
-            - If the parameter is 'print_clusters_positions', setting it to True will generate a large amount of data.
-              This option is not recommended for large systems. If 'print_clusters_positions' is set to True,
-              the user will be prompted to confirm the action.
-
+            If the parameter is 'print_clusters_positions', setting it to True will generate a large amount of data.
+            This option is not recommended for large systems. If 'print_clusters_positions' is set to True,
+            the user will be prompted to confirm the action.
         """
         if self.name == "print_clusters_positions" and self.disable_warnings == False: 
             if new_value == True:
@@ -108,14 +119,13 @@ class ClusterParameter(Parameter):
 
     Attributes:
     -----------
-        - name (str): The name of the cluster parameter.
-        - value (dict): The value of the cluster parameter, stored as a dictionary.
+        name (str): The name of the cluster parameter.
+        value (dict): The value of the cluster parameter, stored as a dictionary.
 
     Methods:
     --------
-        - __init__(name, value) : Initializes a ClusterParameter object.
-        - set_cluster_parameter(key, new_value) : Replaces a value of the settings.
-
+        __init__(name, value): Initializes a ClusterParameter object.
+        set_cluster_parameter(key, new_value): Replaces a value of the settings.
     """
     def __init__(self, name, value) -> None:
         """
@@ -125,29 +135,21 @@ class ClusterParameter(Parameter):
         -----------
             name (str): The name of the cluster parameter.
             value (dict): The value of the cluster parameter.
-        
-        Returns:
-        --------
-            - None.
         """
         super().__init__(name, value)
         
     def set_cluster_parameter(self, key, new_value) -> None:
-        r"""
+        """
         Replaces a value of the settings.
 
         Parameters:
         -----------
-            - key (str): The key of the parameter to be replaced.
-            - new_value: The new value to be assigned to the parameter.
+            key (str): The key of the parameter to be replaced.
+            new_value: The new value to be assigned to the parameter.
 
         Raises:
         -------
-            - ValueError: If the provided key is not found or the new value is invalid.
-        
-        Returns:
-        --------
-            - None.
+            ValueError: If the provided key is not found or the new value is invalid.
         """
         if key not in ["connectivity", "main_former", "criteria", "polyhedra"]:
             raise ValueError(f"\tERROR: Cluster parameter '{key}' couldn't be found in cluster settings.")
@@ -163,7 +165,7 @@ class ClusterParameter(Parameter):
         for k, v in self.value.items():
             if k == key:
                 self.value[key] = new_value
-                return 
-        
-        
-        
+                return
+
+
+

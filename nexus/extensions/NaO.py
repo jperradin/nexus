@@ -47,4 +47,3 @@ def get_connectivity(cluster_settings) -> list:
     Return the connectivity between the atoms.
     """
     return ['Na-Na']
-    

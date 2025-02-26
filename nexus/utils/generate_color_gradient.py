@@ -1,6 +1,28 @@
+"""
+Module: generate_color_gradient
+-------------------------------
+
+This module provides a function to generate a color gradient between two colors.
+
+Functions:
+----------
+    - generate_color_gradient: Generates a color gradient between two colors.
+"""
+
 import colorsys
 
 def generate_color_gradient(num_iterations):
+    """
+    Generates a color gradient between red and blue.
+
+    Parameters:
+    -----------
+        num_iterations (int): The number of colors to generate in the gradient.
+
+    Returns:
+    --------
+        list: A list of RGB tuples representing the color gradient.
+    """
     # Define the start and end colors in RGB
     start_color = (255, 0, 0)  # Red
     end_color = (0, 0, 255)    # Blue

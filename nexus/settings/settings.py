@@ -1,8 +1,18 @@
-# internal imports
-from .parameter import Parameter
-from .parameter import ClusterParameter
+"""
+Module: settings
+-----------------
 
-# external imports
+This module defines the Settings class which handles the configuration settings for the application.
+
+Classes:
+--------
+    - Settings: Handles the configuration settings for the application.
+"""
+
+# Internal imports
+from .parameter import Parameter, ClusterParameter
+
+# External imports
 import importlib
 
 
@@ -11,34 +21,34 @@ class Settings:
     Represents the settings for a project.
 
     Attributes:
-    ----------
-        - project_name (Parameter): Name of the project used for the output directory.
-        - export_directory (Parameter): Parent directory where the output files will be saved.
-        - build_fancy_recaps (Parameter): Whether to build fancy recaps of the results into a single file.
-        - build_fancy_plots (Parameter): Whether to build fancy plots of the results into a single file.
-        - path_to_xyz_file (Parameter): Path to the XYZ file containing the atomic coordinates.
-        - number_of_atoms (Parameter): Number of atoms in the system.
-        - number_of_frames (Parameter): Number of frames in the XYZ file.
-        - header (Parameter): Number of lines in the header of the XYZ file.
-        - range_of_frames (Parameter): Range of frames to be analysed.
-        - frames_to_analyse (Parameter): Frames to be analysed.
-        - timestep (Parameter): Timestep of the simulation.
-        - lbox (Parameter): Box length.
-        - temperature (Parameter): Temperature of the system.
-        - pressure (Parameter): Pressure of the system.
-        - version (Parameter): Version of the software.
-        - quiet (Parameter): Whether to print settings or not.
-        - overwrite_results (Parameter): Whether to overwrite files by default.
-        - print_clusters_positions (Parameter): Whether to print the positions of the clusters.
-        - max_size (Parameter): Maximum size of the clusters for the cluster size distribution.
-        - supported_extensions (Parameter): List of supported extensions.
+    -----------
+        project_name (Parameter): Name of the project used for the output directory.
+        export_directory (Parameter): Parent directory where the output files will be saved.
+        build_fancy_recaps (Parameter): Whether to build fancy recaps of the results into a single file.
+        build_fancy_plots (Parameter): Whether to build fancy plots of the results into a single file.
+        path_to_xyz_file (Parameter): Path to the XYZ file containing the atomic coordinates.
+        number_of_atoms (Parameter): Number of atoms in the system.
+        number_of_frames (Parameter): Number of frames in the XYZ file.
+        header (Parameter): Number of lines in the header of the XYZ file.
+        range_of_frames (Parameter): Range of frames to be analysed.
+        frames_to_analyse (Parameter): Frames to be analysed.
+        timestep (Parameter): Timestep of the simulation.
+        lbox (Parameter): Box length.
+        temperature (Parameter): Temperature of the system.
+        pressure (Parameter): Pressure of the system.
+        version (Parameter): Version of the software.
+        quiet (Parameter): Whether to print settings or not.
+        overwrite_results (Parameter): Whether to overwrite files by default.
+        print_clusters_positions (Parameter): Whether to print the positions of the clusters.
+        max_size (Parameter): Maximum size of the clusters for the cluster size distribution.
+        supported_extensions (Parameter): List of supported extensions.
 
     Methods:
     --------
-        - __init__(extension="SiOz"): Initializes a Settings object with default settings.
-        - load_default_settings(extension): Loads default settings based on the extension.
-        - print_settings(): Prints the current settings.
-        - print_all_settings(): Prints all settings, including those not recommended for printing.
+        __init__(extension="SiOz"): Initializes a Settings object with default settings.
+        load_default_settings(extension): Loads default settings based on the extension.
+        print_settings(): Prints the current settings.
+        print_all_settings(): Prints all settings, including those not recommended for printing.
     """
 
     def __init__(self, extension="SiOz") -> None:
@@ -47,7 +57,7 @@ class Settings:
 
         Parameters:
         -----------
-            - extension (str): The extension of the project.
+            extension (str): The extension of the project.
         """
         self.load_default_settings(extension)
 
@@ -57,7 +67,7 @@ class Settings:
 
         Parameters:
         -----------
-            - extension (str): The extension of the project.
+            extension (str): The extension of the project.
         """
         self.project_name: Parameter = Parameter(
             "project_name", "default"

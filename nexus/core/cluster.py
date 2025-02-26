@@ -1,54 +1,67 @@
-# external imports
-import numpy as np
+"""
+Cluster module for the Nexus project.
+
+This module defines the Cluster class, which represents a cluster of atoms within a system.
+
+Imports:
+    - Standard libraries
+    - Third-party libraries
+    - Internal modules
+
+Classes:
+    - Cluster: Represents a cluster of atoms within a system.
+"""
+
+# Standard library imports
 import os
+
+# Third-party imports
+import numpy as np
 from tqdm import tqdm
 
-# internal imports
+# Internal imports
 from .box import Box
 
 class Cluster:
-    r"""
+    """
     Represents a cluster of atoms within a system.
 
-    Attributes: #TODO: update the attributes
-    -----------
-        - atoms (list) : List of Atom objects belonging to the cluster.
-        - box (Box) : Box object representing the simulation box.
-        - connectivity (str) : Connectivity of the cluster.
-        - root_id (int) : Atom id that is the root of the cluster.
-        - frame (int) : Frame of the trajectory.
-        - size (int) : Size of the cluster (number of atoms).
-        - center_of_mass (list) : Center of mass of the cluster.
-        - indices (list) : List of indices of the atoms.
-        - unwrapped_positions (list) : List of unwrapped positions of the cluster.
-        - percolation_probability (str) : Percolation probability.
-        - gyration_radius (float) : Gyration radius of the cluster.
+    Attributes:
+        atoms (list): List of Atom objects belonging to the cluster.
+        box (Box): Box object representing the simulation box.
+        connectivity (str): Connectivity of the cluster.
+        root_id (int): Atom id that is the root of the cluster.
+        frame (int): Frame of the trajectory.
+        size (int): Size of the cluster (number of atoms).
+        center_of_mass (list): Center of mass of the cluster.
+        indices (list): List of indices of the atoms.
+        unwrapped_positions (list): List of unwrapped positions of the cluster.
+        percolation_probability (str): Percolation probability.
+        gyration_radius (float): Gyration radius of the cluster.
 
     Methods:
-    --------
-        - __init__ : Initializes a Cluster object.
-        - add_atom : Adds an atom to the cluster.
-        - get_atoms : Returns the list of Atom objects belonging to the cluster.
-        - set_indices_and_positions : Sets the array of unique indices and positions of atoms in the cluster.
-        - calculate_center_of_mass : Calculates the center of mass of the cluster.
-        - write_coordinates : Writes the cluster coordinates to an XYZ file.
-        - calculate_gyration_radius : Calculates the gyration radius of the cluster.
-        - calculate_percolation_probability : Calculates the percolation probability of the cluster.
-        - calculate_unwrapped_positions : Calculates the unwrapped positions of atoms in the cluster.
-        - unwrap_position : Unwraps position considering periodic boundary conditions.
+        __init__: Initializes a Cluster object.
+        add_atom: Adds an atom to the cluster.
+        get_atoms: Returns the list of Atom objects belonging to the cluster.
+        set_indices_and_positions: Sets the array of unique indices and positions of atoms in the cluster.
+        calculate_center_of_mass: Calculates the center of mass of the cluster.
+        write_coordinates: Writes the cluster coordinates to an XYZ file.
+        calculate_gyration_radius: Calculates the gyration radius of the cluster.
+        calculate_percolation_probability: Calculates the percolation probability of the cluster.
+        calculate_unwrapped_positions: Calculates the unwrapped positions of atoms in the cluster.
+        unwrap_position: Unwraps position considering periodic boundary conditions.
     """
     def __init__(self, atoms=None, box=None, connectivity="", root_id=None, frame=None, size=None) -> None:
-        r"""
+        """
         Initializes a Cluster object.
 
         Parameters:
-        -----------
-            - atoms (list) : List of Atom objects belonging to the cluster.
-            - box (Box) : Box object representing the simulation box.
-            - connectivity (str) : Connectivity of the cluster.
-            - root_id (int) : Atom id that is the root of the cluster.
-            - frame (int) : Frame of the trajectory.
-            - size (int) : Size of the cluster (number of atoms).
+            atoms (list): List of Atom objects belonging to the cluster.
+            box (Box): Box object representing the simulation box.
+            connectivity (str): Connectivity of the cluster.
+            root_id (int): Atom id that is the root of the cluster.
+            frame (int): Frame of the trajectory.
+            size (int): Size of the cluster (number of atoms).
         """
         # Initialize Cluster object with the provided information in argument.
         self.atoms : list = atoms if atoms is not None else []  # list of Atom objects belonging to the cluster
@@ -69,36 +82,32 @@ class Cluster:
         self.concentration : float = 0.0        # Concentration of the 
         
     def add_atom(self, atom) -> None:
-        r"""
+        """
         Add an atom to the cluster.
         
         Parameters:
-        -----------
-            - atom (Atom) : Atom object to be added to the cluster
+            atom (Atom): Atom object to be added to the cluster
         """
         self.atoms.append(atom)
         
     def get_atoms(self) -> list:
-        r"""
+        """
         Return the list of Atom objects belonging to the cluster
         
         Returns:
-        --------
-            - None.
+            None.
         """
         return self.atoms
     
     def set_indices_and_positions(self, positions_dict) -> None:
-        r"""
+        """
         Set the array of all unique indices of Atom objects in the cluster.
 
         Parameters:
-        --------
-            - positions_dict (dict) : Dictionary where keys are the index of the Atoms and values, their unwrapped positions.
+            positions_dict (dict): Dictionary where keys are the index of the Atoms and values, their unwrapped positions.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         for atom_id, position in positions_dict.items():
             self.indices.append(atom_id)
@@ -107,26 +116,23 @@ class Cluster:
         self.unwrapped_positions = np.array(self.unwrapped_positions)
         
     def calculate_center_of_mass(self) -> None:
-        r"""
+        """
         Calculate the center of mass of the cluser
         
         Returns:
-        --------
-            - None.
+            None.
         """        
         self.center_of_mass = np.mean(self.unwrapped_positions, axis=0)
     
     def write_coordinates(self, path_to_directory) -> None:
-        r"""
+        """
         Write the cluster coordinates to an XYZ file.
         
         Parameters:
-        -----------
-            - path_to_directory (str): Path to the directory where the XYZ file will be saved.
+            path_to_directory (str): Path to the directory where the XYZ file will be saved.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         if self.size <= 1:
             # Do not write file if size is 1 or inferior
@@ -151,12 +157,11 @@ class Cluster:
         output.close()
     
     def calculate_gyration_radius(self) -> None:
-        r"""
+        """
         Calculate the gyration radius of the cluster.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         self.gyration_radius = 0
         for i in range(self.unwrapped_positions.shape[0]):
@@ -167,12 +172,11 @@ class Cluster:
         self.gyration_radius = np.sqrt((0.5 / (self.size**2)) * self.gyration_radius) 
         
     def calculate_percolation_probability(self) -> None:
-        r"""
+        """
         Calculate the percolation probability of the cluster.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         percolation_x = False
         percolation_y = False
@@ -204,12 +208,11 @@ class Cluster:
             self.percolation_probability += 'z'
     
     def calculate_order_parameter(self) -> None:
-        r"""
+        """
         Calculate the order parameter of the cluster.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         
         if len(self.percolation_probability) == 0:
@@ -228,17 +231,15 @@ class Cluster:
             self.order_parameter[2] = self.size / self.number_of_nodes
             
     def calculate_unwrapped_positions(self, criteria, chain, quiet=False) -> None:
-        r"""
+        """
         Calculate the unwrapped positions of the atoms in the cluster to make it continuous.
         
         Parameters:
-        --------
-            - criteria (str) : Criteria to find the clusters ("bond" or "distance").
-            - chain (list) : List of the successive elements forming the clusters.
+            criteria (str): Criteria to find the clusters ("bond" or "distance").
+            chain (list): List of the successive elements forming the clusters.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         # Initialize the dictionary of the unwrapped positions
         stack = [self.atoms[0].parent]
@@ -354,17 +355,15 @@ class Cluster:
         self.set_indices_and_positions(dict_positions)
 
     def unwrap_position(self, vector, box_size):
-        r"""
+        """
         Unwraps position considering periodic boundary conditions.
 
         Parameters:
-        ----------
-        - vector (list) : Vector defined the difference of the composants of the vectors position of an atom and its nearest neighbour in the cluster.
-        - box_size (list) : Dimensions of the periodic box in 3D space.
+            vector (list): Vector defined the difference of the composants of the vectors position of an atom and its nearest neighbour in the cluster.
+            box_size (list): Dimensions of the periodic box in 3D space.
 
         Returns:
-        ----------
-        - Unwrapped position as a tuple.
+            Unwrapped position as a tuple.
         """
         unwrapped_position = []
         for i in range(3):  # Assuming 3D space

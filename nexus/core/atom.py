@@ -1,59 +1,71 @@
-# internal imports
-from ..data import (chemical_symbols, atomic_masses)
+"""
+Atom module for the Nexus project.
+
+This module defines the Atom class, which represents an atom within a system.
+
+Imports:
+    - Standard libraries
+    - Third-party libraries
+    - Internal modules
+
+Classes:
+    - Atom: Represents an atom within a system.
+"""
+
+# Standard library imports
+import sys
+
+# Third-party imports
+import numpy as np
+
+# Internal imports
+from ..data import chemical_symbols, atomic_masses
 from .cutoff import Cutoff
 
-# external imports
-import  numpy as np
-import  sys
-
 class Atom:
-    r"""
+    """
     Represents an atom within a system.
 
     Attributes:
-    -----------
-        - element (str) : Atomic element.
-        - id (int) : Identifier of the atom in the system.
-        - position (np.array) : XYZ coordinates.
-        - frame (int) : Frame index in the trajectory.
-        - cutoffs (dict) : Cutoff distances dictionary (Cutoff object).
-        - extension (str) : Extension used for method determination.
-        - atomic_mass (float) : Atomic mass of the atom.
-        - neighbours (list) : List of first neighbours (PBC applied).
-        - coordination (int) : Number of neighbours around the atom (PBC applied).
-        - parent (Atom) : Root of the cluster.
-        - cluster_id (int) : Cluster index to which the atom belongs.
-        - cluster_type (str) : Cluster type to which the atom belongs.
+        element (str): Atomic element.
+        id (int): Identifier of the atom in the system.
+        position (np.array): XYZ coordinates.
+        frame (int): Frame index in the trajectory.
+        cutoffs (dict): Cutoff distances dictionary (Cutoff object).
+        extension (str): Extension used for method determination.
+        atomic_mass (float): Atomic mass of the atom.
+        neighbours (list): List of first neighbours (PBC applied).
+        coordination (int): Number of neighbours around the atom (PBC applied).
+        parent (Atom): Root of the cluster.
+        cluster_id (int): Cluster index to which the atom belongs.
+        cluster_type (str): Cluster type to which the atom belongs.
 
     Methods:
-    --------
-        - __init__ : Initializes an Atom object.
-        - get_element : Returns the element of the Atom.
-        - get_id : Returns the unique identifier of the Atom.
-        - get_position : Returns the spatial coordinates of the Atom.
-        - get_frame : Returns the frame index associated with the Atom.
-        - get_neighbours : Returns the list of neighbours of the Atom.
-        - get_atomic_mass : Returns the atomic mass of the Atom.
-        - get_coordination : Returns the coordination number of the Atom.
-        - get_cluster_id : Returns the cluster id that the atom belongs to.
-        - add_neighbour : Adds a neighbour to the list of neighbours of the Atom.
-        - add_direct_neighbour : Adds a neighbour to the list of direct neighbours of the Atom.
-        - filter_neighbours : Removes neighbours not within cutoff distances (depending on pair of atoms).
-        - set_cluster : Sets the cluster and type that the atom belongs to.
-        - reset_cluster : Resets the cluster(s) of the atom.
+        __init__: Initializes an Atom object.
+        get_element: Returns the element of the Atom.
+        get_id: Returns the unique identifier of the Atom.
+        get_position: Returns the spatial coordinates of the Atom.
+        get_frame: Returns the frame index associated with the Atom.
+        get_neighbours: Returns the list of neighbours of the Atom.
+        get_atomic_mass: Returns the atomic mass of the Atom.
+        get_coordination: Returns the coordination number of the Atom.
+        get_cluster_id: Returns the cluster id that the atom belongs to.
+        add_neighbour: Adds a neighbour to the list of neighbours of the Atom.
+        filter_neighbours: Removes neighbours not within cutoff distances (depending on pair of atoms).
+        set_cluster: Sets the cluster and type that the atom belongs to.
+        reset_cluster: Resets the cluster(s) of the atom.
     """
     def __init__(self, element, id, position, frame, cutoffs, extension="SiOz") -> None:
-        r"""
+        """
         Initializes an Atom object with the provided information.
 
         Parameters:
-        -----------
-            - element (str): Atomic element.
-            - id (int): Identifier of the atom in the system.
-            - position (np.array): XYZ coordinates.
-            - frame (int): Frame index in the trajectory.
-            - cutoffs (dict): Cutoff distances dictionary (Cutoff object).
-            - extension (str): Extension used for method determination.
+            element (str): Atomic element.
+            id (int): Identifier of the atom in the system.
+            position (np.array): XYZ coordinates.
+            frame (int): Frame index in the trajectory.
+            cutoffs (dict): Cutoff distances dictionary (Cutoff object).
+            extension (str): Extension used for method determination.
         """
         # Initialize an Atom object with the provided information
         self.element : str = element                    # atomic element
@@ -87,112 +99,100 @@ class Atom:
     #____________GETTER METHODS____________
     
     def get_element(self) -> str:
-        r"""
+        """
         Return the element of the Atom.
         
         Returns:
-        --------
-            - str : Name of the element of the Atom.
+            str : Name of the element of the Atom.
         """
         return self.element
     
     def get_id(self) -> int:
-        r"""
+        """
         Return the unique identifier of the Atom.
         
         Returns:
-        --------
-            - int : Index of the Atom in the frame.
+            int : Index of the Atom in the frame.
         """
         return self.id
     
     def get_position(self) -> np.array:
-        r"""
+        """
         Return the spatial coordinates of the Atom.
         
         Returns:
-        --------
-            - np.array : Cartesian coordinates of the Atom.
+            np.array : Cartesian coordinates of the Atom.
         """
         return self.position
     
     def get_frame(self) -> int:
-        r"""
+        """
         Return the frame index associated with the Atom.
         
         Returns:
-        --------
-            - int : Frame index of the trajectory.
+            int : Frame index of the trajectory.
         """
         return self.frame
     
     def get_neighbours(self) -> list:
-        r"""
+        """
         Return the list of neighbours of the Atom.
         
         Returns:
-        --------
-            - list : List of the nearest neighbours of the Atom.
+            list : List of the nearest neighbours of the Atom.
         """
         return self.neighbours
     
     def get_atomic_mass(self) -> float:
-        r"""
+        """
         Return the atomic mass of the Atom.
         
         Returns:
-        --------
-            - float : Atomic mass of the Atom.
+            float : Atomic mass of the Atom.
         """
         return self.atomic_mass
 
     def get_coordination(self) -> int:
-        r"""
+        """
         Return the coordination number of the Atom. (ie the number of first neighbours)
         
         Returns:
-        --------
-            - int : Coordination number of the Atom.
+            int : Coordination number of the Atom.
         """
         return self.coordination
 
     def get_cluster_id(self) -> int:
-        r"""
+        """
         Return the cluster id that the atom belong to.
         
         Returns:
-        --------
-            - int : Cluster index that the Atom belong to.
+            int : Cluster index that the Atom belong to.
         """
         return self.cluster_id
     
     #____________NEIGHBOURS METHODS____________
     
     def add_neighbour(self, neighbour) -> None:
-        r"""
+        """
         Add a neighbour to the list of neighbours of the Atom.
         
         Parameters:
-        -----------
-            - neighbour (Atom) : Atom object to append to the list of neighbours.
+            neighbour (Atom) : Atom object to append to the list of neighbours.
             
         Returns:
-        --------
-            - None.
+            None.
         """
         self.neighbours.append(neighbour)
     
     def filter_neighbours(self, distances) -> None:
-        r"""
+        """
         Removes the neighbours that are not within the cutoff distances (depending of pair of atoms).
         
         Parameters:
-        -----------
-            - distances (list): List of distances to the neighbours.
+            distances (list): List of distances to the neighbours.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         new_list_neighbours = []
         new_list_distances  = []
@@ -219,30 +219,26 @@ class Atom:
     #____________CLUSTERS METHODS____________
     
     def set_cluster(self, cluster_id, cluster_type) -> None:
-        r"""
+        """
         Set the cluster if and type that the atom belong to.
         
         Parameters:
-        -----------
-            - cluster_id (int) : cluster index to be set.
-            - cluster_type (str) : cluster type to be set. 
+            cluster_id (int) : cluster index to be set.
+            cluster_type (str) : cluster type to be set. 
         
         Returns:
-        --------
-            - None.
+            None.
         """
         self.cluster_id = cluster_id
         self.cluster_type = cluster_type
     
     def reset_cluster(self) -> None:
-        r"""
+        """
         Reset the cluster(s) of the atom.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         self.cluster_id     = None
         self.cluster_type   = None
         self.parent         = self
-    

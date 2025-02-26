@@ -1,16 +1,22 @@
+"""
+Module: make_lines_unique
+Description: This module provides a function to read a file, remove duplicate lines, and rewrite the file with unique lines.
+"""
+
 from collections import OrderedDict
 
-def make_lines_unique(filepath:str) -> None:
-    r"""
-    Read an output file that contains multiple header lines and rewrite the file with unique lines.
+def make_lines_unique(filepath: str) -> None:
+    """
+    Read a file, remove duplicate lines, and rewrite the file with unique lines.
     
     Parameters
     ----------
-        - filepath (str) : The path to the file to be read and rewritten. 
+    filepath : str
+        The path to the file to be read and rewritten.
         
     Returns
     -------
-        - None
+    None
     """
     
     # Read the file and store unique lines in an OrderedDict

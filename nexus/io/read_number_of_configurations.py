@@ -1,15 +1,23 @@
+"""
+Module: read_number_of_configurations
+Description: This module provides a function to count the number of configurations in a trajectory file.
+"""
+
 def count_configurations(file_path, keyword="Lattice") -> int:
-    r"""
+    """
     Count the number of configurations in the trajectory file.
     
     Parameters
     ----------
-        - file_path (str) : Path to the trajectory file.
-        - keyword (str) : Keyword to search in the file. Default is "Lattice".
+    file_path : str
+        Path to the trajectory file.
+    keyword : str, optional
+        Keyword to search in the file (default is "Lattice").
         
-    Returns:
-    --------
-        - int : Number of frames found in the input file.
+    Returns
+    -------
+    int
+        Number of frames found in the input file.
     """
     
     # Open the file

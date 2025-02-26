@@ -1,10 +1,25 @@
+"""
+Module: print_title
+-------------------
+
+This module provides a function to print the title and version of the package.
+
+Functions:
+----------
+    - print_title: Prints the title and the version of the package.
+"""
+
 def print_title(__version__) -> None:
-    r"""
+    """
     Prints the title and the version of the package.
+
+    Parameters:
+    -----------
+        __version__ (str): The version of the package.
 
     Returns:
     --------
-      - None.
+        None
     """
     title = r"""
                                                                                                                                     

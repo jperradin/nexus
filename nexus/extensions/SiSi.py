@@ -12,12 +12,10 @@ from ..core.box import Box
 from ..core.cluster import Cluster
 from ..utils.generate_color_gradient import generate_color_gradient
 
-
 # List of supported elements for the extension SiSi
 LIST_OF_SUPPORTED_ELEMENTS = ["Si"]
 LIST_OF_EXTRA_CONNECTIVITIES = ["LD", "HD", "VHD", "HV"]
 EXTRA_CLUSTERING_METHODS = True
-
 
 class Silicon(Atom):
     def __init__(self, element, id, position, frame, cutoffs, extension) -> None:
@@ -34,7 +32,6 @@ class Silicon(Atom):
                 if neighbour.get_element() == "Si"
             ]
         )
-
 
 def transform_into_subclass(atom: Atom) -> object:
     """
@@ -54,7 +51,6 @@ def transform_into_subclass(atom: Atom) -> object:
             f"\tERROR: Atom {atom.element} - {atom.id} can be transformed into Silicon object."
         )
 
-
 def get_connectivity(cluster_settings) -> list:
     polyhedra = [v for k, v in cluster_settings.items() if k == "polyhedra"][0]
     list = []
@@ -62,10 +58,8 @@ def get_connectivity(cluster_settings) -> list:
         list.append(f"Si{poly[0]}-Si{poly[1]}")
     return list
 
-
 def get_extra_connectivity(cluster_settings) -> list:
     return cluster_settings["extra_clusters"]
-
 
 def get_default_settings(criteria="distance") -> dict:
     """
@@ -117,7 +111,6 @@ def get_default_settings(criteria="distance") -> dict:
     }
 
     return dict_settings
-
 
 def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
     """
@@ -278,7 +271,6 @@ def calculate_concentrations(atoms: list, criteria: str, quiet: bool) -> dict:
     for key, value in dict_concentrations.items():
         dict_concentrations[key] = len(np.unique(value)) / len(atoms)
     return dict_concentrations
-
 
 def find_extra_clusters(
     atoms: list, box: Box, counter_c: int, settings: object

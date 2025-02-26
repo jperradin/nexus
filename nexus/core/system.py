@@ -1,64 +1,77 @@
-# external imports
-import  numpy as np
-from    tqdm import tqdm
-from    scipy.spatial import cKDTree
-import  importlib
-import  os
-import  re
-import  inspect
+"""
+System module for the Nexus project.
 
-# internal imports
+This module defines the System class, which represents a system of atoms and provides methods for analyzing and manipulating the system.
+
+Imports:
+    - Standard libraries
+    - Third-party libraries
+    - Internal modules
+
+Classes:
+    - System: Represents a system of atoms and provides methods for analyzing and manipulating the system.
+"""
+
+# Standard library imports
+import importlib
+import os
+import re
+import inspect
+
+# Third-party imports
+import numpy as np
+from tqdm import tqdm
+from scipy.spatial import cKDTree
+
+# Internal imports
 from .cutoff import Cutoff
 from .cluster import Cluster
 from ..utils.generate_color_gradient import generate_color_gradient
 
 class System:
-    r"""
+    """
     Represents a system of atoms and provides methods for analyzing and manipulating the system.
 
     Attributes:
-    -----------
-        - settings (Settings): Settings object containing the list of all the parameters.
-        - atoms (list): List of all the atoms in the system.
-        - box (Box): The Box object containing the lattice information at each frame.
-        - clusters (list): List of all the clusters of the system.
-        - counter_c (int): Counter of Cluster object.
-        - frame (int): Frame of the system in the trajectory.
-        - cutoffs (Cutoff): Cutoff object managing cutoff distances for pairs of elements.
+        settings (Settings): Settings object containing the list of all the parameters.
+        atoms (list): List of all the atoms in the system.
+        box (Box): The Box object containing the lattice information at each frame.
+        clusters (list): List of all the clusters of the system.
+        counter_c (int): Counter of Cluster object.
+        frame (int): Frame of the system in the trajectory.
+        cutoffs (Cutoff): Cutoff object managing cutoff distances for pairs of elements.
 
     Methods:
-    --------
-        - __init__: Initializes a System object.
-        - add_atom: Adds an Atom object to the list of atoms.
-        - add_cluster: Adds a Cluster object to the list of clusters.
-        - get_atoms: Returns the list of atoms.
-        - get_positions: Returns the list of positions and elements of all Atom objects.
-        - get_positions_by_element: Returns the list of positions of all Atom objects of the same element.
-        - get_atoms_by_element: Returns the list of Atom objects belonging to the same species.
-        - get_unique_element: Returns the unique elements present in the system along with their counts.
-        - reset_cluster_indexes: Resets the cluster indexes for all Atom objects in the system.
-        - wrap_atomic_positions: Wraps atomic positions inside the simulation box using periodic boundary conditions.
-        - compute_mass: Returns the mass of the system in atomic unit.
-        - calculate_neighbours: Calculates the nearest neighbours of all atoms in the system.
-        - calculate_structural_units: Determines the structural units and other structural properties.
-        - get_all_clusters: Returns the list of all Cluster objects associated with the given connectivity.
-        - get_filtered_clusters: Returns the list of Cluster objects associated with the given connectivity.
-        - get_all_cluster_sizes: Returns the list of cluster sizes associated with the given connectivity.
-        - get_filtered_cluster_sizes: Returns the list of cluster sizes associated with the given connectivity.
-        - write_coordinates_all_in_one: Writes the cluster coordinates to an XYZ file.
-        - decrypt_connectivity: Decrypts the connectivity string to get the atomic species and the number of neighbors.
-        - find: Finds the root of the cluster to which the given atom belongs.
-        - union: Unions the two clusters to which the given atoms belong.
-        - find_clusters: Finds clusters based on specified criteria.
+        __init__: Initializes a System object.
+        add_atom: Adds an Atom object to the list of atoms.
+        add_cluster: Adds a Cluster object to the list of clusters.
+        get_atoms: Returns the list of atoms.
+        get_positions: Returns the list of positions and elements of all Atom objects.
+        get_positions_by_element: Returns the list of positions of all Atom objects of the same element.
+        get_atoms_by_element: Returns the list of Atom objects belonging to the same species.
+        get_unique_element: Returns the unique elements present in the system along with their counts.
+        reset_cluster_indexes: Resets the cluster indexes for all Atom objects in the system.
+        wrap_atomic_positions: Wraps atomic positions inside the simulation box using periodic boundary conditions.
+        compute_mass: Returns the mass of the system in atomic unit.
+        calculate_neighbours: Calculates the nearest neighbours of all atoms in the system.
+        calculate_structural_units: Determines the structural units and other structural properties.
+        get_all_clusters: Returns the list of all Cluster objects associated with the given connectivity.
+        get_filtered_clusters: Returns the list of Cluster objects associated with the given connectivity.
+        get_all_cluster_sizes: Returns the list of cluster sizes associated with the given connectivity.
+        get_filtered_cluster_sizes: Returns the list of cluster sizes associated with the given connectivity.
+        write_coordinates_all_in_one: Writes the cluster coordinates to an XYZ file.
+        decrypt_connectivity: Decrypts the connectivity string to get the atomic species and the number of neighbors.
+        find: Finds the root of the cluster to which the given atom belongs.
+        union: Unions the two clusters to which the given atoms belong.
+        find_clusters: Finds clusters based on specified criteria.
     """
 
     def __init__(self, settings) -> None:
-        r"""
+        """
         Initializes a System object.
 
         Parameters:
-        -----------
-            - settings (Settings): Settings object containing the list of all the parameters.
+            settings (Settings): Settings object containing the list of all the parameters.
         """
         self.settings : object = settings   # Settings object containing the list of all the parameters
         self.atoms : list = []              # List of all the atoms 
@@ -72,44 +85,40 @@ class System:
         self.cutoffs : object = Cutoff(settings.cutoffs.get_value()) # Cutoffs of the system
         
     def add_atom(self, atom) -> None:
-        r"""
+        """
         Add an Atom object to the list of atoms.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         module = importlib.import_module(f"nexus.extensions.{self.settings.extension.get_value()}")
         transformed_atom = module.transform_into_subclass(atom)
         self.atoms.append(transformed_atom)
     
     def add_cluster(self, cluster:object) -> None:
-        r"""
+        """
         Add a Cluster object to the list of clusters.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         self.clusters.append(cluster)
         
     def get_atoms(self) -> list:
-        f"""
+        """
         Return the list of atoms.
         
         Returns:
-        --------
-            - list : list of Atom objects in the system.
+            list : list of Atom objects in the system.
         """
         return self.atoms
     
     def get_positions(self) -> tuple:
-        r"""
+        """
         Return the list of positions and elements of all Atom objects.
         
         Returns:
-        --------
-            - tuple : the filtered position in a np.array and their associated elements in a np.array.
+            tuple : the filtered position in a np.array and their associated elements in a np.array.
         """
         filtered_positions = list(
                 map(
@@ -136,12 +145,11 @@ class System:
         return np.array(filtered_positions), np.array(filtered_elements)
         
     def get_positions_by_element(self, element) -> np.array:
-        r"""
+        """
         Return the list of positions of all Atom objects of the same element.
         
         Returns:
-        --------
-            - np.array : Filtered positions.
+            np.array : Filtered positions.
         """
         filtered_positions = list(
                 map(
@@ -158,12 +166,11 @@ class System:
         return np.array(filtered_positions)
     
     def get_atoms_by_element(self, element) -> list:
-        r"""
+        """
         Return the list of Atom objects belonging to the same species.
         
         Returns:
-        --------
-            - list : list of Atom objects.
+            list : list of Atom objects.
         """
         filtered_atoms = list(
                 filter(
@@ -177,12 +184,11 @@ class System:
         return filtered_atoms
     
     def get_unique_element(self) -> np.array:
-        r"""
+        """
         Return the uniques elements present in the system along with their counts.
         
         Returns:
-        --------
-            - np.array : array of the unique element in the system.
+            np.array : array of the unique element in the system.
         """
         filtered_elements = np.array(
                 list(
@@ -199,23 +205,21 @@ class System:
         return np.unique(filtered_elements, return_counts=True)
     
     def reset_cluster_indexes(self) -> None:
-        r"""
+        """
         Reset the cluster indexes for all Atom objects in the system.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         for atom in self.atoms:
             atom.reset_cluster()
             
     def wrap_atomic_positions(self) -> None:
-        r"""
+        """
         Wrap atomic positions inside the simulation box using the periodic boundary conditions.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         color_gradient = generate_color_gradient(len(self.atoms))
         if self.settings.quiet.get_value() == False:
@@ -239,12 +243,11 @@ class System:
                 atom.position[i] = np.mod(atom.position[i] + box_size[i], box_size[i])
                 
     def compute_mass(self) -> float:
-        r"""
+        """
         Return the mass of the system in atomic unit.
         
         Returns:
-        --------
-            - float : Total mass of the system.
+            float : Total mass of the system.
         """
         mass = 0
         for atom in self.atoms:
@@ -253,13 +256,12 @@ class System:
         return mass
     
     def calculate_neighbours(self) -> None:
-        r"""
+        """
         Calculate the nearest neighbours of all the atom in the system.        
         - NOTE: this method is extension dependant.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         
         # Wrap all the positions inside the simulation box first
@@ -316,17 +318,15 @@ class System:
             self.atoms[i].calculate_coordination()
     
     def calculate_concentrations(self, extension) -> None:
-        r"""
+        """
         Determine the structural units and other structural properties.
         - NOTE: this method is extension dependant.
         
         Parameters:
-        -----------
-            - extension (str) : name of the extension to use to calculate the structural units.
+            extension (str) : name of the extension to use to calculate the structural units.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         
         module = importlib.import_module(f"nexus.extensions.{extension}")
@@ -337,17 +337,15 @@ class System:
     #____________CLUSTERS METHODS____________
     
     def set_concentrations(self, connectivity: str) -> None:
-        r"""
+        """
         Set the concentrations of the structural units.
         
         Parameters:
-        -----------
-            - dict_units (dict) : Dict of the structural units.
-            - cluster_settings (dict) : Dict of the cluster settings.
+            dict_units (dict) : Dict of the structural units.
+            cluster_settings (dict) : Dict of the cluster settings.
         
         Returns:
-        --------
-            - None.
+            None.
         """
         
         for connec, concentration in self.concentrations.items():
@@ -356,46 +354,40 @@ class System:
                 cluster.concentration = concentration
 
     def get_concentration(self, connectivity: str) -> float:
-        r"""
+        """
         Return the concentration of the sites for a given connectivity.
         
         Parameters:
-        -----------
-            - connectivity (str) : Connectivity of the cluster.
+            connectivity (str) : Connectivity of the cluster.
         
         Returns:
-        --------
-            - float : Concentration of the sites.
+            float : Concentration of the sites.
         """
         
         return self.concentrations[connectivity]
                         
     def get_all_clusters(self, connectivity: str) -> list:
-        r"""
+        """
         Return the list of all Cluster objects associated with the given connectivity.
         
         Parameters:
-        -----------
-            - connectivity (str) : Connectivity of the cluster.
+            connectivity (str) : Connectivity of the cluster.
             
         Returns:
-        --------
-            - list : List of the clusters associated with the given connectivity.
+            list : List of the clusters associated with the given connectivity.
         """
         return [cluster for cluster in self.clusters if cluster.connectivity == connectivity]
     
     def get_filtered_clusters(self, connectivity:str) -> list:
-        r"""
+        """
         Return the list of Cluster objects associated with the given connectivity.
         This method excluds clusters of size 1 and percolating (1D, 2D or 3D) clusters.
         
         Parameters:
-        -----------
-            - connectivity (str) : Connectivity of the cluster.
+            connectivity (str) : Connectivity of the cluster.
             
         Returns:
-        --------
-            - list : List of the clusters associated with the given connectivity.
+            list : List of the clusters associated with the given connectivity.
         """
         return [cluster for cluster in self.clusters if (
                     (cluster.connectivity == connectivity) 
@@ -405,17 +397,15 @@ class System:
             ]
 
     def get_all_cluster_sizes(self, connectivity:str) -> list:
-        r"""
+        """
         Return the list of cluster size associated with the given connectivity.
         This method excluds clusters of size 1.
         
         Parameters:
-        -----------
-            - connectivity (str) : Connectivity of the cluster.
+            connectivity (str) : Connectivity of the cluster.
             
         Returns:
-        --------
-            - list : List of the clusters associated with the given connectivity.
+            list : List of the clusters associated with the given connectivity.
         """
         sizes = [cluster.size for cluster in self.clusters if (
                     (cluster.connectivity == connectivity) 
@@ -429,17 +419,15 @@ class System:
         return sizes
     
     def get_filtered_cluster_sizes(self, connectivity:str) -> list:
-        f"""
+        """
         Return the list of cluster size associated with the given connectivity.
         This method excluds clusters of size 1 and percolating (1D, 2D or 3D) clusters.
         
         Parameters:
-        -----------
-            - connectivity (str) : Connectivity of the cluster.
+            connectivity (str) : Connectivity of the cluster.
             
         Returns:
-        --------
-            - list : List of the clusters associated with the given connectivity.
+            list : List of the clusters associated with the given connectivity.
         """
         sizes = [cluster.size for cluster in self.clusters if (
                     (cluster.connectivity == connectivity) 
@@ -454,16 +442,14 @@ class System:
         return sizes
     
     def get_cluster_sizes_distribution(self, connectivity:str) -> dict:
-        r"""
+        """
         Return the cluster size distribution of the clusters associated with the given connectivity.
         
         Parameters:
-        -----------
-            - connectivity (str) : Connectivity of the cluster.
+            connectivity (str) : Connectivity of the cluster.
             
         Returns:
-        --------
-            - dict : Dict of the cluster size distribution, where keys are the size of the clusters associated with the given connectivity.
+            dict : Dict of the cluster size distribution, where keys are the size of the clusters associated with the given connectivity.
         """
         sizes = self.get_filtered_cluster_sizes(connectivity)
         
@@ -475,16 +461,14 @@ class System:
         return dict_sizes
 
     def get_gyration_radius_distribution(self, connectivity:str, list_sizes:list) -> dict:
-        r"""
+        """
         Return the gyration radius distribution of the clusters associated with the given connectivity.
         
         Parameters:
-        -----------
-            - list_sizes (list) : List of the cluster sizes.
+            list_sizes (list) : List of the cluster sizes.
             
         Returns:
-        --------
-            - dict : Dict of the gyration radius distribution, where keys are the size of the clusters associated with the given connectivity.
+            dict : Dict of the gyration radius distribution, where keys are the size of the clusters associated with the given connectivity.
         """
         dict_rgyr = {}
         
@@ -494,16 +478,14 @@ class System:
         return dict_rgyr
     
     def calculate_order_parameter(self, connectivity:str) -> list:
-        r"""
+        """
         Calculate the order parameter of the percolating cluster.
         
         Parameters:
-        -----------
-            - connectivity (str) : Connectivity of the cluster.
+            connectivity (str) : Connectivity of the cluster.
         
         Returns:
-        --------
-            - list : Order parameter of the percolating cluster [1d value, 2d value, 3d value].
+            list : Order parameter of the percolating cluster [1d value, 2d value, 3d value].
         """
         
         # get the percolating cluster
@@ -527,15 +509,14 @@ class System:
         return order_parameter
     
     def calculate_percolation_probability(self, connectivity:str) -> list:
-        r"""
+        """
         Calculate the percolation probability of the percolating cluster.
         
         Parameters:
-        -----------
-            - connectivity (str) : Connectivity of the cluster.
+            connectivity (str) : Connectivity of the cluster.
             
         Returns:
-            - list : Percolation probability of the percolating cluster [1d value, 2d value, 3d value].
+            list : Percolation probability of the percolating cluster [1d value, 2d value, 3d value].
         """
         
         cluster = [cluster for cluster in self.clusters if (cluster.connectivity == connectivity) and (len(cluster.percolation_probability) > 0)]
@@ -573,16 +554,14 @@ class System:
                 return percolation_probability
 
     def write_coordinates_all_in_one(self, connectivity, path_to_directory) -> None:
-        r"""
+        """
         Write the cluster coordinates to an XYZ file and a list.txt file with their paths.
         
         Parameters:
-        -----------
-            - path_to_directory (str): Path to the directory where the XYZ file will be saved.
+            path_to_directory (str): Path to the directory where the XYZ file will be saved.
             
         Returns:
-        --------
-            - None.
+            None.
         """
         
         clusters = [cluster for cluster in self.clusters if cluster.connectivity ==  connectivity and cluster.size > 1]
@@ -617,16 +596,14 @@ class System:
         output.close()
         
     def decrypt_connectivity(self, connectivity):
-        r"""
+        """
         Decrypt the connectivity string to get the atomic species and the number of neighbors.
         
         Parameters:
-        ----------
-            - connectivity (str): The connectivity string to decrypt.
+            connectivity (str): The connectivity string to decrypt.
         
         Returns:
-        ----------
-            - tuple: Tuple containing the atomic species and the number of neighbors.
+            tuple: Tuple containing the atomic species and the number of neighbors.
         """
         
         species = []
@@ -642,33 +619,29 @@ class System:
         return np.unique(np.array(species)), int(coordinances[0]), int(coordinances[1])
     
     def find(self, atom) -> object:
-        r"""
+        """
         Find the root of the cluster to which the given atom belongs.
         
         Parameters:
-        -----------
-            - atom (Atom): Atom object for which to find the root.
+            atom (Atom): Atom object for which to find the root.
         
         Returns:
-        --------
-            - root (Atom): Root Atom object of the cluster
+            root (Atom): Root Atom object of the cluster
         """
         if atom.parent != atom:
             atom.parent = self.find(atom.parent)
         return atom.parent
 
     def union(self, atom_1, atom_2) -> None:
-        r"""
+        """
         Union the two clusters to which the given atoms belong.
         
         Parameters:
-        -----------
-            - atom_1 (Atom): First Atom object.
-            - atom_2 (Atom): Second Atom object
+            atom_1 (Atom): First Atom object.
+            atom_2 (Atom): Second Atom object
             
         Returns:
-        --------
-            - None.
+            None.
         """
         root_1 = self.find(atom_1)
         root_2 = self.find(atom_2)
@@ -677,16 +650,14 @@ class System:
             root_2.parent = root_1
 
     def find_clusters(self, connectivity) -> None:
-        r"""
+        """
         Find clusters based on specified criteria.
         
         Parameters:
-        ----------
         - connectivity (str): The connectivity type for which to find the clusters. (e.g "SiO5-SiO5" in the case of SiO2)
         
         Returns:
-        --------
-            - None.
+            None.
         """
         
         # Load cluster properties to analyse
@@ -823,6 +794,5 @@ class System:
             if self.settings.print_clusters_positions.get_value():
                 for c in module.LIST_OF_EXTRA_CONNECTIVITIES:
                     self.write_coordinates_all_in_one(c, self.settings._output_directory)
-        
-        
-        
+
+

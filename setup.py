@@ -19,13 +19,7 @@ setup(
         "Programming Language :: Python :: 3.12",
         "Topic :: Scientific/Engineering :: Physics",
         "Topic :: Scientific/Engineering :: Chemistry",
-        "Topic :: Scientific/Engineering :: Materials Science",
-        "Topic :: Scientific/Engineering :: Computational Physics",
-        "Topic :: Scientific/Engineering :: Computational Chemistry",
-        "Topic :: Scientific/Engineering :: Computational Materials Science",
-        "Topic :: Scientific/Engineering :: Computational Physics",
-        "Topic :: Scientific/Engineering :: Computational Chemistry",
-        
+        "Topic :: Scientific/Engineering :: Materials Science",        
     ],
     project_description=open("README.md").read(),
 )

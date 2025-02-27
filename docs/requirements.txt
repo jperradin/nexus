@@ -1,6 +1,3 @@
 sphinx
 sphinx_rtd_theme
 myst-parser
-sphinx_togglebutton
-sphinx_copybutton
-sphinxcontrib

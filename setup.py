@@ -11,7 +11,7 @@ setup(
     install_requires=["numpy", "scipy", "tqdm", "natsort"],
     classifiers=[
         "Development Status :: 5 - Production/Stable",
-        "Intended Audience :: Developers, Scientists and Researchers",
+        "Intended Audience :: Science/Research",
         "License :: OSI Approved :: MIT License",
         "Programming Language :: Python :: 3.9",
         "Programming Language :: Python :: 3.10",

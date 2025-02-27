@@ -6,17 +6,3 @@ sphinx-copybutton
 sphinxcontrib-bibtex
 sphinxcontrib-programoutput
 sphinxcontrib-spelling
-sphinx.ext.autodoc
-sphinx.ext.napoleon
-sphinx.ext.viewcode
-sphinx.ext.mathjax
-sphinx.ext.autosummary
-sphinx.ext.autosectionlabel
-sphinx.ext.todo
-sphinx.ext.intersphinx
-sphinx.ext.extlinks
-sphinx.ext.githubpages
-sphinx.ext.doctest
-sphinx.ext.inheritance_diagram
-sphinx.ext.graphviz
-sphinx.ext.ifconfig

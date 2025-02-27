@@ -22,6 +22,4 @@ Contributions to Nexus-CAT are welcome! Here's how you can contribute:
     pip install -e .
     ```
 
-Note that tests are not configured yet. We are working on it.
-
 Thank you for contributing!

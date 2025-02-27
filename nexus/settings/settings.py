@@ -11,6 +11,7 @@ Classes:
 
 # Internal imports
 from .parameter import Parameter, ClusterParameter
+from . import __version__
 
 # External imports
 import importlib
@@ -69,62 +70,46 @@ class Settings:
         -----------
             extension (str): The extension of the project.
         """
-        self.project_name: Parameter = Parameter(
-            "project_name", "default"
-        )  # Name of the project that will be used for the output directory
-        self.export_directory: Parameter = Parameter(
-            "export_directory", "export"
-        )  # Parent directory where the output files will be saved in the project directory
+        # Initialize project settings
+        self.project_name: Parameter = Parameter("project_name", "default")  # Name of the project that will be used for the output directory
+        self.export_directory: Parameter = Parameter("export_directory", "export")  # Parent directory where the output files will be saved in the project directory
         self._output_directory: str = ""  # Output directory (hidden attribute)
-        self.build_fancy_recaps: Parameter = Parameter(
-            "build_fancy_recaps", False
-        )  # Build fancy recaps of the results into a single file
-        self.build_fancy_plots: Parameter = Parameter(
-            "build_fancy_plots", False
-        )  # Build fancy plots of the results into a single file
-        self.path_to_xyz_file: Parameter = Parameter(
-            "path_to_xyz_file", "input.xyz"
-        )  # Path to the XYZ file containing the atomic coordinates
-        self.number_of_atoms: Parameter = Parameter(
-            "number_of_atoms", 0
-        )  # Number of atoms in the system
-        self.number_of_frames: Parameter = Parameter(
-            "number_of_frames", 0
-        )  # Number of frames in the XYZ file
-        self.header: Parameter = Parameter(
-            "header", 0
-        )  # Number of lines in the header of the XYZ file
-        self.range_of_frames: Parameter = Parameter(
-            "range_of_frames", None
-        )  # Range of frames to be analysed
-        self.frames_to_analyse: Parameter = Parameter(
-            "frames_to_analyse", None
-        )  # Frames to be analysed
-        self.timestep: Parameter = Parameter(
-            "timestep", 0.0016
-        )  # Timestep of the simulation
-        self.lbox: Parameter = Parameter("lbox", 0.0)  # Box length
-        self.temperature: Parameter = Parameter(
-            "temperature", 0.0
-        )  # Temperature of the system
-        self.pressure: Parameter = Parameter("pressure", 0.0)  # Pressure of the system
-        self.version: Parameter = Parameter(
-            "version", "0.1.12"
-        )  # Version of the software
-        self.quiet: Parameter = Parameter("quiet", False)  # Do not print any settings
-        self.overwrite_results: Parameter = Parameter(
-            "overwrite_results", False
-        )  # Overwrite files by default
-        self.print_clusters_positions: Parameter = Parameter(
-            "print_clusters_positions", False
-        )  # Print the positions of the clusters
-        self.max_size: Parameter = Parameter(
-            "max_size", 100
-        )  # Maximum size of the clusters for the cluster size distribution
 
+        # Initialize output settings
+        self.build_fancy_recaps: Parameter = Parameter("build_fancy_recaps", False)  # Build fancy recaps of the results into a single file
+        self.build_fancy_plots: Parameter = Parameter("build_fancy_plots", False)  # Build fancy plots of the results into a single file
+
+        # Initialize file settings
+        self.path_to_xyz_file: Parameter = Parameter("path_to_xyz_file", "input.xyz")  # Path to the XYZ file containing the atomic coordinates
+        self.number_of_atoms: Parameter = Parameter("number_of_atoms", 0)  # Number of atoms in the system
+        self.number_of_frames: Parameter = Parameter("number_of_frames", 0)  # Number of frames in the XYZ file
+        self.header: Parameter = Parameter("header", 0)  # Number of lines in the header of the XYZ file
+        self.range_of_frames: Parameter = Parameter("range_of_frames", None)  # Range of frames to be analysed
+        self.frames_to_analyse: Parameter = Parameter("frames_to_analyse", None)  # Frames to be analysed
+
+        # Initialize simulation settings
+        self.timestep: Parameter = Parameter("timestep", 0.0016)  # Timestep of the simulation
+        self.lbox: Parameter = Parameter("lbox", 0.0)  # Box length
+        self.temperature: Parameter = Parameter("temperature", 0.0)  # Temperature of the system
+        self.pressure: Parameter = Parameter("pressure", 0.0)  # Pressure of the system
+        self.volume: Parameter = Parameter("volume", 0.0)  # Volume of the system
+        self.ekin: Parameter = Parameter("ekin", 0.0)  # Kinetic energy of the system
+        self.epot: Parameter = Parameter("epot", 0.0)  # Potential energy of the system
+        self.etot: Parameter = Parameter("etot", 0.0)  # Total energy of the system
+        self.ensemble: Parameter = Parameter("ensemble", None)  # Ensemble used in the simulation
+
+        # Initialize software settings 
+        self.version: Parameter = Parameter("version", __version__) # Version of the software
+        self.quiet: Parameter = Parameter("quiet", False)  # Do not print any settings
+        self.overwrite_results: Parameter = Parameter("overwrite_results", False)  # Overwrite files by default
+
+        # Initialize cluster analysis settings
+        self.print_clusters_positions: Parameter = Parameter("print_clusters_positions", False)  # Print the positions of the clusters
+        self.max_size: Parameter = Parameter("max_size", 100)  # Maximum size of the clusters for the cluster size distribution
+        # Update the list when adding a new extension
         self.supported_extensions: Parameter = Parameter(
-            "extensions", ["SiOz", "SiSi", "OO"]
-        )  # Update the list when adding a new extension
+            "extensions", ["SiOz", "SiSi", "OO", "NaO"] 
+            ) 
 
         if extension in self.supported_extensions.get_value():
             module = importlib.import_module(f"nexus.extensions.{extension}")
@@ -142,7 +127,7 @@ class Settings:
                 "cutoffs"
             ]  # All the cutoffs of each pair of atoms.
         else:
-            raise ValueError(f"Extension '{extension}' is not supported.")
+            raise ValueError(f"Extension '{extension}' is not supported. Supported extensions are: {self.supported_extensions.get_value()}\nPlease add the extension to the supported_extensions list in the settings.")
 
         self.settings_to_print: str = ""  # Settings to print on the terminal.
 

@@ -3,12 +3,3 @@ sphinx_rtd_theme
 myst-parser
 sphinx-togglebutton
 sphinx-copybutton
-sphinxcontrib-bibtex
-sphinxcontrib-mermaid
-sphinxcontrib-plantuml
-sphinxcontrib-actdiag
-sphinxcontrib-blockdiag
-sphinxcontrib-nwdiag
-sphinxcontrib-seqdiag
-sphinxcontrib-aafig
-sphinxcontrib-asyncio

@@ -3,6 +3,3 @@ sphinx_rtd_theme
 myst-parser
 sphinx-togglebutton
 sphinx-copybutton
-sphinxcontrib-bibtex
-sphinxcontrib-programoutput
-sphinxcontrib-spelling

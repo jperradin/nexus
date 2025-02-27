@@ -25,9 +25,6 @@ extensions = [
     'sphinx.ext.ifconfig',              # Include content based on configuration
     'sphinx_togglebutton',              # Add toggle buttons
     'sphinx_copybutton',                # Add copy buttons
-    'sphinxcontrib.bibtex',             # Support for BibTeX
-    'sphinxcontrib.programoutput',      # Include program output
-    'sphinxcontrib.spelling',           # Check spelling
 ]
 
 templates_path = ['_templates']

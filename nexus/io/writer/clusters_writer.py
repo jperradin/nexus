@@ -9,8 +9,8 @@ class ClustersWriter(BaseWriter):
     Writes cluster data to files, including atomic positions and connectivity.
 
     For each cluster, this writer generates an XYZ file with the unwrapped atomic
-    coordinates of both the primary networking atoms and any associated 'decorating'
-    atoms (e.g., bridging oxygens). If linkages are defined, it also generates a
+    coordinates of both the primary networking nodes and any associated 'decorating'
+    nodes (e.g., bridging oxygens). If linkages are defined, it also generates a
     corresponding '.bonds' file.
     """
     def __init__(self, settings: Settings) -> None:
@@ -39,7 +39,7 @@ class ClustersWriter(BaseWriter):
         xyz_path = os.path.join(path, f'all_unwrapped_clusters-frame_{frame_id}.xyz')
         bonds_path = os.path.join(path, f'all_unwrapped_clusters-frame_{frame_id}.bonds')
         
-        # Calculate total atoms for the header
+        # Calculate total nodes for the header
         total_atoms = sum(cluster.size + len(cluster.decoration_atoms) for cluster in self._clusters)
         
         with open(xyz_path, 'w') as xyz_file, open(bonds_path, 'w') as bonds_file:
@@ -49,18 +49,18 @@ class ClustersWriter(BaseWriter):
             global_node_id_to_local_index = {}
             current_local_index = 1
             
-            # Build the complete ID-to-index map for all atoms (networking and decorating)
+            # Build the complete ID-to-index map for all nodes (networking and decorating)
             for cluster in self._clusters:
                 for node_id in cluster.indices:
                     global_node_id_to_local_index[node_id] = current_local_index
                     current_local_index += 1
-                # Decorating atoms are also part of the atom count
+                # Decorating nodes are also part of the node count
                 current_local_index += len(cluster.decoration_atoms)
 
-            # Reset and write atom positions and bond information
+            # Reset and write node positions and bond information
             current_local_index = 1
             for cluster in self._clusters:
-                # Write atoms and update the map on the fly
+                # Write nodes and update the map on the fly
                 cluster_map = self._write_cluster_atoms(xyz_file, cluster, current_local_index)
                 current_local_index += len(cluster_map)
                 
@@ -123,24 +123,24 @@ class ClustersWriter(BaseWriter):
 
     def _write_cluster_atoms(self, f: TextIO, cluster: Cluster, start_index: int) -> Dict[int, int]:
         """
-        Writes all atoms (networking and decorating) to an already open file.
+        Writes all nodes (networking and decorating) to an already open file.
         Returns a map of global node ID to the local index within the file.
         """
         node_id_to_local_index = {}
         local_index = start_index
         
-        # Write primary networking atoms
+        # Write primary networking nodes
         for symbol, global_id, position in zip(cluster.symbols, cluster.indices, cluster.unwrapped_positions):
             f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id}\n')
             node_id_to_local_index[global_id] = local_index
             local_index += 1
             
-        # Write decorating atoms
+        # Write decorating nodes
         for global_id, data in cluster.decoration_atoms.items():
             symbol = data['symbol']
             position = data['position']
             f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id}\n')
-            # Add decorating atoms to the map as well for bonding purposes
+            # Add decorating nodes to the map as well for bonding purposes
             node_id_to_local_index[global_id] = local_index
             local_index += 1
             
@@ -151,12 +151,12 @@ class ClustersWriter(BaseWriter):
         if self._settings.clustering.criteria == "distance":
             return
             
-        # Write bonds between networking atoms
+        # Write bonds between networking nodes
         for id1, id2 in cluster.linkages:
             if id1 in id_map and id2 in id_map:
                 f.write(f"{id_map[id1]} {id_map[id2]}\n")
 
-        # Write bonds between networking atoms and their decorating neighbors
+        # Write bonds between networking nodes and their decorating neighbors
         if self._settings.clustering.criteria == 'bond':
             bridge_symbol = self._settings.clustering.connectivity[1]
             cluster_nodes_map = {node.node_id: node for node in cluster.nodes}
@@ -167,6 +167,6 @@ class ClustersWriter(BaseWriter):
                 
                 for neighbor in original_node.neighbors:
                     if neighbor.symbol == bridge_symbol:
-                        # Check if both atoms are in the current file's map
+                        # Check if both nodes are in the current file's map
                         if node_id in id_map and neighbor.node_id in id_map:
                              f.write(f"{id_map[node_id]} {id_map[neighbor.node_id]}\n")

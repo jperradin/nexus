@@ -64,7 +64,7 @@ class XYZReader(BaseReader):
                         # Provides more context if a header is malformed.
                         raise IOError(
                             f"Failed to parse frame header at byte offset {frame_start_offset} in {self.filename}. "
-                            f"Ensure all frames have a number of atoms and a valid Lattice string. Error: {e}"
+                            f"Ensure all frames have a number of nodes and a valid Lattice string. Error: {e}"
                         )
                     
                     # Skip the atomic data to find the next frame's header

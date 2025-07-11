@@ -20,7 +20,7 @@ class BondingStrategy(BaseClusteringStrategy):
 
     This strategy identifies clusters based on a specified bonding pattern, typically
     a three-node connectivity pattern. For example, a connectivity of ['Si', 'O', 'Si']
-    will connect silicon nodes that are sharing a common oxygen atom.
+    will connect silicon atoms that are sharing a common oxygen atom.
     """
     def __init__(self, frame: Frame, settings: Settings) -> None:
         self.frame: Frame = frame

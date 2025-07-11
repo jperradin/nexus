@@ -13,7 +13,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
     """
     Computes the percolation order parameter (P∞) for each connectivity type.
 
-    The order parameter is the fraction of networking atoms that belong to a
+    The order parameter is the fraction of networking nodes that belong to a
     percolating cluster. It is a key metric for identifying the percolation
     threshold in a system.
     """

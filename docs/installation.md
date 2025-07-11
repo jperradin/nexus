@@ -6,7 +6,7 @@ To install Nexus-CAT, follow these steps:
 ### Prerequisites
 
 - Python 3.9 or higher
-- Required dependencies: `numpy`, `scipy`, `tqdm`, `natsort`
+- Required dependencies: `numpy`, `tqdm`, `colorama`, `numba`, and `psutil`
 
 ### Installation Steps
 
@@ -29,7 +29,7 @@ pip install nexus-cat --upgrade
 If you want to install the package from the source code to implement your extensions for example, you can clone the repository:
 
 ```bash
-git clone https://github.com:TheDisorderedOrganization/nexus.git
+git clone https://github.com/jperradin/nexus.git
 ```
 
 Then install the package in development mode:

@@ -1,12 +1,12 @@
 <div align="center">
 
-  # NEXUS-CAT
-  ##### Cluster Analysis Toolkit
-  [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
-  [![PyPI version](https://badge.fury.io/py/nexus-cat.svg)](https://badge.fury.io/py/nexus-cat)
-  [![Documentation Status](https://readthedocs.org/projects/nexus-cat/badge/?version=latest)](https://nexus-cat.readthedocs.io/en/latest/)
+# NEXUS-CAT
+##### Cluster Analysis Toolkit
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![PyPI version](https://badge.fury.io/py/nexus-cat.svg)](https://badge.fury.io/py/nexus-cat)
+[![Documentation Status](https://readthedocs.org/projects/nexus-cat/badge/?version=latest)](https://nexus-cat.readthedocs.io/en/latest/)
 
-  <img alt="NEXUS-CAT" width=400 src="./assets/Logo_Nexus-CAT_RVB_1.png" />
+<img alt="NEXUS-CAT" width=400 src="./assets/Logo_Nexus-CAT_RVB_1.png" />
 </div>
 
 logo made by [Lisap](https://lisaperradinportfolio.framer.website/)
@@ -24,37 +24,22 @@ logo made by [Lisap](https://lisaperradinportfolio.framer.website/)
 
 ## ⇁ Description and features
 
-`nexus-cat` is a package designed to find clusters of connected polyhedra in an atomistic simulation trajectory. It provides functionality to analyze cluster properties according to the percolation theory:
-- *Note: Here the notion of size refers to the number of polyhedra in a cluster, not the physical size of the cluster, ie its radius nor its volume.*
-- **Average cluster size** $\langle s \rangle$: $\langle s(p) \rangle = \sum_s \frac{s^2n_s(p)}{\sum_s s n_s(p)}$
-  - with $n_s$ the number of clusters of size $s$ (ie number of polyhedra in the cluster).
-  - 1 sized clusters and percolating clusters are not taken into account in the calculation.
-- **Biggest cluster size** $s_{max}$: largest cluster size in the system no matter the percolation threshold.
-- **Spanning cluster size** $s_{\infty}$ : largest cluster size in the system excluding the percolating cluster.
-- **Gyration radius** $R_g$ : $R_s² = \frac{1}{2s^2}\sum_{i,j}|\overrightarrow{r_i}-\overrightarrow{r_j}|^2$
-  - with $r_i$ the **unwrapped** coordinates of the atom $_i$ in the cluster of size $s$. 
-  - 1 sized clusters and percolating clusters are not taken into account in the calculation.
-- **Correlation length** $\xi$ : $\xi^2 = \frac{\sum_s 2R_s²s²n_s(p)}{\sum_ss²n_s(p)}$
-  - with $n_s$ the number, $R_s$ the average gyration radius of clusters of size $s$ (ie number of polyhedra in the cluster).
-  - 1 sized clusters and percolating clusters are not taken into account in the calculation.
-- **Percolation probability** $\Pi$ :
-```math
-\Pi = \begin{cases}
-0 & \text{if } R_g < L_{box} \\
-1 & \text{if } R_g \geq L_{box} 
-\end{cases}
-```
-  - with $L_{box}$ is the length of the simulation box.
-  - Note: The percolation probability is calculated for each direction of the simulation box, a cluster can percolate in 1D, 2D or 3D. 
+`nexus-cat` is a Python package for analyzing clusters in atomistic simulation trajectories, with a focus on percolation theory and complex network analysis. It provides a flexible and extensible framework for identifying and characterizing clusters based on various criteria.
 
-- **Order parameter $P_∞$** : 
-```math
-P_∞ = \begin{cases}0 & \text{if } \Pi = 0 \\\frac{s_{max}}{N} & \text{if } \Pi = 1 
-\end{cases}
-```
- 
-  - with $s_{max}$ the number of polyhedra in the biggest cluster, $N$ the total number of **connected** polyhedra in the system (1 sized clusters excluded).
-  - Note : the order parameter is calculated with $\Pi$ in 1D. 
+**Key Features**:
+
+* **Multiple Clustering Strategies**: `nexus-cat` supports several strategies for defining clusters:
+    * **Distance Strategy**: Connects nodes based on a simple distance cutoff.
+    * **Bonding Strategy**: Identifies clusters based on a three-node bonding pattern (e.g., Si-O-Si).
+    * **Coordination Strategy**: Extends the bonding pattern by adding constraints on the coordination number of the nodes.
+    * **Shared Strategy**: A more advanced strategy that connects nodes based on a minimum number of shared neighbors, useful for analyzing polyhedral linkages.
+* **Percolation Analysis**: The package can calculate a variety of properties related to percolation theory:
+    * Average cluster size
+    * Largest and spanning cluster sizes
+    * Gyration radius and correlation length
+    * Percolation probability and order parameter
+* **Flexible Configuration**: `nexus-cat` uses a builder pattern with dataclasses for clear and safe configuration, allowing for easy customization of analysis parameters.
+* **Efficient I/O**: The package includes readers for common trajectory formats like XYZ and LAMMPS, with efficient scanning and parsing capabilities.
 
 ## ⇁ Installation
 

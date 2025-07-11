@@ -32,7 +32,7 @@ class Cluster:
         self.linkages: List[Tuple[int, int]] = []
         self._linkage_set: Set[Tuple[int, int]] = set()
         
-        # New attribute to store decorating atoms (e.g., bridging oxygens)
+        # New attribute to store decorating nodes (e.g., bridging oxygens)
         self.decoration_atoms: Dict[int, Dict] = {}
 
     def add_node(self, node: Node) -> None:
@@ -69,7 +69,7 @@ class Cluster:
             wrapped_com = wrap_position(unwrapped_com, self.lattice)
             translation_vector = wrapped_com - unwrapped_com
             self.unwrapped_positions += translation_vector
-            # Also translate decoration atoms
+            # Also translate decoration nodes
             for atom_id in self.decoration_atoms:
                 self.decoration_atoms[atom_id]['position'] += translation_vector
             self.center_of_mass = wrapped_com
@@ -142,7 +142,7 @@ class Cluster:
         self.set_indices_and_positions(dict_positions)
         self.linkages = sorted(list(self._linkage_set))
         
-        # --- New logic to find and unwrap decorating atoms ---
+        # --- New logic to find and unwrap decorating nodes ---
         if self.settings.clustering.criteria == 'bond':
             bridge_symbol = self.settings.clustering.connectivity[1]
             # Create a map of node ID to original Node object for quick lookup

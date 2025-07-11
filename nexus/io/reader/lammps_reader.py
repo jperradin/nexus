@@ -61,7 +61,7 @@ class LAMMPSReader(BaseReader):
                     try:
                         # --- Parse Frame Header ---
                         f.readline() # Timestep value
-                        f.readline() # ITEM: NUMBER OF ATOMS
+                        f.readline() # ITEM: NUMBER OF NODES
                         num_nodes = int(f.readline().strip())
                         
                         f.readline() # ITEM: BOX BOUNDS
@@ -81,7 +81,7 @@ class LAMMPSReader(BaseReader):
                                 lattice.append([0.0, 0.0, lii])
                         lattice = np.array(lattice)
                         
-                        # Read atom property header
+                        # Read node property header
                         self.columns = {col: i for i, col in enumerate(f.readline().strip().split()[2:])}
                         
                         # Skip the atomic data lines to get to the next frame

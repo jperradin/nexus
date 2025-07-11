@@ -372,13 +372,19 @@ class SettingsBuilder:
                 raise ValueError(f"Invalid coordination range: {clustering.coordination_range}")
             if clustering.coordination_mode is None:
                 raise ValueError(f"Invalid coordination mode: {clustering.coordination_mode} with with_coordination_number set to True")
-            
+        
+        if clustering.with_pairwise and not clustering.with_coordination_number:
+            raise ValueError(f"Activate with_coordination_number before with_pairwise")
+
         if clustering.with_alternating and not clustering.with_coordination_number:
             raise ValueError(f"Activate with_coordination_number before with_alternating")
 
         if clustering.with_mixing and not clustering.with_coordination_number:
             raise ValueError(f"Activate with_coordination_number before with_mixing")
 
+        if cluster.with_coordination_number and not cluster.with_pairwise and not cluster.with_alternating and not cluster.with_mixing and cluster.with_connectivity_name == "":
+            raise ValueError(f"Default mode with_coordination_number requires a connectivity name")
+        
         if clustering.with_number_of_shared and not clustering.with_coordination_number:
             raise ValueError(f"Activate with_coordination_number before with_number_of_shared")
 

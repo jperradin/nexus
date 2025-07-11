@@ -10,117 +10,120 @@ from datetime import datetime
 
 
 class PercolationProbabilityAnalyzer(BaseAnalyzer):
+    """
+    Computes the percolation probability (Π) for each connectivity type.
+
+    This is the probability of finding at least one cluster that spans the
+    simulation box along a given dimension. It is calculated for each frame
+    and then averaged. A value of 1.0 indicates percolation occurs in every
+    frame, while 0.0 indicates it never occurs.
+    """
     def __init__(self, settings: Settings) -> None:
+        """Initializes the analyzer."""
         super().__init__(settings)
-        self.percolation_probabilities: Dict[str, List[float]] = {}
+        # Private attributes to store raw, per-frame data
+        # We store a boolean (0 or 1) for each frame indicating if percolation occurred
+        self._raw_percolation_prob_x: Dict[str, List[float]] = {}
+        self._raw_concentrations: Dict[str, List[float]] = {}
+
+        # Public attributes to hold the final, aggregated results
+        self.percolation_probabilities: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
-        self.concentrations: Dict[str, List[float]] = {}
+        self.concentrations: Dict[str, float] = {}
+        
+        # A flag to ensure final calculations are only performed once
+        self._finalized: bool = False
     
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
+        """
+        Analyzes a single frame to determine if percolation occurs for each
+        connectivity type and stores the result (1 for yes, 0 for no).
+        """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
 
-        # get all order parameters per connectivity
         for connectivity in connectivities:
-            percolating_clusters = [c for c in clusters if c.get_connectivity() == connectivity and c.is_percolating]
+            # Initialize lists if this is the first time seeing this connectivity
+            self._raw_percolation_prob_x.setdefault(connectivity, [])
+            self._raw_concentrations.setdefault(connectivity, [])
+
+            # Check if any cluster for this connectivity percolates in the x-direction
+            found_percolating_cluster = any(
+                'x' in c.percolation_probability for c in clusters if c.get_connectivity() == connectivity
+            )
             
-            if percolating_clusters:
-                percolation_probabilities = [c.percolation_probability for c in percolating_clusters]
-                # percolation_probabilities is a list of 3 floats
-                if connectivity not in self.percolation_probabilities:
-                    self.percolation_probabilities[connectivity] = []
-                if len(percolation_probabilities) == 1:
-                    self.percolation_probabilities[connectivity].append([1.0, 0.0, 0.0])
-                elif len(percolation_probabilities) == 2:
-                    self.percolation_probabilities[connectivity].append([1.0, 1.0, 0.0])
-                elif len(percolation_probabilities) == 3:
-                    self.percolation_probabilities[connectivity].append([1.0, 1.0, 1.0])
-                else:
-                    self.percolation_probabilities[connectivity].append([0.0, 0.0, 0.0])
-                self.std[connectivity] = [0.0, 0.0, 0.0]
-                if connectivity not in self.concentrations:
-                    self.concentrations[connectivity] = []
-                self.concentrations[connectivity].append(concentrations[connectivity])
-            else:
-                if connectivity not in self.percolation_probabilities:
-                    self.percolation_probabilities[connectivity] = []
-                self.percolation_probabilities[connectivity].append([0.0, 0.0, 0.0])
-                self.std[connectivity] = [0.0, 0.0, 0.0]
-                if connectivity not in self.concentrations:
-                    self.concentrations[connectivity] = []
-                if connectivity not in concentrations:
-                    self.concentrations[connectivity].append(0.0)
-                else:
-                    self.concentrations[connectivity].append(concentrations[connectivity])
+            self._raw_percolation_prob_x[connectivity].append(1.0 if found_percolating_cluster else 0.0)
+            self._raw_concentrations[connectivity].append(concentrations.get(connectivity, 0.0))
 
         self.update_frame_processed(frame)
 
-    def finalize(self) -> None:
-        for connectivity, percolation_probabilities in self.percolation_probabilities.items():
-            self.percolation_probabilities[connectivity] = np.mean(percolation_probabilities, axis=0)
-            if len(percolation_probabilities) == 1:
-                self.std[connectivity] = [0.0, 0.0, 0.0]
+    def finalize(self) -> Dict[str, Dict[str, float]]:
+        """
+        Calculates the final mean and standard deviation for the percolation
+        probability across all processed frames. This method is now idempotent.
+        """
+        if self._finalized:
+            return self.get_result()
+
+        for connectivity, probs in self._raw_percolation_prob_x.items():
+            if probs:
+                self.percolation_probabilities[connectivity] = np.mean(probs)
+                if len(probs) > 1:
+                    self.std[connectivity] = np.std(probs, ddof=1)
+                else:
+                    self.std[connectivity] = 0.0
             else:
-                self.std[connectivity] = np.std(percolation_probabilities, ddof=1, axis=0)
-            # replace eventual nan with 0.0
+                self.percolation_probabilities[connectivity] = 0.0
+                self.std[connectivity] = 0.0
+            
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
 
-        for connectivity, concentrations in self.concentrations.items():
-            self.concentrations[connectivity] = np.mean(concentrations)
+        for connectivity, concs in self._raw_concentrations.items():
+            self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
 
-        return {"concentrations": self.concentrations, "percolation_probabilities": self.percolation_probabilities, "std": self.std}
+        self._finalized = True
+        return self.get_result()
 
-    def get_result(self) -> Dict[str, float]:
-        return {"concentrations": self.concentrations, "percolation_probabilities": self.percolation_probabilities, "std": self.std}
+    def get_result(self) -> Dict[str, Dict[str, float]]:
+        """Returns the finalized analysis results."""
+        return {
+            "concentrations": self.concentrations, 
+            "percolation_probabilities": self.percolation_probabilities, 
+            "std": self.std
+        }
 
     def update_frame_processed(self, frame: Frame) -> None:
         self.frame_processed.append(frame)
 
     def print_to_file(self) -> None:
-        self._write_header()
-        self._write_data()
-        
-
-    def get_std(self) -> Dict[str, float]:
-        return self.std
-
-    def _write_header(self) -> None:
-        """
-        Initializes the output file with a header.
-
-        Parameters:
-        -----------
-            overwrite (bool): Whether to overwrite the existing file.
-            path_to_directory (str): The directory where the output file will be saved.
-            number_of_frames (int): The number of frames used in averaging.
-        """
-        path = os.path.join(self._settings.export_directory, "percolation_probability.dat")
-        number_of_frames = len(self.frame_processed)
-        overwrite = self._settings.analysis.overwrite
-        if not overwrite and os.path.exists(path):
-            with open(path, 'a', encoding='utf-8') as output:
-                output.write(f"# Percolation Probability Results\n")
-                output.write(f"# Date: {datetime.now()}\n")
-                output.write(f"# Frames averaged: {number_of_frames}\n")
-                output.write("# Connectivity_type,Concentration,Percolation_probability,Standard_deviation_ddof=1\n")
-            output.close()
-        else:
-            with open(path, 'w', encoding='utf-8') as output:
-                output.write(f"# Percolation Probability Results\n")
-                output.write(f"# Date: {datetime.now()}\n")
-                output.write(f"# Frames averaged: {number_of_frames}\n")
-                output.write("# Connectivity_type,Concentration,Percolation_probability,Standard_deviation_ddof=1\n")
-            output.close()
-    def _write_data(self) -> None:
+        """Writes the finalized results to a data file."""
         output = self.finalize()
+        self._write_header()
         path = os.path.join(self._settings.export_directory, "percolation_probability.dat")
         with open(path, "a") as f:
             for connectivity in self.percolation_probabilities:
-                concentration = output["concentrations"][connectivity]
-                percolation_probability = output["percolation_probabilities"][connectivity]
-                std = output["std"][connectivity]
-                f.write(f"{connectivity},{concentration},{percolation_probability[0]},{std[0]}\n")
+                concentration = output["concentrations"].get(connectivity, 0.0)
+                percolation_probability = output["percolation_probabilities"].get(connectivity, 0.0)
+                std = output["std"].get(connectivity, 0.0)
+                f.write(f"{connectivity},{concentration},{percolation_probability},{std}\n")
         remove_duplicate_lines(path)
+
+    def _write_header(self) -> None:
+        """Initializes the output file with a header."""
+        path = os.path.join(self._settings.export_directory, "percolation_probability.dat")
+        number_of_frames = len(self.frame_processed)
+        
+        if self._settings.analysis.overwrite or not os.path.exists(path):
+            mode = 'w'
+        else:
+            if os.path.getsize(path) > 0: return
+            mode = 'a'
+
+        with open(path, mode, encoding='utf-8') as output:
+            output.write(f"# Percolation Probability Results (X-direction)\n")
+            output.write(f"# Date: {datetime.now()}\n")
+            output.write(f"# Frames averaged: {number_of_frames}\n")
+            output.write("# Connectivity_type,Concentration,Percolation_probability,Standard_deviation_ddof=1\n")
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}"

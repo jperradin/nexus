@@ -27,70 +27,72 @@ class XYZReader(BaseReader):
 
     def scan(self) -> List[FrameIndex]:
         """
-        Scans the trajectory file.
-        Initializes Frame objects with the chunk locations of each frame.
-        Parse the header to store the number of nodes, the lattice and other informations.
+        Scans the trajectory file efficiently to index frames.
 
-        Returns:
-            List[FrameIndex]: A list of FrameIndex objects.
+        This method reads the file sequentially to locate the start of each
+        frame and parse its header. It uses a single buffered reader for
+        efficient I/O and stores the byte offset of each frame for fast
+        seeking later. The `mmaped_file` attribute is no longer needed for
+        this operation.
         """
-        if not self.mmaped_file:
-            with open(self.filename, 'rb') as f:
-                self.mmaped_file = memoryview(f.read())
-        self.frame_offsets = []
-        self.frame_sizes = []
-        self.num_frames = 0
         self.frame_indices = []
-
+        self.num_frames = 0
+        
         try:
-            file_size = os.path.getsize(self.filename)
+            # Use a single `with` statement for robust file handling.
+            # Python's file object is already buffered and efficient.
             with open(self.filename, 'r') as f:
-                offset = 0
-                while offset < file_size:
-                    # Store position at the start of the frame
-                    frame_start = offset
-
-                    # Read number of nodes line
-                    num_nodes_line = f.readline().strip()
-                    if not num_nodes_line:
-                        break # End of file
-                    try:
-                        num_nodes = int(num_nodes_line)
-                    except ValueError:
-                        raise ValueError("Number of nodes must be an integer")
-                    offset += 1
-
-                    # Read lattice line
-                    lattice_line = f.readline().strip()
-                    try:
-                        lattice_line = lattice_line.split('\"')[1]
-                        lattice_line = lattice_line.split()
-                        lxx, lxy, lxz = float(lattice_line[0]), float(lattice_line[1]), float(lattice_line[2])
-                        lyx, lyy, lyz = float(lattice_line[3]), float(lattice_line[4]), float(lattice_line[5])
-                        lzx, lzy, lzz = float(lattice_line[6]), float(lattice_line[7]), float(lattice_line[8])
-                        lattice = np.array([[lxx, lxy, lxz], [lyx, lyy, lyz], [lzx, lzy, lzz]])
-                    except ValueError:
-                        raise ValueError("Lattice must be a 3x3 matrix")
-                    offset += 1
-
-                    # Read node lines
-                    for _ in range(num_nodes):
-                        l = f.readline()
-                        offset += 1
+                while True:
+                    # Record the starting position of the potential frame.
+                    frame_start_offset = f.tell()
                     
-                    # Store position at the end of the frame
-                    self.frame_indices.append(FrameIndex(frame_id=self.num_frames, num_nodes=num_nodes, lattice=lattice, byte_offset=frame_start))
-                    self.num_frames += 1
-                    self.frame_sizes.append(offset - frame_start)
-                    self.frame_offsets.append(frame_start)
+                    num_nodes_line = f.readline()
+                    if not num_nodes_line:
+                        break  # End of file
 
+                    header_line = f.readline()
+                    
+                    try:
+                        num_nodes = int(num_nodes_line.strip())
+                        
+                        # Extract lattice information from the header
+                        lattice_str = header_line.split('Lattice="')[1].split('"')[0]
+                        parts = [float(p) for p in lattice_str.split()]
+                        lattice = np.array(parts).reshape(3, 3)
+
+                    except (ValueError, IndexError) as e:
+                        # Provides more context if a header is malformed.
+                        raise IOError(
+                            f"Failed to parse frame header at byte offset {frame_start_offset} in {self.filename}. "
+                            f"Ensure all frames have a number of atoms and a valid Lattice string. Error: {e}"
+                        )
+                    
+                    # Skip the atomic data to find the next frame's header
+                    for _ in range(num_nodes):
+                        f.readline()
+
+                    # Store the indexed frame information.
+                    frame_index = FrameIndex(
+                        frame_id=self.num_frames,
+                        num_nodes=num_nodes,
+                        lattice=lattice,
+                        byte_offset=frame_start_offset
+                    )
+                    self.frame_indices.append(frame_index)
+                    self.num_frames += 1
+
+        except FileNotFoundError:
+            raise
         except Exception as e:
-            raise Exception(f"Error scanning trajectory file: {str(e)}")
+            # Catch other potential I/O errors
+            raise IOError(f"Error scanning trajectory file {self.filename}: {e}")
 
         if self.verbose:
             print(f"Scanned {self.num_frames} frames in {self.filename}")
 
         self.is_indexed = True
+        # The `parse` method will use these FrameIndex objects to seek directly
+        # to the correct position in the file to read a specific frame.
         return self.frame_indices
 
     def parse(self, frame_id: int) -> Generator[Frame, None, None]:
@@ -100,10 +102,14 @@ class XYZReader(BaseReader):
         Yields:
             Frame: A data structure representing a frame.
         """
+        if not self.is_indexed:
+            self.scan()
         
         frame_index = self.frame_indices[frame_id]
+        
         with open(self.filename, 'r') as f:
-            self.seek_to_line(f, frame_index.byte_offset) 
+            f.seek(frame_index.byte_offset)
+
             num_nodes = frame_index.num_nodes
             lattice = frame_index.lattice
 

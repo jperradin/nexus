@@ -33,88 +33,81 @@ class LAMMPSReader(BaseReader):
 
     def scan(self) -> List[FrameIndex]:
         """
-        Scans the trajectory file.
-        Initializes Frame objects with the chunk locations of each frame.
-        Parse the header to store the number of nodes, the lattice and other informations.
+        Scans the LAMMPS trajectory file efficiently to index frames.
 
-        Returns:
-            List[FrameIndex]: A list of FrameIndex objects.
+        This method reads the file sequentially to locate the start of each
+        frame and parse its header. It uses a single buffered reader for
+        efficient I/O and stores the byte offset for fast seeking later.
         """
-        if not self.mmaped_file:
-            with open(self.filename, 'rb') as f:
-                self.mmaped_file = memoryview(f.read())
-        self.frame_offsets = []
-        self.frame_sizes = []
-        self.num_frames = 0
         self.frame_indices = []
-
+        self.num_frames = 0
+        
         try:
-            file_size = os.path.getsize(self.filename)
             with open(self.filename, 'r') as f:
-                offset = 0
-                while offset < file_size:
-                    # Store position at the start of the frame
-                    frame_start = offset
-
-                    # Skip 3 header lines
-                    f.readline()
-                    f.readline()
-                    f.readline()
-                    offset += 3
-
-                    # Read number of nodes line
-                    num_nodes_line = f.readline().strip()
-                    if not num_nodes_line:
+                while True:
+                    frame_start_offset = f.tell()
+                    
+                    # Read the first line of the frame block
+                    line = f.readline()
+                    if not line:
                         break # End of file
+                    
+                    # Check if the line is the 'ITEM: TIMESTEP' header
+                    if 'ITEM: TIMESTEP' not in line:
+                        # This could indicate a malformed file or we are out of sync.
+                        # For now, we'll assume it means the end of valid frames.
+                        break
+                        
                     try:
-                        num_nodes = int(num_nodes_line)
-                    except ValueError:
-                        raise ValueError("Number of nodes must be an integer")
-                    offset += 1
-
-                    # Skip 1 header line
-                    f.readline()
-                    offset += 1
-
-                    # Read lattice line
-                    lattices = [f.readline().strip() for _ in range(3)]
-                    try:
+                        # --- Parse Frame Header ---
+                        f.readline() # Timestep value
+                        f.readline() # ITEM: NUMBER OF ATOMS
+                        num_nodes = int(f.readline().strip())
+                        
+                        f.readline() # ITEM: BOX BOUNDS
+                        
+                        # Read lattice vectors
+                        lattices = [f.readline().strip() for _ in range(3)]
                         lattice = []
                         for i in range(3):
-                            line = lattices[i].split()
-                            low = float(line[0])
-                            high = float(line[1])
+                            line_parts = lattices[i].split()
+                            low, high = float(line_parts[0]), float(line_parts[1])
                             lii = high - low
                             if i == 0:
                                 lattice.append([lii, 0.0, 0.0])
                             elif i == 1:
                                 lattice.append([0.0, lii, 0.0])
-                            elif i == 2:
+                            else:
                                 lattice.append([0.0, 0.0, lii])
                         lattice = np.array(lattice)
-                    except ValueError:
-                        raise ValueError("Lattice must be a 3x3 matrix")
-                    offset += 3
+                        
+                        # Read atom property header
+                        self.columns = {col: i for i, col in enumerate(f.readline().strip().split()[2:])}
+                        
+                        # Skip the atomic data lines to get to the next frame
+                        for _ in range(num_nodes):
+                            f.readline()
 
-                    # Read node lines
-                    self.columns = f.readline().strip().split()
-                    self.columns.remove("ITEM:")
-                    self.columns.remove("NODES")
-                    columns = {col: i for i, col in enumerate(self.columns)}
-                    self.columns = columns
-                    offset += 1
-                    for _ in range(num_nodes):
-                        f.readline()
-                        offset += 1
-                    
-                    # Store position at the end of the frame
-                    self.frame_indices.append(FrameIndex(frame_id=self.num_frames, num_nodes=num_nodes, lattice=lattice, byte_offset=frame_start))
+                    except (ValueError, IndexError) as e:
+                        raise IOError(
+                            f"Failed to parse LAMMPS frame header at byte offset {frame_start_offset} in {self.filename}. "
+                            f"Error: {e}"
+                        )
+
+                    # Store the indexed frame information
+                    frame_index = FrameIndex(
+                        frame_id=self.num_frames,
+                        num_nodes=num_nodes,
+                        lattice=lattice,
+                        byte_offset=frame_start_offset
+                    )
+                    self.frame_indices.append(frame_index)
                     self.num_frames += 1
-                    self.frame_sizes.append(offset - frame_start)
-                    self.frame_offsets.append(frame_start)
 
+        except FileNotFoundError:
+            raise
         except Exception as e:
-            raise Exception(f"Error scanning trajectory file: {str(e)}")
+            raise IOError(f"Error scanning trajectory file {self.filename}: {e}")
 
         if self.verbose:
             print(f"Scanned {self.num_frames} frames in {self.filename}")
@@ -130,9 +123,14 @@ class LAMMPSReader(BaseReader):
             Frame: A data structure representing a frame.
         """
         
+        if not self.is_indexed:
+            self.scan()
+
         frame_index = self.frame_indices[frame_id]
+        
         with open(self.filename, 'r') as f:
-            self.seek_to_line(frame_index.byte_offset) 
+            f.seek(frame_index.byte_offset)
+        
             num_nodes = frame_index.num_nodes
             lattice = frame_index.lattice
 

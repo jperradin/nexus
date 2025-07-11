@@ -43,7 +43,7 @@ class DistanceStrategy(BaseClusteringStrategy):
             raise ValueError("Connectivity for clustering based on distance criteria must be a list of two elements.")
             
     
-    def find_clusters(self) -> List[Cluster]:
+    def build_clusters(self) -> List[Cluster]:
         networking_nodes = [node for node in self._nodes if node.symbol in self._settings.clustering.node_types]
         connectivity = self._settings.clustering.connectivity
 

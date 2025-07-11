@@ -12,7 +12,7 @@ class BaseAnalyzer(ABC):
     Analyzers are responsible for processing Frame objects, extracting relevant information,
     and producing analysis results that can be retrieved or written to output files.
     
-    Attributes:
+    Args:
         frame_processed (List[Frame]): List of frames that have been processed by the analyzer.
         _settings (Settings): Configuration settings for the analyzer.
     """

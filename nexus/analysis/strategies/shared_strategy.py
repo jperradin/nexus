@@ -114,7 +114,7 @@ class SharedStrategy(BaseClusteringStrategy):
 
         return connectivities
 
-    def find_clusters(self) -> None:
+    def build_clusters(self) -> None:
         # Select the networking nodes based on clustering settings
         # 1 - check node types
         if self._settings.clustering.criteria == 'bond':

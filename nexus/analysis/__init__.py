@@ -9,11 +9,12 @@ from .analyzers.cluster_size_distribution_analyzer import ClusterSizeDistributio
 from .analyzers.gyration_radius_analyzer import GyrationRadiusAnalyzer
 from .analyzers.correlation_length_analyzer import CorrelationLengthAnalyzer
 
-from .finder_factory import FinderFactory
-from .finders.base_finder import BaseFinder
-from .finders.general_distance_finder import GeneralDistanceFinder
-from .finders.general_bond_finder import GeneralBondFinder
-from .finders.coordination_based_finder import CoordinationBasedFinder
+from .strategy_factory import StrategyFactory
+from .strategies.base_strategy import BaseClusteringStrategy
+from .strategies.bond_strategy import BondingStrategy
+from .strategies.coordination_strategy import CoordinationStrategy
+from .strategies.distance_strategy import DistanceStrategy
+from .strategies.shared_strategy import SharedStrategy
 
 __all__ = [
     "BaseAnalyzer",
@@ -26,9 +27,10 @@ __all__ = [
     "ClusterSizeDistributionAnalyzer",
     "GyrationRadiusAnalyzer",
     "CorrelationLengthAnalyzer",
-    "FinderFactory",
-    "BaseFinder",
-    "GeneralDistanceFinder",
-    "GeneralBondFinder",
-    "CoordinationBasedFinder"
+    "StrategyFactory",
+    "BaseClusteringStrategy",
+    "BondingStrategy",
+    "CoordinationStrategy",
+    "DistanceStrategy",
+    "SharedStrategy"
 ]

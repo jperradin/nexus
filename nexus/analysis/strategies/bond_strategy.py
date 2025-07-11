@@ -43,7 +43,7 @@ class BondingStrategy(BaseClusteringStrategy):
             raise ValueError("Connectivity for clustering based on bond criteria must be a list of three elements.")
             
     
-    def find_clusters(self) -> List[Cluster]:
+    def build_clusters(self) -> List[Cluster]:
         networking_nodes = [node for node in self._nodes if node.symbol in self._settings.clustering.node_types and node.symbol != self._settings.clustering.connectivity[1]]
         connectivity = self._settings.clustering.connectivity
 

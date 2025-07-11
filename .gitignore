@@ -16,8 +16,7 @@ my_tests/
 ./assets/Logo_Nexus-CAT_RVB_2.png
 ./assets/Logo_Nexus-CAT_RVB_3.png
 launch-nexus-quick-test.py
-.readthedocs.yml
-examples/exports/
+examples/outputs/
 
 examples/inputs/ordinary_percolation/20/*.xyz
 examples/inputs/ordinary_percolation/25/*.xyz
@@ -30,3 +29,5 @@ examples/inputs/flips/temperature3/*.xyz
 examples/inputs/flips/*.zip
 examples/inputs/H2O/
 examples/inputs/a-Si/
+
+quicktest*

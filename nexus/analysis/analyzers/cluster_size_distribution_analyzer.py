@@ -9,216 +9,131 @@ from datetime import datetime
 
 class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
     """
-    Analyzer that computes the distribution of cluster sizes for each connectivity type.
-    
+    Computes the distribution of cluster sizes, n(s), for each connectivity type.
+
     This analyzer tracks how many clusters of each size exist for each connectivity
-    type across all processed frames. It excludes percolating clusters from the analysis.
-    The distribution data can be used to understand the frequency of different cluster
-    sizes in the system and how they vary with connectivity.
-    
-    Attributes:
-        size_distribution (Dict): Nested dictionary mapping connectivity types to dictionaries
-            that map cluster sizes to counts of clusters of that size.
-        std (Dict): Nested dictionary mapping connectivity types to dictionaries
-            that map cluster sizes to standard deviations of cluster counts across frames.
-        concentrations (Dict): Dictionary mapping connectivity types to their concentrations.
+    type across all processed frames, which is fundamental for percolation theory.
+    It excludes percolating clusters from the analysis to focus on the finite clusters.
     """
     def __init__(self, settings: Settings) -> None:
-        """
-        Initialize the ClusterSizeDistributionAnalyzer.
-        
-        Args:
-            settings (Settings): Configuration settings for the analyzer.
-        """
+        """Initializes the analyzer."""
         super().__init__(settings)
-        self.size_distribution = {}
-        self.std = {}
-        self.concentrations = {}
+        # Private attributes to store raw, per-frame data
+        self._raw_size_distribution: Dict[str, Dict[int, List[int]]] = {}
+        self._raw_concentrations: Dict[str, List[float]] = {}
+
+        # Public attributes to hold the final, aggregated results
+        self.size_distribution: Dict[str, Dict[int, float]] = {}
+        self.std: Dict[str, Dict[int, float]] = {}
+        self.concentrations: Dict[str, float] = {}
+        
+        # A flag to ensure final calculations are only performed once
+        self._finalized: bool = False
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyze a frame to compute the cluster size distribution for each connectivity type.
-        
-        This method extracts clusters from the frame, groups them by connectivity type,
-        and counts the number of clusters of each size. Only non-percolating clusters
-        are considered in this analysis.
-        
-        Args:
-            frame (Frame): The frame to analyze.
-            connectivities (List[str]): List of connectivities to analyze.
+        Analyzes a single frame to compute the cluster size distribution for each
+        connectivity type and stores the raw data.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
 
-        # get all sizes per connectivity
         for connectivity in connectivities:
+            # Initialize dictionaries if this is the first time seeing this connectivity
+            self._raw_size_distribution.setdefault(connectivity, {})
+            self._raw_concentrations.setdefault(connectivity, [])
+
             sizes = [c.get_size() for c in clusters if c.get_connectivity() == connectivity and not c.is_percolating]
-            sizes, ns = np.unique(sizes, return_counts=True)
-            if sizes.any():
-                for s in sizes:
-                    if connectivity not in self.size_distribution:
-                        self.size_distribution[connectivity] = {}
-                        self.std[connectivity] = {}
-                    if connectivity not in self.concentrations:
-                        self.concentrations[connectivity] = []
-                    if s not in self.size_distribution[connectivity]:
-                        self.size_distribution[connectivity][s] = []
-                        self.std[connectivity][s] = []
-                    self.size_distribution[connectivity][s].append(ns[sizes==s])
-                    self.std[connectivity][s].append(ns[sizes==s])
-                    self.concentrations[connectivity].append(concentrations[connectivity])
-            else:
-                key = np.int64(0)
-                value = np.array([0])
-                if connectivity not in self.size_distribution:
-                    self.size_distribution[connectivity] = {key: [value]}
-                    self.std[connectivity] = {key: [value]}
-                    if connectivity not in self.concentrations:
-                        self.concentrations[connectivity] = []
-                    if connectivity not in concentrations:
-                        self.concentrations[connectivity].append(0.0)
-                    else:
-                        self.concentrations[connectivity].append(concentrations[connectivity])
-                else:
-                    if key not in self.size_distribution[connectivity]:
-                        self.size_distribution[connectivity][key] = [value]
-                        self.std[connectivity][key] = [value]
-                    else:
-                        self.size_distribution[connectivity][key].append(value)
-                        self.std[connectivity][key].append(value)
-                    if connectivity not in self.concentrations:
-                        self.concentrations[connectivity] = []
-                    if connectivity not in concentrations:
-                        self.concentrations[connectivity].append(0.0)
-                    else:
-                        self.concentrations[connectivity].append(concentrations[connectivity])
+            
+            if sizes:
+                unique_sizes, ns = np.unique(sizes, return_counts=True)
+                for s, n in zip(unique_sizes, ns):
+                    self._raw_size_distribution[connectivity].setdefault(s, []).append(n)
+            
+            # Record concentration for this frame
+            self._raw_concentrations[connectivity].append(concentrations.get(connectivity, 0.0))
 
         self.update_frame_processed(frame)
 
     def update_frame_processed(self, frame: Frame) -> None:
-        """
-        Update the list of processed frames.
-        
-        Args:
-            frame (Frame): The frame that has been processed.
-        """
         self.frame_processed.append(frame)
 
     def finalize(self) -> Dict:
         """
-        Finalize the analysis by calculating sums and standard deviations.
-        
-        This method computes final values across all frames for each connectivity
-        type and cluster size, including:
-        - The total count of clusters of each size for each connectivity type
-        - The standard deviation of cluster counts across frames
-        
-        Returns:
-            Dict: Dictionary containing results with keys:
-                - 'concentrations': Concentrations for each connectivity
-                - 'size_distribution': Total counts of clusters by size for each connectivity
-                - 'std': Standard deviations of cluster counts for each size and connectivity
+        Calculates the final mean and standard deviation for the cluster size
+        distribution across all processed frames. This method is now idempotent.
         """
-        for connectivity, sizes in self.size_distribution.items():
-            for size, ns in sizes.items():
-                self.size_distribution[connectivity][size] = np.sum(ns)
-                if len(ns) == 1:
-                    self.std[connectivity][size] = 0.0
+        if self._finalized:
+            return self.get_result()
+
+        for connectivity, size_data in self._raw_size_distribution.items():
+            self.size_distribution.setdefault(connectivity, {})
+            self.std.setdefault(connectivity, {})
+            for size, counts in size_data.items():
+                # The final value is the total count divided by the number of frames
+                total_count = np.sum(counts)
+                num_frames = len(self.frame_processed)
+                self.size_distribution[connectivity][size] = total_count / num_frames if num_frames > 0 else 0.0
+                
+                # To calculate std dev, we need to account for frames where a size didn't appear
+                all_counts_for_size = counts + [0] * (num_frames - len(counts))
+                if len(all_counts_for_size) > 1:
+                    self.std[connectivity][size] = np.std(all_counts_for_size, ddof=1)
                 else:
-                    self.std[connectivity][size] = np.std(ns, ddof=1)
-        
-        if self.concentrations:
-            for connectivity in self.concentrations:
-                self.concentrations[connectivity] = np.mean(self.concentrations[connectivity])
+                    self.std[connectivity][size] = 0.0
 
-        return {"concentrations": self.concentrations, "size_distribution": self.size_distribution, "std": self.std}
+        for connectivity, concs in self._raw_concentrations.items():
+            self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
 
-    def get_result(self) -> Dict[str, float]:
-        """
-        Get the current analysis results.
-        
-        Returns:
-            Dict: Dictionary containing results with keys:
-                - 'concentrations': Concentrations for each connectivity
-                - 'size_distribution': Counts of clusters by size for each connectivity
-                - 'std': Standard deviations of cluster counts for each size and connectivity
-        """
-        return {"concentrations": self.concentrations, "size_distribution": self.size_distribution, "std": self.std}
+        self._finalized = True
+        return self.get_result()
+
+    def get_result(self) -> Dict[str, Dict]:
+        """Returns the finalized analysis results."""
+        return {
+            "concentrations": self.concentrations,
+            "size_distribution": self.size_distribution,
+            "std": self.std
+        }
 
     def print_to_file(self) -> None:
-        """
-        Write the analysis results to a file.
-        
-        This method writes the cluster size distribution results to a file for
-        each connectivity type in the export directory specified in settings.
-        """
-        self._write_header()
-        self._write_data()
-
-    def _write_header(self) -> None:
-        """
-        Initialize the output files with headers.
-        
-        This method creates or appends to output files for each connectivity type and writes
-        header information including date, number of frames processed, and column descriptions.
-        
-        The files will be created in the directory specified in settings.export_directory.
-        If settings.analysis.overwrite is False and a file already exists, data will be appended;
-        otherwise, the file will be overwritten.
-        """
-        for connectivity in self.size_distribution:
-            path = os.path.join(self._settings.export_directory, f"cluster_size_distribution-{connectivity}.dat")
-            number_of_frames = len(self.frame_processed)
-            overwrite = self._settings.analysis.overwrite
-            if not overwrite and os.path.exists(path):
-                with open(path, 'a', encoding='utf-8') as output:
-                    output.write(f"# Cluster Size Distribution \u279c {number_of_frames} frames averaged.\n")
-                    output.write(f"# Date: {datetime.now()}\n")
-                    output.write(f"# Frames averaged: {number_of_frames}\n")
-                    output.write("# Connectivity_type,Concentration,Cluster_size,N_clusters,Standard_deviation_ddof=1\n")
-                output.close()
-            else:
-                with open(path, 'w', encoding='utf-8') as output:
-                    output.write(f"# Cluster Size Distribution \u279c {number_of_frames} frames averaged.\n")
-                    output.write(f"# Date: {datetime.now()}\n")
-                    output.write(f"# Frames averaged: {number_of_frames}\n")
-                    output.write("# Connectivity_type,Concentration,Cluster_size,N_clusters,Standard_deviation_ddof=1\n")
-                output.close()
-
-    def _write_data(self) -> None:
-        """
-        Write the analysis data to the output files.
-        
-        This method appends the analysis results (connectivity types, concentrations,
-        cluster sizes, cluster counts, and standard deviations) to the output files,
-        sorted by descending cluster size, and removes any duplicate lines that might
-        have been introduced.
-        """
+        """Writes the finalized results to data files, one per connectivity."""
         output = self.finalize()
-        # sort cluster sizes by descending size
-        for connectivity in output["size_distribution"]:
-            path = os.path.join(self._settings.export_directory, f"cluster_size_distribution-{connectivity}.dat")
-            with open(path, "a") as f:
-                for size, ns in sorted(output["size_distribution"][connectivity].items(), key=lambda x: x[0], reverse=True):
-                    std = output["std"][connectivity][size]
-                    f.write(f"{connectivity},{output['concentrations'][connectivity]},{size},{ns},{std}\n")
-            remove_duplicate_lines(path)
         
+        for connectivity in self.size_distribution:
+            self._write_header(connectivity)
+            path = os.path.join(self._settings.export_directory, f"cluster_size_distribution-{connectivity}.dat")
+            
+            # Sort by size in descending order for plotting
+            sorted_sizes = sorted(self.size_distribution[connectivity].keys(), reverse=True)
+            
+            with open(path, "a") as f:
+                for size in sorted_sizes:
+                    concentration = output["concentrations"].get(connectivity, 0.0)
+                    n_s = output["size_distribution"][connectivity].get(size, 0.0)
+                    std_dev = output["std"][connectivity].get(size, 0.0)
+                    f.write(f"{connectivity},{concentration},{size},{n_s},{std_dev}\n")
+            remove_duplicate_lines(path)
+
+    def _write_header(self, connectivity: str) -> None:
+        """Initializes the output file with a header for a given connectivity."""
+        path = os.path.join(self._settings.export_directory, f"cluster_size_distribution-{connectivity}.dat")
+        number_of_frames = len(self.frame_processed)
+        
+        if self._settings.analysis.overwrite or not os.path.exists(path):
+            mode = 'w'
+        else:
+            if os.path.getsize(path) > 0: return
+            mode = 'a'
+
+        with open(path, mode, encoding='utf-8') as output:
+            output.write(f"# Cluster Size Distribution Results for {connectivity}\n")
+            output.write(f"# Date: {datetime.now()}\n")
+            output.write(f"# Frames averaged: {number_of_frames}\n")
+            output.write("# Connectivity_type,Concentration,Cluster_size,N_clusters_per_frame,Standard_deviation_ddof=1\n")
 
     def __str__(self) -> str:
-        """
-        Return a string representation of the analyzer.
-        
-        Returns:
-            str: The name of the analyzer class.
-        """
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
-        """
-        Return a string representation for debugging.
-        
-        Returns:
-            str: A string representation that could be used to recreate the analyzer.
-        """
         return f"{self.__class__.__name__}()"

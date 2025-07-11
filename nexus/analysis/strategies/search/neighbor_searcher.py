@@ -4,10 +4,10 @@ from tqdm import tqdm
 import os
 from typing import List
 
-from ...core.node import Node
-from ...core.frame import Frame
-from ...config.settings import Settings
-from ...utils.geometry import cartesian_to_fractional
+from ....core.node import Node
+from ....core.frame import Frame
+from ....config.settings import Settings
+from ....utils.geometry import cartesian_to_fractional
 
 class NeighborSearcher:
     """
@@ -99,7 +99,7 @@ class NeighborSearcher:
             if self.settings.apply_pbc:
                 # You should implement calculate_pbc_distance in geometry.py
                 # For now, we assume it exists
-                from ...utils.geometry import calculate_pbc_distance
+                from ....utils.geometry import calculate_pbc_distance
                 dist = calculate_pbc_distance(node_pos, neighbor.position, self._lattice)
             else:
                 dist = np.linalg.norm(node_pos - neighbor.position)

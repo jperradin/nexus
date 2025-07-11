@@ -172,11 +172,40 @@ def fractional_to_cartesian(position: np.ndarray, lattice: np.ndarray) -> np.nda
     """
     return np.dot(position, lattice)
 
+@jit(nopython=True, cache=True, fastmath=True)
+def calculate_gyration_radius(positions: np.ndarray, center_of_mass: np.ndarray) -> float:
+    """
+    Calculates the gyration radius for a set of positions.
+
+    Args:
+        positions (np.ndarray): The positions of the cluster
+        center_of_mass (np.ndarray): The center of mass of the cluster
+    
+    Returns:
+        float: The gyration radius of the cluster
+    """
+    if positions.shape[0] == 0:
+        return 0.0
+
+    rg_squared = 0.0
+    n_nodes = positions.shape[0]
+
+    # Sum the squared distances from the center of mass
+    for i in range(n_nodes):
+        dx = positions[i, 0] - center_of_mass[0]
+        dy = positions[i, 1] - center_of_mass[1]
+        dz = positions[i, 2] - center_of_mass[2]
+        rg_squared += dx**2 + dy**2 + dz**2
+
+    # Return the root of the mean squared distance
+    return np.sqrt(rg_squared / n_nodes)    
+
 __all__ = [
     'wrap_position',
     'wrap_positions',
     'calculate_direct_distance',
     'calculate_pbc_distance',
     'calculate_direct_angle',
-    'calculate_pbc_angle'
+    'calculate_pbc_angle',
+    'calculate_gyration_radius'
 ]

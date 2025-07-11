@@ -1,1 +1,1 @@
-from .neighbor_finder import NeighborFinder
+from .neighbor_searcher import NeighborSearcher

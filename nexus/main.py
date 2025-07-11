@@ -9,7 +9,7 @@ import time
 from .config.settings import Settings
 from .io.reader.reader_factory import ReaderFactory
 from .core.system import System
-from .analysis.finder_factory import FinderFactory
+from .analysis.strategy_factory import StrategyFactory
 from .analysis.analyzer_factory import AnalyzerFactory
 from .io.writer.writer_factory import WriterFactory
 from .utils import *
@@ -22,7 +22,7 @@ def main(settings: Settings):
 
     perf = performance.Performance(
         id=str(uuid.uuid4()),
-        name=f" run_{settings.project_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        name=f"{settings.project_name}-run_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
     )
     start_time = time.time()
     process = psutil.Process(os.getpid())
@@ -101,15 +101,15 @@ def main(settings: Settings):
         frame.initialize_nodes()
         # Find neighbors
         neighbor_start = time.time()
-        finder = FinderFactory(frame, settings).get_finder(settings)
-        finder.find_neighbors()
+        strategy = StrategyFactory(frame, settings).get_strategy(settings)
+        strategy.find_neighbors()
         neighbor_end = time.time()
         neighbor_times.append((neighbor_end - neighbor_start) * 1000)
         
         # Find clusters
         cluster_start = time.time()
-        connectivities = finder.get_connectivities()
-        clusters = finder.find_clusters()
+        connectivities = strategy.get_connectivities()
+        clusters = strategy.build_clusters()
         frame.set_clusters(clusters)
         frame.set_connectivities(connectivities)
         cluster_end = time.time()

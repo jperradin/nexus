@@ -382,7 +382,7 @@ class SettingsBuilder:
         if clustering.with_mixing and not clustering.with_coordination_number:
             raise ValueError(f"Activate with_coordination_number before with_mixing")
 
-        if cluster.with_coordination_number and not cluster.with_pairwise and not cluster.with_alternating and not cluster.with_mixing and cluster.with_connectivity_name == "":
+        if clustering.with_coordination_number and not clustering.with_pairwise and not clustering.with_alternating and not clustering.with_mixing and clustering.with_connectivity_name == "":
             raise ValueError(f"Default mode with_coordination_number requires a connectivity name")
         
         if clustering.with_number_of_shared and not clustering.with_coordination_number:

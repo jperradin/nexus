@@ -31,7 +31,7 @@ Represents a cluster of nodes within a system.
 
 **Attributes:**
 - `nodes (List[Node])`: List of Node objects belonging to the cluster.
-- `connectivity (str)`: Connectivity criteria of the cluster.
+- `connectivity (str)`: Connectivity criterion of the cluster.
 - `root_id (int)`: Node ID that is the root of the cluster.
 - `size (int)`: Size of the cluster (number of nodes).
 - `settings (Settings)`: Settings object containing configuration parameters.
@@ -147,7 +147,7 @@ The `Settings` class encapsulates all configuration parameters, while the `Setti
 
 #### `GeneralSettings`, `LatticeSettings`, `ClusteringSettings`, `AnalysisSettings`
 
-These are dataclasses that hold the configuration for different aspects of the analysis, such as general project information, lattice parameters, clustering criteria, and which analyses to perform.
+These are dataclasses that hold the configuration for different aspects of the analysis, such as general project information, lattice parameters, clustering criterion, and which analyses to perform.
 
 ### `utils` module
 

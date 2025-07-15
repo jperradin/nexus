@@ -148,7 +148,7 @@ class ClustersWriter(BaseWriter):
             
     def _write_cluster_bonds(self, f: TextIO, cluster: Cluster, id_map: Dict[int, int]) -> None:
         """Writes bond data, translating global node IDs to local file indices."""
-        if self._settings.clustering.criteria == "distance":
+        if self._settings.clustering.criterion == "distance":
             return
             
         # Write bonds between networking nodes
@@ -157,7 +157,7 @@ class ClustersWriter(BaseWriter):
                 f.write(f"{id_map[id1]} {id_map[id2]}\n")
 
         # Write bonds between networking nodes and their decorating neighbors
-        if self._settings.clustering.criteria == 'bond':
+        if self._settings.clustering.criterion == 'bond':
             bridge_symbol = self._settings.clustering.connectivity[1]
             cluster_nodes_map = {node.node_id: node for node in cluster.nodes}
             

@@ -12,7 +12,7 @@ class BaseClusteringStrategy(ABC):
     Abstract base class for all clustering strategies.
 
     A clustering strategy defines a specific algorithm for grouping nodes into
-    clusters based on a set of criteria. This class provides the fundamental
+    clusters based on a set of criterion. This class provides the fundamental
     interface for all strategies, including a common union-find implementation
     for efficient cluster merging.
 

@@ -31,10 +31,10 @@ class StrategyFactory:
         if config.with_number_of_shared:
             return self._strategies.get("SharedStrategy")
         
-        if not config.with_coordination_number and not config.with_alternating and config.criteria == "distance":
+        if not config.with_coordination_number and not config.with_alternating and config.criterion == "distance":
             return self._strategies.get("DistanceStrategy")
         
-        if not config.with_coordination_number and not config.with_alternating and config.criteria == "bond":
+        if not config.with_coordination_number and not config.with_alternating and config.criterion == "bond":
             return self._strategies.get("BondingStrategy")
             
         return self._strategies.get("Not found.")

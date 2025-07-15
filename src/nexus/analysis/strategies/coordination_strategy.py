@@ -73,7 +73,7 @@ class CoordinationStrategy(BaseClusteringStrategy):
             root_2.parent = root_1
 
     def get_connectivities(self) -> List[str]:
-        if self._settings.clustering.criteria == 'bond':
+        if self._settings.clustering.criterion == 'bond':
             type1 = self._settings.clustering.connectivity[0]
             type2 = self._settings.clustering.connectivity[1]
             type3 = self._settings.clustering.connectivity[2]
@@ -136,7 +136,7 @@ class CoordinationStrategy(BaseClusteringStrategy):
     def build_clusters(self) -> None:
         # Select the networking nodes based on clustering settings
         # 1 - check node types
-        if self._settings.clustering.criteria == 'bond':
+        if self._settings.clustering.criterion == 'bond':
             networking_nodes = [node for node in self._nodes if node.symbol in self._settings.clustering.node_types and node.symbol != self._settings.clustering.connectivity[1]]
         else:
             networking_nodes = [node for node in self._nodes if node.symbol in self._settings.clustering.node_types]
@@ -175,7 +175,7 @@ class CoordinationStrategy(BaseClusteringStrategy):
         }
         progress_bar = tqdm(networking_nodes, desc=f"Finding clusters {connectivity} ...", **progress_bar_kwargs)
 
-        if self._settings.clustering.criteria == 'bond':
+        if self._settings.clustering.criterion == 'bond':
             type1 = self._settings.clustering.connectivity[0]
             type2 = self._settings.clustering.connectivity[1]
             type3 = self._settings.clustering.connectivity[2]
@@ -191,7 +191,7 @@ class CoordinationStrategy(BaseClusteringStrategy):
                                 if (node.symbol == type1 and neighbor2.symbol == type3) and (node.coordination == z1 and neighbor2.coordination == z2):
                                     self.union(neighbor2, node)
         
-        elif self._settings.clustering.criteria == 'distance':
+        elif self._settings.clustering.criterion == 'distance':
             type1 = self._settings.clustering.connectivity[0]
             type2 = self._settings.clustering.connectivity[1]
             

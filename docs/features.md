@@ -24,7 +24,7 @@ Nexus-CAT provides a wide range of features for cluster analysis in atomistic si
 
 ### Extensibility
 
-- Customize cluster connectivity criteria and polyhedra.
+- Customize cluster connectivity criterion and polyhedra.
 - The use of factories (`StrategyFactory`, `AnalyzerFactory`, `ReaderFactory`, `WriterFactory`) allows for easy extension of the package with new algorithms and file formats.
 
 ### Visualization and Output

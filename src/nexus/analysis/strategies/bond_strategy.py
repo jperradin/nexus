@@ -40,7 +40,7 @@ class BondingStrategy(BaseClusteringStrategy):
             connectivity = [f"{connectivity[0]}-{connectivity[1]}-{connectivity[2]}"]
             return connectivity
         else:
-            raise ValueError("Connectivity for clustering based on bond criteria must be a list of three elements.")
+            raise ValueError("Connectivity for clustering based on bond criterion must be a list of three elements.")
             
     
     def build_clusters(self) -> List[Cluster]:

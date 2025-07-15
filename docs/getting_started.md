@@ -55,7 +55,7 @@ This section will guide you through the initial setup and usage of Nexus-CAT.
 
     ```python
     config_clustering = c.ClusteringSettings(
-        criteria="bond",
+        criterion="bond",
         node_types=["Si", "O"],
         node_masses=[28.0855, 15.9994],
         connectivity=["Si", "O", "Si"],

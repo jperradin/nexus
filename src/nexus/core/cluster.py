@@ -143,7 +143,7 @@ class Cluster:
         self.linkages = sorted(list(self._linkage_set))
         
         # --- New logic to find and unwrap decorating nodes ---
-        if self.settings.clustering.criteria == 'bond':
+        if self.settings.clustering.criterion == 'bond':
             bridge_symbol = self.settings.clustering.connectivity[1]
             # Create a map of node ID to original Node object for quick lookup
             cluster_nodes_map = {node.node_id: node for node in self.nodes}

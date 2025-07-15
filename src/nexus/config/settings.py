@@ -49,11 +49,11 @@ class ClusteringSettings:
     
     Attributes:
     """
-    criteria: str = "distance" # "distance" or "bond"
+    criterion: str = "distance" # "distance" or "bond"
     node_types: List[str] = field(default_factory=lambda: []) # List of node types
     node_masses: List[float] = field(default_factory=lambda: []) # List of node masses in reduced units
     connectivity: List[str] = field(default_factory=lambda: []) # List of connectivity
-    cutoffs: List[Cutoff] = field(default_factory=lambda: []) # Cutoffs for distance and bond criteria
+    cutoffs: List[Cutoff] = field(default_factory=lambda: []) # Cutoffs for distance and bond criterion
     with_printed_unwrapped_clusters: bool = False # Whether to print the unwrapped clusters
     print_mode: str = 'none' # "all", "connectivity", "individual", "none"
 
@@ -348,16 +348,16 @@ class SettingsBuilder:
         if not isinstance(clustering, ClusteringSettings):
             raise ValueError(f"Invalid clustering settings: {clustering}")
             
-        if clustering.criteria not in ['bond', 'distance']:
-            raise ValueError(f"Invalid criteria: {clustering.criteria}")
+        if clustering.criterion not in ['bond', 'distance']:
+            raise ValueError(f"Invalid criterion: {clustering.criterion}")
 
         if clustering.connectivity is None:
             raise ValueError(f"Invalid connectivity: {clustering.connectivity}")
 
-        if clustering.criteria == 'bond' and len(clustering.connectivity) != 3:
+        if clustering.criterion == 'bond' and len(clustering.connectivity) != 3:
             raise ValueError(f"Invalid connectivity, connectivity must be a list of 3 elements, got {len(clustering.connectivity)}")
 
-        if clustering.criteria == 'distance' and len(clustering.connectivity) != 2:
+        if clustering.criterion == 'distance' and len(clustering.connectivity) != 2:
             raise ValueError(f"Invalid connectivity, connectivity must be a list of 2 elements, got {len(clustering.connectivity)}")
 
         if clustering.with_coordination_number:

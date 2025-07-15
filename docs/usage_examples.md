@@ -34,7 +34,7 @@ config_lattice = c.LatticeSettings(
 
 # Clustering settings
 config_clustering = c.ClusteringSettings(
-    criteria="bond",                        # Use bond criteria for clustering
+    criterion="bond",                        # Use bond criterion for clustering
     node_types=["Si", "O"],                 # Types of nodes in the system
     node_masses=[28.0855, 15.9994],         # Masses of nodes in reduced units
     connectivity=["Si", "O", "Si"],         # Connectivity pattern to analyze
@@ -130,7 +130,7 @@ config_lattice = c.LatticeSettings(
 
 # Define H2O clustering settings
 config_clustering = c.ClusteringSettings(
-    criteria="distance",                    # Use distance criteria for clustering 
+    criterion="distance",                    # Use distance criterion for clustering 
     node_types=["O", "H"],                  # Types of nodes in the system
     node_masses=[15.9994, 1.00794],         # Masses of nodes in reduced units
     connectivity=["O", "O"],                # Study O-O connectivity
@@ -174,7 +174,7 @@ config_lattice = c.LatticeSettings(
 
 # Define clustering settings for percolation analysis
 config_clustering = c.ClusteringSettings(
-    criteria="distance",                    # Use distance criteria
+    criterion="distance",                    # Use distance criterion
     node_types=["1"],                       # Simple node type
     node_masses=[1.0],                      # Node mass
     connectivity=["1", "1"],                # Analyze connectivity between same type

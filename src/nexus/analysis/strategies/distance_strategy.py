@@ -40,7 +40,7 @@ class DistanceStrategy(BaseClusteringStrategy):
         if isinstance(connectivity, list) and len(connectivity) == 2:
             return [f"{connectivity[0]}-{connectivity[1]}"]
         else:
-            raise ValueError("Connectivity for clustering based on distance criteria must be a list of two elements.")
+            raise ValueError("Connectivity for clustering based on distance criterion must be a list of two elements.")
             
     
     def build_clusters(self) -> List[Cluster]:

@@ -30,5 +30,4 @@ examples/inputs/flips/*.zip
 examples/inputs/H2O/
 examples/inputs/a-Si/
 
-quicktest*
 setup_old.py

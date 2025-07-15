@@ -131,6 +131,10 @@ class CoordinationStrategy(BaseClusteringStrategy):
                 self._search_mode = "default"
                 connectivities = [self._settings.clustering.with_connectivity_name]
 
+        if self._settings.clustering.with_connectivity_name != "" and len(connectivities) == 1:
+            # Replace the automated connectivity name with the user-specified one
+            connectivities = [self._settings.clustering.with_connectivity_name]
+
         return connectivities
 
     def build_clusters(self) -> None:

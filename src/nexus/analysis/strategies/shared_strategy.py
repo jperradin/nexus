@@ -81,36 +81,67 @@ class SharedStrategy(BaseClusteringStrategy):
             root_2.parent = root_1
 
     def get_connectivities(self) -> List[str]:
-        cn = self._settings.clustering.shared_threshold
         if self._settings.clustering.criterion == 'bond':
             type1 = self._settings.clustering.connectivity[0]
             type2 = self._settings.clustering.connectivity[1]
             type3 = self._settings.clustering.connectivity[2]
 
             coordination_range = self._settings.clustering.coordination_range
-            if self._settings.clustering.with_alternating:
+            
+            if self._settings.clustering.with_pairwise:
+                self._search_mode = "pairwise"
+                connectivities = [f"{type1}{type2}_{i}={type3}{type2}_{i}" for i in range(coordination_range[0], coordination_range[1] + 1)]
+            elif self._settings.clustering.with_mixing:
+                self._search_mode = "mixing"
+                # Generate all possible combinations within the coordination range
                 connectivities = []
                 for i in range(coordination_range[0], coordination_range[1] + 1):
-                    connectivities.append(f"{type1}{type2}_{i}-{type3}{type2}_{i}-{cn}plus_common_neighbors")
+                    for j in range(i, coordination_range[1] + 1):  # j >= i to avoid duplicates
+                        connectivities.append(f"{type1}{type2}_{i}={type3}{type2}_{j}")
+                        if i != j:  # Add the reverse combination if different
+                            connectivities.append(f"{type3}{type2}_{j}={type1}{type2}_{i}")
+            elif self._settings.clustering.with_alternating:
+                self._search_mode = "alternating"
+                connectivities = []
+                for i in range(coordination_range[0], coordination_range[1] + 1):
+                    connectivities.append(f"{type1}{type2}_{i}={type3}{type2}_{i}")
                     if i+1 <= coordination_range[1]:
-                        connectivities.append(f"{type3}{type2}_{i}-{type1}{type2}_{i+1}-{cn}plus_common_neighbors")
+                        connectivities.append(f"{type3}{type2}_{i}={type1}{type2}_{i+1}")
             else:
-                connectivities = [f"{type1}{type2}_{i}-{type3}{type2}_{i}-{cn}plus_common_neighbors" for i in range(coordination_range[0], coordination_range[1] + 1)]
+                self._search_mode = "default"
+                connectivities = [self._settings.clustering.with_connectivity_name]
         else:
             type1 = self._settings.clustering.connectivity[0]
             type2 = self._settings.clustering.connectivity[1]
 
-            coordination_range = self._settings.clustering.coordination_range            
-            if self._settings.clustering.with_alternating:
+            coordination_range = self._settings.clustering.coordination_range
+            
+            if self._settings.clustering.with_pairwise:
+                self._search_mode = "pairwise"
+                connectivities = [f"{type1}_{i}={type2}_{i}" for i in range(coordination_range[0], coordination_range[1] + 1)]
+            elif self._settings.clustering.with_mixing:
+                self._search_mode = "mixing"
+                # Generate all possible combinations within the coordination range
                 connectivities = []
                 for i in range(coordination_range[0], coordination_range[1] + 1):
-                    connectivities.append(f"{type1}_{i}-{type2}_{i}-{cn}plus_common_neighbors")
+                    for j in range(i, coordination_range[1] + 1):  # j >= i to avoid duplicates
+                        connectivities.append(f"{type1}_{i}={type2}_{j}")
+                        if i != j:  # Add the reverse combination if different
+                            connectivities.append(f"{type2}_{j}={type1}_{i}")
+            elif self._settings.clustering.with_alternating:
+                self._search_mode = "alternating"
+                connectivities = []
+                for i in range(coordination_range[0], coordination_range[1] + 1):
+                    connectivities.append(f"{type1}_{i}={type2}_{i}")
                     if i+1 <= coordination_range[1]:
-                        connectivities.append(f"{type2}_{i}-{type1}_{i+1}-{cn}plus_common_neighbors")
+                        connectivities.append(f"{type2}_{i}={type1}_{i+1}")
             else:
-                connectivities = []
-                for i in range(coordination_range[0], coordination_range[1] + 1):
-                    connectivities.append(f"{type1}_{i}-{type2}_{i}-{cn}plus_common_neighbors")
+                self._search_mode = "default"
+                connectivities = [self._settings.clustering.with_connectivity_name]
+
+        if self._settings.clustering.with_connectivity_name != "" and len(connectivities) == 1:
+            # Replace the automated connectivity name with the user-specified one
+            connectivities = [self._settings.clustering.with_connectivity_name]
 
         return connectivities
 
@@ -126,11 +157,14 @@ class SharedStrategy(BaseClusteringStrategy):
         connectivities = self.get_connectivities()
         
         # 3 - generate clusters based on connectivities
-        for connectivity in connectivities:
-            z1, z2, dump = connectivity.split('-')
-            z1 = int(z1.split('_')[1])
-            z2 = int(z2.split('_')[1])
-            self._find_cluster(networking_nodes, connectivity, z1, z2)
+        if self._search_mode == "default":
+            self._find_cluster(networking_nodes, connectivities[0], 0, 0)
+        else:
+            for connectivity in connectivities:
+                z1, z2 = connectivity.split('=')
+                z1 = int(z1.split('_')[1])
+                z2 = int(z2.split('_')[1])
+                self._find_cluster(networking_nodes, connectivity, z1, z2)
         
         # 4 - return clusters
         return self.clusters
@@ -138,6 +172,13 @@ class SharedStrategy(BaseClusteringStrategy):
     def _find_cluster(self, networking_nodes: List[Node], connectivity: str, z1: int, z2: int) -> None:
         number_of_nodes = 0
 
+        lbound = self._settings.clustering.coordination_range[0]
+        ubound = self._settings.clustering.coordination_range[1]
+        if lbound == ubound:
+            coordination_range = np.array([lbound])
+        else:
+            coordination_range = np.arange(lbound, ubound + 1)
+        
         progress_bar_kwargs = {
             "disable": not self._settings.verbose,
             "leave": False,
@@ -155,9 +196,14 @@ class SharedStrategy(BaseClusteringStrategy):
                 for neighbor in node.neighbors:
                     if neighbor.symbol == type2:
                         for neighbor2 in neighbor.neighbors:
-                            if (node.symbol == type1 and neighbor2.symbol == type3) and (node.coordination == z1 and neighbor2.coordination == z2):
-                                if self.get_number_of_shared(node, neighbor2) >= self._settings.clustering.shared_threshold:
-                                    self.union(neighbor2, node)
+                            if self._search_mode == "default":
+                                if (node.symbol == type1 and neighbor2.symbol == type3) and (node.coordination in coordination_range and neighbor2.coordination in coordination_range):
+                                    if self.get_number_of_shared(node, neighbor2) >= self._settings.clustering.shared_threshold:
+                                        self.union(neighbor2, node)
+                            else:
+                                if (node.symbol == type1 and neighbor2.symbol == type3) and (node.coordination == z1 and neighbor2.coordination == z2):
+                                    if self.get_number_of_shared(node, neighbor2) >= self._settings.clustering.shared_threshold:
+                                        self.union(neighbor2, node)
         
         elif self._settings.clustering.criterion == 'distance':
             type1 = self._settings.clustering.connectivity[0]
@@ -165,9 +211,14 @@ class SharedStrategy(BaseClusteringStrategy):
             
             for node in progress_bar:
                 for neighbor in node.neighbors:
-                    if (node.symbol == type1 and neighbor.symbol == type2) and (node.coordination == z1 and neighbor.coordination == z2):
-                        if self.get_number_of_shared(node, neighbor) >= self._settings.clustering.shared_threshold:
-                            self.union(neighbor, node)
+                    if self._search_mode == "default":
+                        if (node.symbol == type1 and neighbor.symbol == type2) and (node.coordination in coordination_range and neighbor.coordination in coordination_range):
+                            if self.get_number_of_shared(node, neighbor) >= self._settings.clustering.shared_threshold:
+                                self.union(neighbor, node)
+                    else:
+                        if (node.symbol == type1 and neighbor.symbol == type2) and (node.coordination == z1 and neighbor.coordination == z2):
+                            if self.get_number_of_shared(node, neighbor) >= self._settings.clustering.shared_threshold:
+                                self.union(neighbor, node)
         
         clusters_found = {}
         local_clusters = []

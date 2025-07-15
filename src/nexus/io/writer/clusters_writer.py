@@ -150,23 +150,12 @@ class ClustersWriter(BaseWriter):
         """Writes bond data, translating global node IDs to local file indices."""
         if self._settings.clustering.criterion == "distance":
             return
-            
+        
+        _nodes = {node.node_id: node for node in cluster.nodes}
+
         # Write bonds between networking nodes
         for id1, id2 in cluster.linkages:
             if id1 in id_map and id2 in id_map:
-                f.write(f"{id_map[id1]} {id_map[id2]}\n")
-
-        # Write bonds between networking nodes and their decorating neighbors
-        if self._settings.clustering.criterion == 'bond':
-            bridge_symbol = self._settings.clustering.connectivity[1]
-            cluster_nodes_map = {node.node_id: node for node in cluster.nodes}
-            
-            for node_id in cluster.indices:
-                original_node = cluster_nodes_map.get(node_id)
-                if not original_node: continue
-                
-                for neighbor in original_node.neighbors:
-                    if neighbor.symbol == bridge_symbol:
-                        # Check if both nodes are in the current file's map
-                        if node_id in id_map and neighbor.node_id in id_map:
-                             f.write(f"{id_map[node_id]} {id_map[neighbor.node_id]}\n")
+                s1 = _nodes[id1].symbol
+                s2 = _nodes[id2].symbol
+                f.write(f"{s1}({id_map[id1]})-{s2}({id_map[id2]})\n")

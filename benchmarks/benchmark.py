@@ -26,18 +26,14 @@ config_clustering = c.ClusteringSettings(
 config_analysis = c.AnalysisSettings(
     with_all=True,
 )
+config_analysis.overwrite = False
 
 # Path to the trajectory file
-j = 20
+j = range(10, 100, 5)
 
-rootdir = f"./{j}"
-parser = p.Parser(file_location=rootdir, format="xyz")
-files = parser.get_files()
-infos = parser.get_infos()
-
-for i, file in enumerate(files):
-    path = file
-    project_name = infos["project_name"][i]
+for j in j:
+    path = f"./perco-{j}_0.3116.xyz"
+    project_name = f'{j}'
     config_general = c.GeneralSettings(
         project_name=project_name,
         export_directory=f"./outputs/{j}",

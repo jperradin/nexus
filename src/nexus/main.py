@@ -88,6 +88,7 @@ def main(settings: Settings):
     neighbor_times = []
     cluster_times = []
     analysis_times = []
+    number_nodes = []
 
     # Read and process frames
     for i, frame in progress_bar:
@@ -131,6 +132,8 @@ def main(settings: Settings):
         frame_end = time.time()
         frame_times.append((frame_end - frame_start) * 1000)
 
+        number_nodes.append(len(frame))
+
         # Record per-frame performance
         if i % 10 == 0 or i == total - 1:  # Record every 10 frames or the last frame
             current_memory = process.memory_info().rss / (1024 * 1024)
@@ -143,6 +146,7 @@ def main(settings: Settings):
             perf.add_metric("neighbor_finding_time_ms", neighbor_times[-1])
             perf.add_metric("cluster_finding_time_ms", cluster_times[-1])
             perf.add_metric("analysis_time_ms", analysis_times[-1])
+            perf.add_metric("number_nodes", number_nodes[-1])
             perf.record_history()
 
     # Print results
@@ -164,6 +168,7 @@ def main(settings: Settings):
     perf.add_metric("avg_neighbor_time_ms", sum(neighbor_times) / len(neighbor_times) if neighbor_times else 0)
     perf.add_metric("avg_cluster_time_ms", sum(cluster_times) / len(cluster_times) if cluster_times else 0)
     perf.add_metric("avg_analysis_time_ms", sum(analysis_times) / len(analysis_times) if analysis_times else 0)
+    perf.add_metric("avg_number_nodes", sum(number_nodes) / len(number_nodes) if number_nodes else 0)
     perf.record_history()
 
     # Save performance metrics

@@ -100,8 +100,11 @@ class ClustersWriter(BaseWriter):
         
         frame_id = self._clusters[0].frame_id
         for cluster in self._clusters:
-            xyz_path = os.path.join(path, f'cluster-frame_{frame_id}-id_{cluster.root_id}.xyz')
-            bonds_path = os.path.join(path, f'cluster-frame_{frame_id}-id_{cluster.root_id}.bonds')
+            subpath = os.path.join(path, cluster.connectivity)
+            if not os.path.exists(subpath): os.makedirs(subpath)
+            
+            xyz_path = os.path.join(subpath, f'cluster-frame_{frame_id}-id_{cluster.root_id}.xyz')
+            bonds_path = os.path.join(subpath, f'cluster-frame_{frame_id}-id_{cluster.root_id}.bonds')
             
             total_atoms = cluster.size + len(cluster.decoration_atoms)
             with open(xyz_path, 'w') as xyz_file:

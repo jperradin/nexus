@@ -98,8 +98,6 @@ class SharedStrategy(BaseClusteringStrategy):
                 for i in range(coordination_range[0], coordination_range[1] + 1):
                     for j in range(i, coordination_range[1] + 1):  # j >= i to avoid duplicates
                         connectivities.append(f"{type1}{type2}_{i}={type3}{type2}_{j}")
-                        if i != j:  # Add the reverse combination if different
-                            connectivities.append(f"{type3}{type2}_{j}={type1}{type2}_{i}")
             elif self._settings.clustering.with_alternating:
                 self._search_mode = "alternating"
                 connectivities = []
@@ -126,8 +124,6 @@ class SharedStrategy(BaseClusteringStrategy):
                 for i in range(coordination_range[0], coordination_range[1] + 1):
                     for j in range(i, coordination_range[1] + 1):  # j >= i to avoid duplicates
                         connectivities.append(f"{type1}_{i}={type2}_{j}")
-                        if i != j:  # Add the reverse combination if different
-                            connectivities.append(f"{type2}_{j}={type1}_{i}")
             elif self._settings.clustering.with_alternating:
                 self._search_mode = "alternating"
                 connectivities = []

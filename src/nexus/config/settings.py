@@ -50,6 +50,7 @@ class ClusteringSettings:
     Attributes:
     """
     criterion: str = "distance" # "distance" or "bond"
+    neighbor_searcher: str = "kd_tree" # "kd_tree", TODO : "cell_list"
     node_types: List[str] = field(default_factory=lambda: []) # List of node types
     node_masses: List[float] = field(default_factory=lambda: []) # List of node masses in reduced units
     connectivity: List[str] = field(default_factory=lambda: []) # List of connectivity

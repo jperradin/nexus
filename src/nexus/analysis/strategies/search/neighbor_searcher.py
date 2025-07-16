@@ -29,19 +29,10 @@ class NeighborSearcher:
         self.settings: Settings = settings
         self._nodes: List[Node] = frame.nodes
         self._lattice: np.ndarray = frame.lattice
+        self._max_cutoff: float = max(c.distance for c in self.settings.clustering.cutoffs)
 
     def execute(self) -> None:
-        """
-        Executes the neighbor finding and filtering process.
-
-        This method performs the following steps:
-        1. Determines the maximum cutoff distance.
-        2. Builds a cKDTree for efficient spatial queries, handling PBC if enabled.
-        3. Queries the tree to find candidate neighbors for each node.
-        4. Filters the candidate neighbors based on precise cutoff distances for each pair of node types.
-        """
         positions = self.frame.get_wrapped_positions()
-        max_cutoff = max(c.distance for c in self.settings.clustering.cutoffs)
 
         # Build the k-d tree, handling periodic boundary conditions
         if self.settings.apply_pbc:
@@ -50,11 +41,11 @@ class NeighborSearcher:
             query_positions = positions_frac
             # Estimate fractional cutoff. This is an approximation but is only used for broad-phase search.
             # The exact distance check will perform the precise filtering.
-            search_radius = max_cutoff / np.linalg.norm(self._lattice, axis=0).max()
+            search_radius = self._max_cutoff / np.linalg.norm(self._lattice, axis=0).max()
         else:
             kdtree = cKDTree(positions)
             query_positions = positions
-            search_radius = max_cutoff
+            search_radius = self._max_cutoff
 
         progress_bar_kwargs = {
             "disable": not self.settings.verbose,

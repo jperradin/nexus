@@ -29,14 +29,13 @@ config_analysis = c.AnalysisSettings(
 config_analysis.overwrite = False
 
 # Path to the trajectory file
-j = range(10, 100, 5)
-
+j = range(85, 100, 5)
 for j in j:
-    path = f"./perco-{j}_0.3116.xyz"
+    path = f"benchmarks/perco-{j}_0.3116.xyz"
     project_name = f'{j}'
     config_general = c.GeneralSettings(
         project_name=project_name,
-        export_directory=f"./outputs/{j}",
+        export_directory=f"benchmarks/outputs/",
         file_location=path,
         range_of_frames=(0, -1),
         apply_pbc=True,

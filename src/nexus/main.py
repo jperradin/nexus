@@ -134,6 +134,8 @@ def main(settings: Settings):
 
         number_nodes.append(len(frame))
 
+        del frame
+
         # Record per-frame performance
         if i % 10 == 0 or i == total - 1:  # Record every 10 frames or the last frame
             current_memory = process.memory_info().rss / (1024 * 1024)

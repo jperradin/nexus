@@ -152,3 +152,11 @@ class Frame:
 
     def __repr__(self) -> str:
         return f"Frame {self.frame_id} (num_nodes={len(self.nodes)})\n(first node: {(self.nodes[0].symbol, self.nodes[0].position) if len(self.nodes) > 0 else ''}\n(lattice=\n{self.lattice})\n"
+
+    def __del__(self) -> None:
+        del self.nodes
+        del self.clusters
+        del self.lattice
+        del self._data
+        del self.connectivities
+        

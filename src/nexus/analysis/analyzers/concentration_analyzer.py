@@ -8,14 +8,16 @@ import numpy as np
 import os
 from datetime import datetime
 
+
 class ConcentrationAnalyzer(BaseAnalyzer):
     """
     Computes the concentration of clusters for each connectivity type.
-    
+
     This analyzer tracks the concentration of clusters for each connectivity type
     across all processed frames. The concentration is defined as the ratio of the
     number of nodes in clusters of a given connectivity type to the total number of nodes.
     """
+
     def __init__(self, settings: Settings) -> None:
         """Initializes the analyzer."""
         super().__init__(settings)
@@ -26,7 +28,7 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         self.concentrations: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
         self.fluctuations: Dict[str, float] = {}
-        
+
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
 
@@ -39,14 +41,13 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         for connectivity in connectivities:
             # Initialize list if this is the first time seeing this connectivity
             self._raw_concentrations.setdefault(connectivity, [])
-            
-            # Record concentration for this frame, defaulting to 0.0 if not present
-            self._raw_concentrations[connectivity].append(concentrations.get(connectivity, 0.0))
-            
-        self.update_frame_processed(frame)     
 
-    def update_frame_processed(self, frame: Frame) -> None:
-        self.frame_processed.append(frame)   
+            # Record concentration for this frame, defaulting to 0.0 if not present
+            self._raw_concentrations[connectivity].append(
+                concentrations.get(connectivity, 0.0)
+            )
+
+        self.update_frame_processed()
 
     def finalize(self) -> Dict[str, Dict[str, float]]:
         """
@@ -62,7 +63,9 @@ class ConcentrationAnalyzer(BaseAnalyzer):
                 if len(concs) > 1:
                     self.std[connectivity] = np.std(concs, ddof=1)
                     mean_conc = self.concentrations[connectivity]
-                    self.fluctuations[connectivity] = np.var(concs, ddof=1) / mean_conc if mean_conc > 0 else 0.0
+                    self.fluctuations[connectivity] = (
+                        np.var(concs, ddof=1) / mean_conc if mean_conc > 0 else 0.0
+                    )
                 else:
                     self.std[connectivity] = 0.0
                     self.fluctuations[connectivity] = 0.0
@@ -70,9 +73,11 @@ class ConcentrationAnalyzer(BaseAnalyzer):
                 self.concentrations[connectivity] = 0.0
                 self.std[connectivity] = 0.0
                 self.fluctuations[connectivity] = 0.0
-            
+
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
-            self.fluctuations[connectivity] = np.nan_to_num(self.fluctuations[connectivity])
+            self.fluctuations[connectivity] = np.nan_to_num(
+                self.fluctuations[connectivity]
+            )
 
         self._finalized = True
         return self.get_result()
@@ -80,9 +85,9 @@ class ConcentrationAnalyzer(BaseAnalyzer):
     def get_result(self) -> Dict[str, Dict[str, float]]:
         """Returns the finalized analysis results."""
         return {
-            "concentrations": self.concentrations, 
-            "std": self.std, 
-            "fluctuations": self.fluctuations
+            "concentrations": self.concentrations,
+            "std": self.std,
+            "fluctuations": self.fluctuations,
         }
 
     def print_to_file(self) -> None:
@@ -101,19 +106,22 @@ class ConcentrationAnalyzer(BaseAnalyzer):
     def _write_header(self) -> None:
         """Initializes the output file with a header."""
         path = os.path.join(self._settings.export_directory, "concentrations.dat")
-        number_of_frames = len(self.frame_processed)
+        number_of_frames = self.frame_processed_count
 
         if self._settings.analysis.overwrite or not os.path.exists(path):
-            mode = 'w'
+            mode = "w"
         else:
-            if os.path.getsize(path) > 0: return
-            mode = 'a'
-            
-        with open(path, mode, encoding='utf-8') as output:
+            if os.path.getsize(path) > 0:
+                return
+            mode = "a"
+
+        with open(path, mode, encoding="utf-8") as output:
             output.write(f"# Concentration Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
-            output.write("# Connectivity_type,Concentration,Standard_deviation_ddof=1,Fluctuations_ddof=1\n")
+            output.write(
+                "# Connectivity_type,Concentration,Standard_deviation_ddof=1,Fluctuations_ddof=1\n"
+            )
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}"

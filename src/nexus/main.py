@@ -15,6 +15,7 @@ from .io.writer.writer_factory import WriterFactory
 from .utils import *
 from .version import __version__
 
+
 def main(settings: Settings):
     """
     Main function to test the package.
@@ -22,7 +23,7 @@ def main(settings: Settings):
 
     perf = performance.Performance(
         id=str(uuid.uuid4()),
-        name=f"{settings.project_name}-run_{datetime.now().strftime('%Y%m%d_%H%M%S')}"
+        name=f"{settings.project_name}-run_{datetime.now().strftime('%Y%m%d_%H%M%S')}",
     )
     start_time = time.time()
     process = psutil.Process(os.getpid())
@@ -35,13 +36,15 @@ def main(settings: Settings):
         print(settings)
 
     # Create export directory
-    settings.export_directory = os.path.join(settings.export_directory, settings.project_name)
+    settings.export_directory = os.path.join(
+        settings.export_directory, settings.project_name
+    )
     if not os.path.exists(settings.export_directory):
         os.makedirs(settings.export_directory)
 
     # Save logs
     if settings.save_logs:
-        writer = WriterFactory(settings).get_writer('LogsWriter')
+        writer = WriterFactory(settings).get_writer("LogsWriter")
         writer.write()
 
     # Initialize reader and system
@@ -50,9 +53,9 @@ def main(settings: Settings):
     reader.set_verbose(settings.verbose)
     system = System(reader, settings)
     scan_end = time.time()
-    
+
     # Track reader initialization performance
-    perf.add_metric('scan_trajectory_time_ms', (scan_end - scan_start) * 1000)
+    perf.add_metric("scan_trajectory_time_ms", (scan_end - scan_start) * 1000)
     perf.record_history()
 
     # Get total number of frames
@@ -75,13 +78,20 @@ def main(settings: Settings):
 
     # Initialize progress bar
     progress_bar_kwargs = {
-            "disable": not settings.verbose,
-            "leave": True,
-            "ncols": os.get_terminal_size().columns,
-            "colour": "red"
-        }
+        "disable": not settings.verbose,
+        "leave": True,
+        "ncols": os.get_terminal_size().columns,
+        "colour": "red",
+    }
 
-    progress_bar = tqdm(enumerate(system.iter_frames()), desc=f"Processing frames {settings.range_of_frames}...", unit="frame", total=total, **progress_bar_kwargs)
+    progress_bar = tqdm(
+        enumerate(system.iter_frames()),
+        desc=f"Processing frames {settings.range_of_frames}...",
+        unit="frame",
+        initial=settings.range_of_frames[0],
+        total=total,
+        **progress_bar_kwargs,
+    )
 
     # Track per-frame metrics
     frame_times = []
@@ -92,12 +102,11 @@ def main(settings: Settings):
 
     # Read and process frames
     for i, frame in progress_bar:
-
         frame_start = time.time()
 
         if settings.lattice.apply_custom_lattice:
             frame.set_lattice(settings.lattice.custom_lattice)
-        
+
         # Initialize nodes
         frame.initialize_nodes()
         # Find neighbors
@@ -106,7 +115,7 @@ def main(settings: Settings):
         strategy.find_neighbors()
         neighbor_end = time.time()
         neighbor_times.append((neighbor_end - neighbor_start) * 1000)
-        
+
         # Find clusters
         cluster_start = time.time()
         connectivities = strategy.get_connectivities()
@@ -125,7 +134,7 @@ def main(settings: Settings):
 
         # Print clusters
         if settings.clustering.with_printed_unwrapped_clusters:
-            writer = WriterFactory(settings).get_writer('ClustersWriter')
+            writer = WriterFactory(settings).get_writer("ClustersWriter")
             writer.set_clusters(frame.get_clusters())
             writer.write()
 
@@ -140,7 +149,7 @@ def main(settings: Settings):
         if i % 10 == 0 or i == total - 1:  # Record every 10 frames or the last frame
             current_memory = process.memory_info().rss / (1024 * 1024)
             cpu_percent = process.cpu_percent()
-            
+
             perf.execution_time_ms = frame_times[-1]
             perf.memory_usage_mb = current_memory
             perf.cpu_usage_percent = cpu_percent
@@ -151,33 +160,47 @@ def main(settings: Settings):
             perf.add_metric("number_nodes", number_nodes[-1])
             perf.record_history()
 
+            if settings.save_performance:
+                perf_writer = WriterFactory(settings).get_writer("PerformanceWriter")
+                perf_writer.write(perf)
+
     # Print results
     for analyzer in analyzers:
-        analyzer.print_to_file()       
+        analyzer.print_to_file()
 
     # Record overall performance metrics
     end_time = time.time()
     total_time_ms = (end_time - start_time) * 1000
     final_memory = process.memory_info().rss / (1024 * 1024)
     memory_increase = final_memory - init_memory
-    
+
     perf.execution_time_ms = total_time_ms
     perf.memory_usage_mb = final_memory
     perf.cpu_usage_percent = process.cpu_percent()
     perf.add_metric("total_frames_processed", total)
     perf.add_metric("memory_increase_mb", memory_increase)
-    perf.add_metric("avg_frame_time_ms", sum(frame_times) / len(frame_times) if frame_times else 0)
-    perf.add_metric("avg_neighbor_time_ms", sum(neighbor_times) / len(neighbor_times) if neighbor_times else 0)
-    perf.add_metric("avg_cluster_time_ms", sum(cluster_times) / len(cluster_times) if cluster_times else 0)
-    perf.add_metric("avg_analysis_time_ms", sum(analysis_times) / len(analysis_times) if analysis_times else 0)
-    perf.add_metric("avg_number_nodes", sum(number_nodes) / len(number_nodes) if number_nodes else 0)
+    perf.add_metric(
+        "avg_frame_time_ms", sum(frame_times) / len(frame_times) if frame_times else 0
+    )
+    perf.add_metric(
+        "avg_neighbor_time_ms",
+        sum(neighbor_times) / len(neighbor_times) if neighbor_times else 0,
+    )
+    perf.add_metric(
+        "avg_cluster_time_ms",
+        sum(cluster_times) / len(cluster_times) if cluster_times else 0,
+    )
+    perf.add_metric(
+        "avg_analysis_time_ms",
+        sum(analysis_times) / len(analysis_times) if analysis_times else 0,
+    )
+    perf.add_metric(
+        "avg_number_nodes", sum(number_nodes) / len(number_nodes) if number_nodes else 0
+    )
     perf.record_history()
 
     # Save performance metrics
     if settings.save_performance:
-        writer = WriterFactory(settings).get_writer('PerformanceWriter')
+        writer = WriterFactory(settings).get_writer("PerformanceWriter")
         writer.write(perf)
-           
-        
-        
-    
+

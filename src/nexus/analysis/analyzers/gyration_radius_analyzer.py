@@ -7,6 +7,7 @@ import numpy as np
 import os
 from datetime import datetime
 
+
 class GyrationRadiusAnalyzer(BaseAnalyzer):
     """
     Computes the average gyration radius for each connectivity type.
@@ -15,6 +16,7 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
     clusters for a given connectivity, averaged over all processed frames.
     This provides a measure of the typical spatial extent of finite clusters.
     """
+
     def __init__(self, settings: Settings) -> None:
         """Initializes the analyzer."""
         super().__init__(settings)
@@ -38,23 +40,26 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
-        
+
         for connectivity in connectivities:
             # Initialize lists if this is the first time seeing this connectivity
             self._raw_gyration_radii.setdefault(connectivity, [])
             self._raw_concentrations.setdefault(connectivity, [])
 
             # Collect gyration radii from all non-percolating clusters of this type
-            radii_in_frame = [c.gyration_radius for c in clusters if c.get_connectivity() == connectivity and not c.is_percolating]
+            radii_in_frame = [
+                c.gyration_radius
+                for c in clusters
+                if c.get_connectivity() == connectivity and not c.is_percolating
+            ]
             if radii_in_frame:
                 self._raw_gyration_radii[connectivity].extend(radii_in_frame)
-            
-            self._raw_concentrations[connectivity].append(concentrations.get(connectivity, 0.0))
 
-        self.update_frame_processed(frame)
+            self._raw_concentrations[connectivity].append(
+                concentrations.get(connectivity, 0.0)
+            )
 
-    def update_frame_processed(self, frame: Frame) -> None:
-        self.frame_processed.append(frame)
+        self.update_frame_processed()
 
     def finalize(self) -> Dict[str, Dict[str, float]]:
         """
@@ -70,7 +75,9 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
                 if len(radii) > 1:
                     self.std[connectivity] = np.std(radii, ddof=1)
                     mean_radius = self.gyration_radii[connectivity]
-                    self.fluctuations[connectivity] = np.var(radii, ddof=1) / mean_radius if mean_radius > 0 else 0.0
+                    self.fluctuations[connectivity] = (
+                        np.var(radii, ddof=1) / mean_radius if mean_radius > 0 else 0.0
+                    )
                 else:
                     self.std[connectivity] = 0.0
                     self.fluctuations[connectivity] = 0.0
@@ -78,9 +85,11 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
                 self.gyration_radii[connectivity] = 0.0
                 self.std[connectivity] = 0.0
                 self.fluctuations[connectivity] = 0.0
-            
+
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
-            self.fluctuations[connectivity] = np.nan_to_num(self.fluctuations[connectivity])
+            self.fluctuations[connectivity] = np.nan_to_num(
+                self.fluctuations[connectivity]
+            )
 
         for connectivity, concs in self._raw_concentrations.items():
             self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
@@ -94,7 +103,7 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
             "concentrations": self.concentrations,
             "gyration_radii": self.gyration_radii,
             "std": self.std,
-            "fluctuations": self.fluctuations
+            "fluctuations": self.fluctuations,
         }
 
     def print_to_file(self) -> None:
@@ -108,25 +117,30 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
                 gyration_radius = output["gyration_radii"].get(connectivity, 0.0)
                 std = output["std"].get(connectivity, 0.0)
                 fluctuations = output["fluctuations"].get(connectivity, 0.0)
-                f.write(f"{connectivity},{concentration},{gyration_radius},{std},{fluctuations}\n")
+                f.write(
+                    f"{connectivity},{concentration},{gyration_radius},{std},{fluctuations}\n"
+                )
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
         """Initializes the output file with a header."""
         path = os.path.join(self._settings.export_directory, "gyration_radius.dat")
-        number_of_frames = len(self.frame_processed)
-        
-        if self._settings.analysis.overwrite or not os.path.exists(path):
-            mode = 'w'
-        else:
-            if os.path.getsize(path) > 0: return
-            mode = 'a'
+        number_of_frames = self.frame_processed_count
 
-        with open(path, mode, encoding='utf-8') as output:
+        if self._settings.analysis.overwrite or not os.path.exists(path):
+            mode = "w"
+        else:
+            if os.path.getsize(path) > 0:
+                return
+            mode = "a"
+
+        with open(path, mode, encoding="utf-8") as output:
             output.write(f"# Average Gyration Radius Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
-            output.write("# Connectivity_type,Concentration,Average_Gyration_radius,Standard_deviation_ddof=1,Fluctuations_ddof=1\n")
+            output.write(
+                "# Connectivity_type,Concentration,Average_Gyration_radius,Standard_deviation_ddof=1,Fluctuations_ddof=1\n"
+            )
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}"

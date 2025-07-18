@@ -32,7 +32,7 @@ config_analysis.overwrite = False
 j = range(85, 100, 5)
 for j in j:
     path = f"benchmarks/perco-{j}_0.3116.xyz"
-    project_name = f'{j}'
+    project_name = f"{j}"
     config_general = c.GeneralSettings(
         project_name=project_name,
         export_directory=f"benchmarks/outputs/",

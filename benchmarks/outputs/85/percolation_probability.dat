@@ -1,0 +1,5 @@
+# Percolation Probability Results (X-direction)
+# Date: 2025-07-18 10:37:17.405218
+# Frames averaged: 100
+# Connectivity_type,Concentration,Percolation_probability,Standard_deviation_ddof=1
+1-1,0.8937149542312122,0.92,0.2726599243442907

@@ -5,7 +5,7 @@ from ...config.settings import Settings
 from ...utils.aesthetics import remove_duplicate_lines
 
 import numpy as np
-import os 
+import os
 from datetime import datetime
 
 
@@ -17,6 +17,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
     percolating cluster. It is a key metric for identifying the percolation
     threshold in a system.
     """
+
     def __init__(self, settings: Settings) -> None:
         """Initializes the analyzer."""
         super().__init__(settings)
@@ -28,10 +29,10 @@ class OrderParameterAnalyzer(BaseAnalyzer):
         self.order_parameters: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
         self.concentrations: Dict[str, float] = {}
-        
+
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
-    
+
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
         Analyzes a single frame to get the order parameter for each connectivity
@@ -47,20 +48,28 @@ class OrderParameterAnalyzer(BaseAnalyzer):
 
             # The order parameter is typically defined for the largest cluster if it percolates.
             # We find the largest percolating cluster.
-            percolating_clusters = [c for c in clusters if c.get_connectivity() == connectivity and c.is_percolating]
-            
+            percolating_clusters = [
+                c
+                for c in clusters
+                if c.get_connectivity() == connectivity and c.is_percolating
+            ]
+
             if percolating_clusters:
                 # Assuming the order parameter is associated with the largest of the percolating clusters
                 largest_perc_cluster = max(percolating_clusters, key=lambda c: c.size)
                 # We are interested in the 1D order parameter (P∞_x) as per the README
-                self._raw_order_parameters[connectivity].append(largest_perc_cluster.order_parameter[0])
+                self._raw_order_parameters[connectivity].append(
+                    largest_perc_cluster.order_parameter[0]
+                )
             else:
                 # If no cluster percolates, the order parameter is 0
                 self._raw_order_parameters[connectivity].append(0.0)
 
-            self._raw_concentrations[connectivity].append(concentrations.get(connectivity, 0.0))
+            self._raw_concentrations[connectivity].append(
+                concentrations.get(connectivity, 0.0)
+            )
 
-        self.update_frame_processed(frame)
+        self.update_frame_processed()
 
     def finalize(self) -> Dict[str, Dict[str, float]]:
         """
@@ -80,7 +89,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
             else:
                 self.order_parameters[connectivity] = 0.0
                 self.std[connectivity] = 0.0
-            
+
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
 
         for connectivity, concs in self._raw_concentrations.items():
@@ -92,13 +101,10 @@ class OrderParameterAnalyzer(BaseAnalyzer):
     def get_result(self) -> Dict[str, Dict[str, float]]:
         """Returns the finalized analysis results."""
         return {
-            "concentrations": self.concentrations, 
-            "order_parameters": self.order_parameters, 
-            "std": self.std
+            "concentrations": self.concentrations,
+            "order_parameters": self.order_parameters,
+            "std": self.std,
         }
-
-    def update_frame_processed(self, frame: Frame) -> None:
-        self.frame_processed.append(frame)
 
     def print_to_file(self) -> None:
         """Writes the finalized results to a data file."""
@@ -116,19 +122,22 @@ class OrderParameterAnalyzer(BaseAnalyzer):
     def _write_header(self) -> None:
         """Initializes the output file with a header."""
         path = os.path.join(self._settings.export_directory, "order_parameter.dat")
-        number_of_frames = len(self.frame_processed)
-        
-        if self._settings.analysis.overwrite or not os.path.exists(path):
-            mode = 'w'
-        else:
-            if os.path.getsize(path) > 0: return
-            mode = 'a'
+        number_of_frames = self.frame_processed_count
 
-        with open(path, mode, encoding='utf-8') as output:
+        if self._settings.analysis.overwrite or not os.path.exists(path):
+            mode = "w"
+        else:
+            if os.path.getsize(path) > 0:
+                return
+            mode = "a"
+
+        with open(path, mode, encoding="utf-8") as output:
             output.write(f"# Order Parameter Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
-            output.write("# Connectivity_type,Concentration,Order_parameter,Standard_deviation_ddof=1\n")
+            output.write(
+                "# Connectivity_type,Concentration,Order_parameter,Standard_deviation_ddof=1\n"
+            )
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}"

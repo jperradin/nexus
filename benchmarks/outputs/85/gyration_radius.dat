@@ -1,0 +1,5 @@
+# Average Gyration Radius Results
+# Date: 2025-07-18 10:37:17.404458
+# Frames averaged: 100
+# Connectivity_type,Concentration,Average_Gyration_radius,Standard_deviation_ddof=1,Fluctuations_ddof=1
+1-1,0.8937149542312122,0.9976273045698413,0.9145326413765187,0.8383591230030935

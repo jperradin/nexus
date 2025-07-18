@@ -8,6 +8,7 @@ import numpy as np
 import os
 from datetime import datetime
 
+
 class AverageClusterSizeAnalyzer(BaseAnalyzer):
     """
     Computes the weight-average cluster size <S>, a key metric in percolation theory.
@@ -54,23 +55,22 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
                 for c in clusters
                 if c.get_connectivity() == connectivity and not c.is_percolating
             ]
-            
+
             if sizes:
                 unique_sizes, ns = np.unique(sizes, return_counts=True)
                 numerator = np.sum(unique_sizes**2 * ns)
                 denominator = np.sum(unique_sizes * ns)
-                
+
                 average_size = numerator / denominator if denominator > 0 else 0.0
                 self._raw_average_sizes[connectivity].append(average_size)
             else:
                 self._raw_average_sizes[connectivity].append(0.0)
 
-            self._raw_concentrations[connectivity].append(concentrations.get(connectivity, 0.0))
+            self._raw_concentrations[connectivity].append(
+                concentrations.get(connectivity, 0.0)
+            )
 
-        self.update_frame_processed(frame)
-
-    def update_frame_processed(self, frame: Frame) -> None:
-        self.frame_processed.append(frame)
+        self.update_frame_processed()
 
     def finalize(self) -> Dict[str, Dict[str, float]]:
         """
@@ -86,7 +86,9 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
                 if len(sizes) > 1:
                     self.std[connectivity] = np.std(sizes, ddof=1)
                     mean_size = self.average_sizes[connectivity]
-                    self.fluctuations[connectivity] = np.var(sizes, ddof=1) / mean_size if mean_size > 0 else 0.0
+                    self.fluctuations[connectivity] = (
+                        np.var(sizes, ddof=1) / mean_size if mean_size > 0 else 0.0
+                    )
                 else:
                     self.std[connectivity] = 0.0
                     self.fluctuations[connectivity] = 0.0
@@ -94,9 +96,11 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
                 self.average_sizes[connectivity] = 0.0
                 self.std[connectivity] = 0.0
                 self.fluctuations[connectivity] = 0.0
-            
+
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
-            self.fluctuations[connectivity] = np.nan_to_num(self.fluctuations[connectivity])
+            self.fluctuations[connectivity] = np.nan_to_num(
+                self.fluctuations[connectivity]
+            )
 
         for connectivity, concs in self._raw_concentrations.items():
             self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
@@ -124,25 +128,30 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
                 average_size = output["average_cluster_size"].get(connectivity, 0.0)
                 std = output["std"].get(connectivity, 0.0)
                 fluctuations = output["fluctuations"].get(connectivity, 0.0)
-                f.write(f"{connectivity},{concentration},{average_size},{std},{fluctuations}\n")
+                f.write(
+                    f"{connectivity},{concentration},{average_size},{std},{fluctuations}\n"
+                )
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
         """Initializes the output file with a header."""
         path = os.path.join(self._settings.export_directory, "average_cluster_size.dat")
-        number_of_frames = len(self.frame_processed)
-        
+        number_of_frames = self.frame_processed_count
+
         if self._settings.analysis.overwrite or not os.path.exists(path):
-            mode = 'w'
+            mode = "w"
         else:
-            if os.path.getsize(path) > 0: return
-            mode = 'a'
+            if os.path.getsize(path) > 0:
+                return
+            mode = "a"
 
         with open(path, mode, encoding="utf-8") as output:
             output.write(f"# Average Cluster Size Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
-            output.write("# Connectivity_type,Concentration,Average_cluster_size,Standard_deviation_ddof=1,Fluctuations_ddof=1\n")
+            output.write(
+                "# Connectivity_type,Concentration,Average_cluster_size,Standard_deviation_ddof=1,Fluctuations_ddof=1\n"
+            )
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}"

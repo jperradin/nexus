@@ -7,6 +7,7 @@ import numpy as np
 import os
 from datetime import datetime
 
+
 class CorrelationLengthAnalyzer(BaseAnalyzer):
     """
     Computes the correlation length (ξ) of the cluster size distribution.
@@ -16,6 +17,7 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
     weighted by cluster size: ξ² = Σ(2 * R_s² * s² * n_s) / Σ(s² * n_s),
     where R_s is the gyration radius of clusters of size s.
     """
+
     def __init__(self, settings: Settings) -> None:
         """Initializes the analyzer."""
         super().__init__(settings)
@@ -39,32 +41,41 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
-        
+
         for connectivity in connectivities:
             # Initialize lists if this is the first time seeing this connectivity
             self._raw_correlation_lengths.setdefault(connectivity, [])
             self._raw_concentrations.setdefault(connectivity, [])
 
-            non_percolating_clusters = [c for c in clusters if c.get_connectivity() == connectivity and not c.is_percolating]
-            
+            non_percolating_clusters = [
+                c
+                for c in clusters
+                if c.get_connectivity() == connectivity and not c.is_percolating
+            ]
+
             if non_percolating_clusters:
                 sizes = np.array([c.get_size() for c in non_percolating_clusters])
-                gyration_radii_sq = np.array([c.gyration_radius**2 for c in non_percolating_clusters])
-                
+                gyration_radii_sq = np.array(
+                    [c.gyration_radius**2 for c in non_percolating_clusters]
+                )
+
                 numerator = np.sum(2 * gyration_radii_sq * sizes**2)
                 denominator = np.sum(sizes**2)
-                
-                correlation_length_sq = numerator / denominator if denominator > 0 else 0.0
-                self._raw_correlation_lengths[connectivity].append(np.sqrt(correlation_length_sq))
+
+                correlation_length_sq = (
+                    numerator / denominator if denominator > 0 else 0.0
+                )
+                self._raw_correlation_lengths[connectivity].append(
+                    np.sqrt(correlation_length_sq)
+                )
             else:
                 self._raw_correlation_lengths[connectivity].append(0.0)
 
-            self._raw_concentrations[connectivity].append(concentrations.get(connectivity, 0.0))
+            self._raw_concentrations[connectivity].append(
+                concentrations.get(connectivity, 0.0)
+            )
 
-        self.update_frame_processed(frame)
-
-    def update_frame_processed(self, frame: Frame) -> None:
-        self.frame_processed.append(frame)
+        self.update_frame_processed()
 
     def finalize(self) -> Dict[str, Dict[str, float]]:
         """
@@ -80,7 +91,11 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
                 if len(lengths) > 1:
                     self.std[connectivity] = np.std(lengths, ddof=1)
                     mean_length = self.correlation_length[connectivity]
-                    self.fluctuations[connectivity] = np.var(lengths, ddof=1) / mean_length if mean_length > 0 else 0.0
+                    self.fluctuations[connectivity] = (
+                        np.var(lengths, ddof=1) / mean_length
+                        if mean_length > 0
+                        else 0.0
+                    )
                 else:
                     self.std[connectivity] = 0.0
                     self.fluctuations[connectivity] = 0.0
@@ -88,23 +103,25 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
                 self.correlation_length[connectivity] = 0.0
                 self.std[connectivity] = 0.0
                 self.fluctuations[connectivity] = 0.0
-            
+
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
-            self.fluctuations[connectivity] = np.nan_to_num(self.fluctuations[connectivity])
+            self.fluctuations[connectivity] = np.nan_to_num(
+                self.fluctuations[connectivity]
+            )
 
         for connectivity, concs in self._raw_concentrations.items():
             self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
 
         self._finalized = True
         return self.get_result()
-                
+
     def get_result(self) -> Dict[str, Dict[str, float]]:
         """Returns the finalized analysis results."""
         return {
-            "concentrations": self.concentrations, 
-            "correlation_length": self.correlation_length, 
-            "std": self.std, 
-            "fluctuations": self.fluctuations
+            "concentrations": self.concentrations,
+            "correlation_length": self.correlation_length,
+            "std": self.std,
+            "fluctuations": self.fluctuations,
         }
 
     def print_to_file(self) -> None:
@@ -118,25 +135,30 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
                 correlation_length = output["correlation_length"].get(connectivity, 0.0)
                 std = output["std"].get(connectivity, 0.0)
                 fluctuations = output["fluctuations"].get(connectivity, 0.0)
-                f.write(f"{connectivity},{concentration},{correlation_length},{std},{fluctuations}\n")
+                f.write(
+                    f"{connectivity},{concentration},{correlation_length},{std},{fluctuations}\n"
+                )
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
         """Initializes the output file with a header."""
         path = os.path.join(self._settings.export_directory, "correlation_length.dat")
-        number_of_frames = len(self.frame_processed)
-        
-        if self._settings.analysis.overwrite or not os.path.exists(path):
-            mode = 'w'
-        else:
-            if os.path.getsize(path) > 0: return
-            mode = 'a'
+        number_of_frames = self.frame_processed_count
 
-        with open(path, mode, encoding='utf-8') as output:
+        if self._settings.analysis.overwrite or not os.path.exists(path):
+            mode = "w"
+        else:
+            if os.path.getsize(path) > 0:
+                return
+            mode = "a"
+
+        with open(path, mode, encoding="utf-8") as output:
             output.write(f"# Correlation Length Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
-            output.write("# Connectivity_type,Concentration,Correlation_length,Standard_deviation_ddof=1,Fluctuations_ddof=1\n")
+            output.write(
+                "# Connectivity_type,Concentration,Correlation_length,Standard_deviation_ddof=1,Fluctuations_ddof=1\n"
+            )
 
     def __str__(self) -> str:
         return f"{self.__class__.__name__}"

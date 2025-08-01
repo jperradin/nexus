@@ -8,7 +8,8 @@
             "name": "Python Debugger: Current File",
             "type": "debugpy",
             "request": "launch",
-            "program": "benchmarks/benchmark.py",
+            // "program": "benchmarks/benchmark.py",
+            "program": "examples/inputs/quicktest-SiO2.py",
             "console": "integratedTerminal"
         }
     ]

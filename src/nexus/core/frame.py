@@ -43,7 +43,7 @@ class Frame:
             raise TypeError("lattice must be a numpy array")
 
     def initialize_nodes(self) -> None:
-        """Initialize the list of nodes in the frame"""
+        """Initialize the list of nodes in the frame, filters out not selected species"""
         id = 0
         symbols = self._data["symbol"]
         positions = self._data["position"]
@@ -52,6 +52,8 @@ class Frame:
             raise ValueError("symbols and positions must have the same length")
 
         for symbol, position in zip(symbols, positions):
+            if symbol not in self._settings.clustering.node_types:
+                continue
             self.nodes.append(Node(node_id=id, symbol=symbol, position=position))
             id += 1
 

@@ -4,5 +4,6 @@ archive/
 dist/
 benchmarks/*.xyz
 benchmarks/data/
+benchmarks/outputs*
 examples/outputs/*
 nexus_cat.egg-info

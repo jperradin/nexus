@@ -3,8 +3,8 @@ from nexus import SettingsBuilder, main
 import nexus.config.settings as c
 
 # Path to the trajectory file
-path = "./examples/inputs/example-SiO2-1008at.xyz"
-# path = "./examples/inputs/example-SiO2-27216at.xyz"
+# path = "./examples/inputs/example-SiO2-1008at.xyz"
+path = "./examples/inputs/example-SiO2-27216at.xyz"
 # path = "./examples/inputs/example-SiO2-96000at.xyz"
 # path = "./examples/inputs/example-SiO2-1056000at.xyz"
 

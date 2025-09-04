@@ -13,7 +13,7 @@ config_general = c.GeneralSettings(
     project_name="example-SiO2",  # Project name
     export_directory="./examples/outputs",  # Export directory
     file_location=path,  # File location
-    range_of_frames=(2, 4),  # Range of frames
+    range_of_frames=(0, 0),  # Range of frames
     apply_pbc=True,  # Apply periodic boundary conditions
     verbose=True,  # Verbose mode (if True, print title, progress bars, etc.)
     save_logs=True,  # Save logs    (save logs to export_directory/logs.txt)
@@ -48,7 +48,7 @@ config_clustering = c.ClusteringSettings(
     with_alternating=False,  # if with_coordination_number is True, calculate alternating coordination number ie 4-5, 5-6 ...
     with_number_of_shared=False,  # if with_coordination_number is True, calculate number of shared
     with_printed_unwrapped_clusters=True,
-    print_mode="individual",  # "all", "connectivity", "individual", "none"
+    print_mode="connectivity",  # "all", "connectivity", "individual", "none"
 )
 
 # Analysis settings

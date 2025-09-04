@@ -205,11 +205,11 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.000000
-@timestamp def "Fri Aug 29 13:50:07 2025"
+@timestamp def "Wed Sep  3 10:19:34 2025"
 @with string
 @    string on
 @    string loctype view
-@    string 1.2, 0.65447667087
+@    string 0.85, 1.05
 @    string color 1
 @    string rot 0
 @    string font 2
@@ -219,7 +219,7 @@
 @with string
 @    string on
 @    string loctype view
-@    string 1.2, 0.394703656999
+@    string 0.85, 0.738524590164
 @    string color 1
 @    string rot 0
 @    string font 2
@@ -229,13 +229,23 @@
 @with string
 @    string on
 @    string loctype view
-@    string 1.2, 0.12736443884
+@    string 0.85, 0.438398486759
 @    string color 1
 @    string rot 0
 @    string font 2
 @    string just 0
 @    string char size 1.270000
 @    string def "c)"
+@with string
+@    string on
+@    string loctype view
+@    string 0.85, 0.137011349306
+@    string color 1
+@    string rot 0
+@    string font 2
+@    string just 0
+@    string char size 1.270000
+@    string def "d)"
 @r0 on
 @link r0 to g3
 @r0 type polyi
@@ -939,7 +949,8 @@
 @    yaxis  bar linewidth 1.0
 @    yaxis  label "Average execution time per frame [ms]"
 @    yaxis  label layout para
-@    yaxis  label place auto
+@    yaxis  label place spec
+@    yaxis  label place 0.110000, 0.100000
 @    yaxis  label char size 1.310000
 @    yaxis  label font 4
 @    yaxis  label color 1

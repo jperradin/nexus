@@ -1,8 +1,9 @@
 from typing import List, Dict, TextIO
-import os
 from ...core.cluster import Cluster
 from .base_writer import BaseWriter
 from ...config.settings import Settings
+import os
+import numpy as np
 
 class ClustersWriter(BaseWriter):
     """
@@ -40,7 +41,13 @@ class ClustersWriter(BaseWriter):
         bonds_path = os.path.join(path, f'all_unwrapped_clusters-frame_{frame_id}.bonds')
         
         # Calculate total nodes for the header
-        total_atoms = sum(cluster.size + len(cluster.decoration_atoms) for cluster in self._clusters)
+        atoms_id_list = []
+        for c in self._clusters:
+            atoms_id_list.extend(c.indices)
+            atoms_id_list.extend(c.decoration_atoms.keys())
+        # Use np.unique to avoid double-counting any shared decoration atoms
+        total_atoms = len(np.unique(atoms_id_list))
+        uniques_ids = set()
         
         with open(xyz_path, 'w') as xyz_file, open(bonds_path, 'w') as bonds_file:
             xyz_file.write(f"{total_atoms}\n")
@@ -61,7 +68,7 @@ class ClustersWriter(BaseWriter):
             current_local_index = 1
             for cluster in self._clusters:
                 # Write nodes and update the map on the fly
-                cluster_map = self._write_cluster_atoms(xyz_file, cluster, current_local_index)
+                cluster_map, uniques_ids = self._write_cluster_atoms(xyz_file, cluster, current_local_index, uniques_ids)
                 current_local_index += len(cluster_map)
                 
                 # Write bonds using the map for this cluster
@@ -73,6 +80,7 @@ class ClustersWriter(BaseWriter):
             clusters_per_connectivity.setdefault(cluster.connectivity, []).append(cluster)
 
         for connectivity, cluster_list in clusters_per_connectivity.items():
+            unique_ids = set()
             path = os.path.join(self._settings.export_directory, "unwrapped_clusters", connectivity)
             if not os.path.exists(path): os.makedirs(path)
             if not cluster_list: continue
@@ -81,7 +89,13 @@ class ClustersWriter(BaseWriter):
             xyz_path = os.path.join(path, f'{connectivity}_unwrapped_clusters-frame_{frame_id}.xyz')
             bonds_path = os.path.join(path, f'{connectivity}_unwrapped_clusters-frame_{frame_id}.bonds')
             
-            total_atoms = sum(c.size + len(c.decoration_atoms) for c in cluster_list)
+            atoms_id_list = []
+            for c in cluster_list:
+                atoms_id_list.extend(c.indices)
+                atoms_id_list.extend(c.decoration_atoms.keys())
+            # Use np.unique to avoid double-counting any shared decoration atoms
+            total_atoms = len(np.unique(atoms_id_list))
+            # total_atoms = sum(c.size + len(c.decoration_atoms) for c in cluster_list)
 
             with open(xyz_path, 'w') as xyz_file, open(bonds_path, 'w') as bonds_file:
                 xyz_file.write(f"{total_atoms}\n")
@@ -89,7 +103,7 @@ class ClustersWriter(BaseWriter):
 
                 current_local_index = 1
                 for cluster in cluster_list:
-                    cluster_map = self._write_cluster_atoms(xyz_file, cluster, current_local_index)
+                    cluster_map, unique_ids = self._write_cluster_atoms(xyz_file, cluster, current_local_index, unique_ids)
                     current_local_index += len(cluster_map)
                     self._write_cluster_bonds(bonds_file, cluster, cluster_map)
             
@@ -111,7 +125,7 @@ class ClustersWriter(BaseWriter):
                 xyz_file.write(f"{total_atoms}\n")
                 self._write_header_comment(xyz_file, cluster)
                 # For individual files, the local index starts at 1
-                node_id_to_local_index = self._write_cluster_atoms(xyz_file, cluster, 1)
+                node_id_to_local_index, _ = self._write_cluster_atoms(xyz_file, cluster, 1)
 
             with open(bonds_path, 'w') as bonds_file:
                 self._write_cluster_bonds(bonds_file, cluster, node_id_to_local_index)
@@ -124,30 +138,38 @@ class ClustersWriter(BaseWriter):
         lattice_line = f'Lattice="{lxx} {lxy} {lxz} {lyx} {lyy} {lyz} {lzx} {lzy} {lzz}" Properties=species:S:1:index:I:1:pos:R:3:cluster_id:I:1\n'
         f.write(lattice_line)
 
-    def _write_cluster_atoms(self, f: TextIO, cluster: Cluster, start_index: int) -> Dict[int, int]:
+    def _write_cluster_atoms(self, f: TextIO, cluster: Cluster, start_index: int, unique_ids: List|None = None) -> Dict[int, int]:
         """
         Writes all nodes (networking and decorating) to an already open file.
         Returns a map of global node ID to the local index within the file.
         """
         node_id_to_local_index = {}
         local_index = start_index
+        if unique_ids is None:
+            unique_ids = set()
+        
         
         # Write primary networking nodes
         for symbol, global_id, position in zip(cluster.symbols, cluster.indices, cluster.unwrapped_positions):
             f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id}\n')
             node_id_to_local_index[global_id] = local_index
             local_index += 1
+            unique_ids.add(global_id)
             
         # Write decorating nodes
         for global_id, data in cluster.decoration_atoms.items():
             symbol = data['symbol']
             position = data['position']
+            # Skip if this decorating atom was already written (shared between clusters ???)
+            if global_id in unique_ids:
+                continue
+            unique_ids.add(global_id)
             f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id}\n')
             # Add decorating nodes to the map as well for bonding purposes
             node_id_to_local_index[global_id] = local_index
             local_index += 1
-            
-        return node_id_to_local_index
+        x = len(unique_ids)    
+        return node_id_to_local_index, unique_ids
             
     def _write_cluster_bonds(self, f: TextIO, cluster: Cluster, id_map: Dict[int, int]) -> None:
         """Writes bond data, translating global node IDs to local file indices."""

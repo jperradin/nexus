@@ -135,7 +135,7 @@ class ClustersWriter(BaseWriter):
         lxx, lxy, lxz = cluster.lattice[0]
         lyx, lyy, lyz = cluster.lattice[1]
         lzx, lzy, lzz = cluster.lattice[2]
-        lattice_line = f'Lattice="{lxx} {lxy} {lxz} {lyx} {lyy} {lyz} {lzx} {lzy} {lzz}" Properties=species:S:1:index:I:1:pos:R:3:cluster_id:I:1\n'
+        lattice_line = f'Lattice="{lxx} {lxy} {lxz} {lyx} {lyy} {lyz} {lzx} {lzy} {lzz}" Properties=species:S:1:index:I:1:pos:R:3:cluster_id:I:1:percolating:I:1\n'
         f.write(lattice_line)
 
     def _write_cluster_atoms(self, f: TextIO, cluster: Cluster, start_index: int, unique_ids: List|None = None) -> Dict[int, int]:
@@ -164,7 +164,7 @@ class ClustersWriter(BaseWriter):
             if global_id in unique_ids:
                 continue
             unique_ids.add(global_id)
-            f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id}\n')
+            f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id} {len(cluster.percolation_probability)}\n')
             # Add decorating nodes to the map as well for bonding purposes
             node_id_to_local_index[global_id] = local_index
             local_index += 1

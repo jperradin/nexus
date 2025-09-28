@@ -53,7 +53,7 @@ config_clustering = c.ClusteringSettings(
 
 # Analysis settings
 config_analysis = c.AnalysisSettings(
-    with_all=True,
+    with_all=False,
 )
 
 # Build Settings object

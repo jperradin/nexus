@@ -20,6 +20,7 @@ class ClustersWriter(BaseWriter):
 
     def set_clusters(self, clusters: List[Cluster]) -> None:
         self._clusters: List[Cluster] = sorted(clusters, key=lambda cluster: cluster.size, reverse=True)
+        
     
     def write(self) -> None:
         if self._settings.clustering.print_mode == "none":
@@ -102,7 +103,8 @@ class ClustersWriter(BaseWriter):
                 self._write_header_comment(xyz_file, cluster_list[0])
 
                 current_local_index = 1
-                for cluster in cluster_list:
+                for i, cluster in enumerate(cluster_list):
+                    cluster.is_spanning = True if i == 0 else False
                     cluster_map, unique_ids = self._write_cluster_atoms(xyz_file, cluster, current_local_index, unique_ids)
                     current_local_index += len(cluster_map)
                     self._write_cluster_bonds(bonds_file, cluster, cluster_map)
@@ -135,7 +137,7 @@ class ClustersWriter(BaseWriter):
         lxx, lxy, lxz = cluster.lattice[0]
         lyx, lyy, lyz = cluster.lattice[1]
         lzx, lzy, lzz = cluster.lattice[2]
-        lattice_line = f'Lattice="{lxx} {lxy} {lxz} {lyx} {lyy} {lyz} {lzx} {lzy} {lzz}" Properties=species:S:1:index:I:1:pos:R:3:cluster_id:I:1:percolating:I:1\n'
+        lattice_line = f'Lattice="{lxx} {lxy} {lxz} {lyx} {lyy} {lyz} {lzx} {lzy} {lzz}" Properties=species:S:1:index:I:1:pos:R:3:cluster_id:I:1:coordination:I:1:percolating:I:1:spanning:I:1\n'
         f.write(lattice_line)
 
     def _write_cluster_atoms(self, f: TextIO, cluster: Cluster, start_index: int, unique_ids: List|None = None) -> Dict[int, int]:
@@ -148,10 +150,14 @@ class ClustersWriter(BaseWriter):
         if unique_ids is None:
             unique_ids = set()
         
-        
+        span = 1 if cluster.is_spanning else 0
         # Write primary networking nodes
-        for symbol, global_id, position in zip(cluster.symbols, cluster.indices, cluster.unwrapped_positions):
-            f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id}\n')
+        for symbol, global_id, position, node in zip(cluster.symbols, cluster.indices, cluster.unwrapped_positions, cluster.nodes):
+            if node.coordination is None:
+                coord = 0
+            else:
+                coord = node.coordination
+            f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id} {coord} {len(cluster.percolation_probability)} {span}\n')
             node_id_to_local_index[global_id] = local_index
             local_index += 1
             unique_ids.add(global_id)
@@ -164,7 +170,7 @@ class ClustersWriter(BaseWriter):
             if global_id in unique_ids:
                 continue
             unique_ids.add(global_id)
-            f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id} {len(cluster.percolation_probability)}\n')
+            f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id} {len(cluster.percolation_probability)} {span}\n')
             # Add decorating nodes to the map as well for bonding purposes
             node_id_to_local_index[global_id] = local_index
             local_index += 1

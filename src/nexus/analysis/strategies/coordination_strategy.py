@@ -155,6 +155,8 @@ class CoordinationStrategy(BaseClusteringStrategy):
                 self._find_cluster(networking_nodes, connectivity, z1, z2)
         
         # 4 - return clusters
+        for cluster in self.clusters:
+            cluster._all_connectivities = set(connectivities)
         return self.clusters
 
     def _find_cluster(self, networking_nodes: List[Node], connectivity: str, z1: int, z2: int) -> None:

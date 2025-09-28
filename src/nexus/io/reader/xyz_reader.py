@@ -125,6 +125,12 @@ class XYZReader(BaseReader):
 
             num_nodes = frame_index.num_nodes
             lattice = frame_index.lattice
+            # update lattice in settings
+            if not self._settings.lattice.apply_custom_lattice:
+                self._settings.lattice.lattice = lattice
+            # apply custom lattice if specified
+            else:
+                lattice = self._settings.lattice.custom_lattice
 
             # Skip 2 header lines
             f.readline()

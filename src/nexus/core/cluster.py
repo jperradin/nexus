@@ -17,6 +17,7 @@ class Cluster:
         self.settings: Settings = settings
         self.lattice: np.ndarray = lattice
         self._inv_lattice: np.ndarray = np.linalg.inv(lattice)
+        self._all_connectivities: Set[str] = set()
 
         self.center_of_mass: np.ndarray = np.zeros(3)
         self.symbols: list = []
@@ -28,6 +29,7 @@ class Cluster:
         self.total_nodes: int = 0
         self.concentration: float = 0.0
         self.is_percolating: bool = False
+        self.is_spanning: bool = False
         
         self.linkages: List[Tuple[int, int]] = []
         self._linkage_set: Set[Tuple[int, int]] = set()

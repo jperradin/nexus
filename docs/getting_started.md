@@ -66,7 +66,7 @@ This section will guide you through the initial setup and usage of Nexus-CAT.
         coordination_mode="O",
         coordination_range=[4, 6],
         with_alternating=True,
-        with_printed_unwrapped_clusters=False,
+        with_printed_unwrapped_clusters=True,
         print_mode="connectivity"
     )
     ```

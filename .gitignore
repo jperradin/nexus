@@ -6,3 +6,4 @@ build/
 benchmarks/
 examples/outputs/*
 nexus_cat.egg-info
+.vscode/

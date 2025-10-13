@@ -6,7 +6,7 @@ Getting Started
 This section will guide you through the initial setup and usage of Nexus-CAT.
 
 <div align="center">
-<img alt="General workflow" width=800 src="../assets/workflow-Nexus.jpg" />
+<img alt="General workflow" width=800 src="https://github.com/jperradin/nexus/blob/main/assets/workflow-Nexus.jpg" />
 </div>
 
 Nexus follows a modular, configuration-driven workflow that separates user input from the core analysis pipeline. The framework processes trajectory files through distinct stages: configuration, data reading, frame analysis, clustering, and output generation.

@@ -2,6 +2,7 @@
 __pycache__/
 archive/
 dist/
+build/
 benchmarks/
 examples/outputs/*
 nexus_cat.egg-info

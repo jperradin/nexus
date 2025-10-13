@@ -160,7 +160,8 @@ class Cluster:
                         unwrapped_bridge_pos = unwrapped_pos + relative_pos
                         self.decoration_atoms[neighbor.node_id] = {
                             'symbol': neighbor.symbol,
-                            'position': unwrapped_bridge_pos
+                            'position': unwrapped_bridge_pos,
+                            'coordination': neighbor.coordination
                         }
 
     def __str__(self) -> str:

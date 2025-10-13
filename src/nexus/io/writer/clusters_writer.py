@@ -166,11 +166,16 @@ class ClustersWriter(BaseWriter):
         for global_id, data in cluster.decoration_atoms.items():
             symbol = data['symbol']
             position = data['position']
+            coordination = data['coordination']
             # Skip if this decorating atom was already written (shared between clusters ???)
             if global_id in unique_ids:
                 continue
             unique_ids.add(global_id)
-            f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id} {len(cluster.percolation_probability)} {span}\n')
+            if coordination is None:
+                coord = 0
+            else:
+                coord = coordination
+            f.write(f'{symbol} {global_id} {position[0]:.5f} {position[1]:.5f} {position[2]:.5f} {cluster.root_id} {coord} {len(cluster.percolation_probability)} {span}\n')
             # Add decorating nodes to the map as well for bonding purposes
             node_id_to_local_index[global_id] = local_index
             local_index += 1

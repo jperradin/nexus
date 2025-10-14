@@ -4,9 +4,10 @@ import nexus.config.settings as c
 
 # Path to the trajectory file
 # path = "./examples/inputs/example-SiO2-1008at.xyz"
-path = "./examples/inputs/example-SiO2-27216at.xyz"
+# path = "./examples/inputs/example-SiO2-27216at.xyz"
 # path = "./examples/inputs/example-SiO2-96000at.xyz"
 # path = "./examples/inputs/example-SiO2-1056000at.xyz"
+path = '../../these/sio2-1008at-11frames--for_snapshots/pos07.xyz'
 
 # General settings
 config_general = c.GeneralSettings(

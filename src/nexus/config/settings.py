@@ -83,6 +83,12 @@ class ClusteringSettings:
     shared_mode: str = "all_types" # "all_types", "same_type", "different_type", "<node_type>"
     shared_threshold: int = 1 # Minimum shared threshold
 
+    def get_max_cutoff(self) -> float:
+        max_cutoff = 0.0
+        for cutoff in self.cutoffs:
+            if cutoff.distance > max_cutoff:
+                max_cutoff = cutoff.distance
+        return max_cutoff
 
     def get_cutoff(self, type1: str, type2: str) -> float:
         for cutoff in self.cutoffs:

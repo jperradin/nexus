@@ -56,13 +56,13 @@ class Cluster:
 
     def set_indices_and_positions(self, positions_dict) -> None:
         unwrapped_pos_list = []
-        for node_id, position in positions_dict.items():
-            for node in self.nodes:
+        for node in self.nodes:
+            for node_id, position in positions_dict.items():
                 if node.node_id == node_id:
                     self.symbols.append(node.symbol)
+                    self.indices.append(node.node_id)
+                    unwrapped_pos_list.append(position)
                     break
-            self.indices.append(node_id)
-            unwrapped_pos_list.append(position)
         self.unwrapped_positions = np.array(unwrapped_pos_list)
 
     def calculate_center_of_mass(self) -> None:
@@ -87,6 +87,10 @@ class Cluster:
         self.gyration_radius = calculate_gyration_radius(self.unwrapped_positions, self.center_of_mass)
 
     def calculate_percolation_probability(self) -> None:
+        """
+        Pre-determine percolation probability based on gyration radius and lattice dimensions.
+        The cluster percolates if it spans all three dimensions.
+        """
         if self.size <= 1: return
         min_coords = np.min(self.unwrapped_positions, axis=0)
         max_coords = np.max(self.unwrapped_positions, axis=0)
@@ -99,6 +103,23 @@ class Cluster:
         if percolate_y: self.percolation_probability += 'y'
         if percolate_z: self.percolation_probability += 'z'
         self.is_percolating = 'x' in self.percolation_probability and 'y' in self.percolation_probability and 'z' in self.percolation_probability
+
+    def verify_percolation(self) -> None:
+        """ 
+        Verify if cluster truly percolates in given directory by checking
+        connectivity between opposite boundary slices through periodic images. 
+
+        This function is called after calculate_percolation_probability.
+        """
+        if not self.is_percolating:
+            return
+
+        axis_mapping = {'x': 0, 'y': 1, 'z': 2}
+        slices = {axis: [] for axis in axis_mapping}
+        # Determine atoms in each slice        
+        slice_thickness = self.settings.clustering.get_max_cutoff() * 1.5
+        
+
 
     def calculate_order_parameter(self) -> None:
         if self.size <= 1 or self.total_nodes == 0: return

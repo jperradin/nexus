@@ -50,7 +50,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
 
             # Check if any cluster for this connectivity percolates in the x-direction
             found_percolating_cluster = any(
-                "x" in c.percolation_probability
+                "xyz" in c.percolation_probability
                 for c in clusters
                 if c.get_connectivity() == connectivity
             )
@@ -133,7 +133,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
             mode = "a"
 
         with open(path, mode, encoding="utf-8") as output:
-            output.write(f"# Percolation Probability Results (X-direction)\n")
+            output.write(f"# Percolation Probability Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(

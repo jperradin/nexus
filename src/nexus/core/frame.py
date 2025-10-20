@@ -152,7 +152,9 @@ class Frame:
         for connectivity in self.connectivities:
             for cluster in self.clusters:
                 if cluster.get_connectivity() == connectivity:
-                    concentrations[connectivity] = cluster.total_nodes / len(self.nodes)
+                    connectivity_settings = self._settings.clustering.connectivity
+                    networking_nodes = len([node for node in self.nodes if node.symbol in [connectivity_settings[0], connectivity_settings[-1]]])
+                    concentrations[connectivity] = cluster.total_nodes / networking_nodes
                     break
 
         for connectivity in self.connectivities:

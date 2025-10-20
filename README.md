@@ -112,13 +112,12 @@ As a first example you can follow the steps of the [Getting started](https://nex
 
 ## ⇁ Documentation
 
-The documentation is available [here](https://nexus-cat.readthedocs.io/en/latest/)
+The documentation is available [here](https://nexus-cat.readthedocs.io/en/latest/).
 
-## ⇁ Contributing
+## ⇁ Notes
 
-Contributions to `Nexus-CAT` are welcome! You can contribute by submitting bug reports, feature requests, new extension requests, or pull requests through GitHub.
+Portions of the documentation and this code were assisted by large language models or AI coding assistants and have been reviewed for accuracy and compliance.
 
 ## ⇁ License
 
 This project is licensed under the [MIT License](https://opensource.org/licenses/MIT).
-

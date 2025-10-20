@@ -320,7 +320,7 @@ Here's the API reference for the `Cluster` class in the core module:
 
 ### Cluster
 
-Represents a cluster of nodes with connectivity, spatial properties, and periodic boundary handling.
+Represents a cluster of nodes with connectivity, spatial properties, and robust percolation detection using period vector analysis. Handles periodic boundary conditions and computes structural properties for percolation theory analysis.
 
 #### Initialization
 ```python
@@ -328,73 +328,244 @@ Cluster(connectivity: str, root_id: int, size: int, settings: Settings, lattice:
 ```
 Creates a cluster with a connectivity label, root node ID, size, settings, and lattice matrix.
 
+##### Parameters
+- `connectivity` (str): Connectivity descriptor (e.g., `"Si-O-Si"` or `"Si4-Si4"`).
+- `root_id` (int): ID of the root node defining the cluster.
+- `size` (int): Number of nodes in the cluster.
+- `settings` (`Settings`): Configuration settings for the analysis.
+- `lattice` (np.ndarray): 3×3 lattice matrix defining the periodic simulation box.
+
+
 #### Attributes
-- `nodes` (List[Node]): Nodes in the cluster.
-- `connectivity` (str): Connectivity descriptor.
-- `root_id` (int): ID of the root node.
-- `size` (int): Number of nodes.
-- `settings` (Settings): Configuration settings.
-- `lattice` (np.ndarray): Lattice matrix.
-- `_inv_lattice` (np.ndarray): Inverse of lattice matrix.
-- `center_of_mass` (np.ndarray): Cluster's center of mass.
-- `symbols` (list): Symbols of cluster nodes.
-- `indices` (list): Node IDs.
-- `unwrapped_positions` (np.ndarray): Node positions unwrapped in periodic space.
-- `percolation_probability` (str): Directions in which cluster percolates (e.g., "xyz").
-- `gyration_radius` (float): Radius of gyration.
-- `order_parameter` (list): Order parameters for each dimension.
-- `total_nodes` (int): Total nodes considered in the system.
-- `concentration` (float): Fractional concentration.
-- `is_percolating` (bool): True if cluster spans all directions.
-- `is_spanning` (bool): True if cluster spans boundaries.
-- `linkages` (List[Tuple[int, int]]): Node linkage pairs.
-- `decoration_atoms` (Dict[int, Dict]): Additional nodes decorating the cluster, e.g., bridging atoms.
+
+**Basic Properties:**
+- `nodes` (List[Node]): List of nodes belonging to the cluster.
+- `connectivity` (str): Connectivity descriptor identifying cluster type.
+- `root_id` (int): Unique identifier of the cluster's root node.
+- `size` (int): Number of nodes in the cluster.
+- `settings` (`Settings`): Configuration settings.
+- `lattice` (np.ndarray): 3×3 lattice matrix.
+- `symbols` (list): Element symbols of cluster nodes.
+- `indices` (list): Global node IDs.
+- `_inv_lattice` (np.ndarray): Inverse of the lattice matrix for coordinate transformations.
+- `_all_connectivities` (Set[str]): Set of all connectivity types in the analysis.
+
+**Structural Properties:**
+- `center_of_mass` (np.ndarray): Wrapped center of mass position in Cartesian coordinates.
+- `unwrapped_positions` (np.ndarray): Node positions unwrapped across periodic boundaries.
+- `gyration_radius` (float): Radius of gyration quantifying spatial extent.
+
+**Percolation Properties:**
+- `percolation_probability` (str): Directions in which cluster percolates (e.g., `"x"`, `"xy"`, `"xyz"`).
+- `order_parameter` (list): Order parameters `[P∞_x, P∞_y, P∞_z]` for each dimension.
+- `is_percolating` (bool): `True` if cluster percolates in all three dimensions.
+- `is_spanning` (bool): `True` if cluster is the largest in its connectivity type.
+
+**Connectivity Data:**
+- `linkages` (List[Tuple[int, int]]): List of node ID pairs representing bonds between networking nodes.
+- `_linkage_set` (Set[Tuple[int, int]]): Internal set for efficient linkage tracking during unwrapping.
+- `decoration_atoms` (Dict[int, Dict]): Dictionary of decorating nodes (e.g., bridging atoms in bond-based clustering). Keys are node IDs, values contain `symbol`, `position`, and `coordination`.
+
+**Statistical Properties:**
+- `total_nodes` (int): Total number of networking nodes in the system (for normalization).
+- `concentration` (float): Fractional concentration: `size / total_nodes`.
+
+***
 
 #### Methods
 
-- `add_node(node: Node)`: Add a node to the cluster and assign its cluster ID.
-- `set_lattice(lattice: np.ndarray)`: Update lattice and its inverse.
-- `get_nodes() -> List[Node]`: Return cluster nodes.
-- `get_connectivity() -> str`: Return connectivity descriptor.
-- `get_size() -> int`: Return cluster size.
-- `set_indices_and_positions(positions_dict: Dict[int, np.ndarray])`: Sets nodes’ indices and unwrapped positions.
-- `calculate_center_of_mass()`: Calculate cluster center of mass; wraps it in lattice and translates decoration atoms.
-- `calculate_gyration_radius()`: Compute radius of gyration.
-- `calculate_percolation_probability()`: Identify lattice directions in which cluster percolates and update flags.
-- `calculate_order_parameter()`: Calculate order parameters based on percolation and cluster size.
-- `calculate_concentration()`: Compute concentration relative to total nodes.
-- `_unwrap_vector(vector: np.ndarray) -> np.ndarray`: Apply periodic unwrapping to a vector.
-- `calculate_unwrapped_positions()`: Unwrap cluster node positions relative to root; unwraps decoration atoms if applicable, with progress bar.
-- `__str__()` / `__repr__()`: String representation summarizing cluster attributes.
+- `add_node(node: Node) -> None`
+  - Adds a node to the cluster and assigns the cluster ID to the node.
+  - **Parameters**:
+    - `node` (Node): Node object to add.
+  - **Returns**: None
 
+- `set_lattice(lattice: np.ndarray) -> None`
+  - Updates the lattice matrix and its inverse.
+  - **Parameters**:
+    - `lattice` (np.ndarray): New 3×3 lattice matrix.
+  - **Returns**: None
+
+- `get_nodes() -> List[Node]`
+  - Returns the list of nodes in the cluster.
+  - **Returns**: List of `Node` objects.
+
+- `get_connectivity() -> str`
+  - Returns the connectivity descriptor string.
+  - **Returns**: Connectivity descriptor.
+
+- `get_size() -> int`
+  - Returns the number of nodes in the cluster.
+  - **Returns**: Cluster size (integer).
+
+- `set_indices_and_positions(positions_dict: Dict[int, np.ndarray]) -> None`
+  - Sets node indices, symbols, and unwrapped positions from a dictionary.
+  - **Parameters**:
+    - `positions_dict` (Dict[int, np.ndarray]): Mapping of node IDs to unwrapped positions.
+  - **Returns**: None
+  - **Behavior**: Populates `symbols`, `indices`, and `unwrapped_positions` attributes.
+
+- `calculate_center_of_mass() -> None`
+  - Calculates the cluster's center of mass in unwrapped coordinates.
+  - **Returns**: None
+  - **Behavior**:
+    - Computes mean of unwrapped positions.
+    - Wraps center of mass back into primary periodic cell.
+    - Translates all unwrapped positions and decoration atoms to center the cluster around the wrapped COM.
+    - Updates `center_of_mass` attribute.
+
+- `calculate_gyration_radius() -> None`
+  - Computes the radius of gyration about the center of mass.
+  - **Returns**: None
+  - **Formula**: $R_g = \sqrt{\frac{1}{N} \sum_{i=1}^{N} |\mathbf{r}_i - \mathbf{r}_{\text{COM}}|^2}$
+  - **Behavior**: Returns 0.0 for clusters with size ≤ 1.
+
+- `calculate_percolation_probability() -> None`
+  - Determines percolation using robust period vector algorithm.
+  - **Returns**: None
+  - **Method**: Period vector detection following Livraghi et al. (2021) [J. Chem. Theory Comput.](https://pubs.acs.org/doi/10.1021/acs.jctc.1c00423)
+  - **Behavior**:
+    - Traverses cluster using breadth-first search.
+    - Tracks unwrapped positions during traversal.
+    - Detects period vectors when a node is reached via multiple periodic paths.
+    - Calculates percolation dimension from linear independence of period vectors.
+    - Updates `percolation_probability` (e.g., `"xyz"`) and `is_percolating` flag.
+  - **Percolation Theory Significance**: True percolation requires the cluster to connect to itself across periodic boundaries through actual bond connectivity, not just spatial extent. This method distinguishes genuine percolating clusters from large finite clusters.
+
+- `_detect_period_vectors() -> List[np.ndarray]`
+  - Internal method to detect period vectors during cluster traversal.
+  - **Returns**: List of period vectors (displacement vectors across periodic boundaries).
+  - **Behavior**:
+    - Performs BFS traversal starting from root node.
+    - Maintains unwrapped positions for visited nodes.
+    - When encountering a previously visited node through a different path, records the displacement as a period vector.
+    - Handles both `"distance"` and `"bond"` clustering criteria.
+
+- `_calculate_period_dimension(period_vectors: List[np.ndarray]) -> int`
+  - Calculates the algebraic dimension of the period vector set using singular value decomposition.
+  - **Parameters**:
+    - `period_vectors` (List[np.ndarray]): List of detected period vectors.
+  - **Returns**: Integer (0, 1, 2, or 3) indicating percolation dimensionality.
+  - **Method**: Computes rank of period vector matrix via SVD with numerical tolerance.
+
+- `_get_percolation_directions(period_vectors: List[np.ndarray]) -> str`
+  - Determines which Cartesian directions (x, y, z) the cluster percolates in.
+  - **Parameters**:
+    - `period_vectors` (List[np.ndarray]): List of detected period vectors.
+  - **Returns**: String containing percolating directions (e.g., `"xy"` for percolation in x and y).
+  - **Behavior**: Checks which directions have significant fractional components (> 0.5 lattice units) in linearly independent period vectors.
+
+- `_get_independent_periods(period_vectors: List[np.ndarray]) -> List[np.ndarray]`
+  - Extracts linearly independent period vectors.
+  - **Parameters**:
+    - `period_vectors` (List[np.ndarray]): All detected period vectors.
+  - **Returns**: List of up to 3 linearly independent period vectors.
+  - **Method**: Uses matrix rank calculation to select independent vectors.
+
+- `calculate_order_parameter() -> None`
+  - Calculates order parameters for each dimension based on percolation status.
+  - **Returns**: None
+  - **Formula**: $P_\infty = \frac{N_{\text{cluster}}}{N_{\text{total}}}$ for percolating dimensions, 0 otherwise.
+  - **Behavior**: Assigns `[P∞, 0, 0]` for 1D percolation, `[P∞, P∞, 0]` for 2D, and `[P∞, P∞, P∞]` for 3D.
+
+- `calculate_concentration() -> None`
+  - Computes the cluster concentration relative to total networking nodes.
+  - **Returns**: None
+  - **Formula**: $c = \frac{N_{\text{cluster}}}{N_{\text{total}}}$
+  - **Behavior**: Updates `concentration` attribute.
+
+- `_unwrap_vector(vector: np.ndarray) -> np.ndarray`
+  - Applies minimum image convention to unwrap a displacement vector.
+  - **Parameters**:
+    - `vector` (np.ndarray): Displacement vector to unwrap.
+  - **Returns**: Unwrapped vector in Cartesian coordinates.
+  - **Method**: Converts to fractional coordinates, subtracts nearest integer, converts back to Cartesian.
+
+- `calculate_unwrapped_positions() -> None`
+  - Unwraps all cluster node positions relative to the root node using breadth-first traversal.
+  - **Returns**: None
+  - **Behavior**:
+    - Performs BFS starting from root node.
+    - For each neighbor, calculates unwrapped position by adding minimum image displacement to current position.
+    - Records linkages between nodes.
+    - For bond-based clustering, identifies and unwraps decorating atoms (e.g., bridging oxygens).
+    - Displays progress bar if verbose mode enabled.
+    - Handles both `"distance"` and `"bond"` clustering criteria.
+  - **Output**: Populates `unwrapped_positions`, `linkages`, and `decoration_atoms` attributes.
+
+- `__str__() -> str`
+  - Returns a concise string representation of the cluster.
+  - **Format**: `"{root_id} {connectivity} {size} {is_percolating} {node_ids}"`
+  - **Returns**: Human-readable cluster summary (truncated to 20 node IDs).
+
+- `__repr__() -> str`
+  - Returns the same representation as `__str__()`.
+
+***
 
 ### Usage Example
 
-In the typical workflow of Necus-CAT, the clusters are created automatically by a `finder` during the clustering process.
-The following lines are not recommended and are only for illustration purposes if needed.
-
+In the typical workflow of Nexus, clusters are created automatically by clustering strategies during the analysis process. The following example is for illustration purposes only:
 
 ```python
 import numpy as np
 from nexus.core.cluster import Cluster, Node
-from nexus.config.settings import Settings
+from nexus.config.settings import Settings, ClusteringSettings
 
-# Dummy settings
-lattice = np.eye(3)
-settings = Settings(
-    ...
+# Define settings
+clustering_settings = ClusteringSettings(
+    criterion="distance",
+    node_types=["A", "B"],
+    connectivity=["A", "B"]
 )
 
-cluster = Cluster(connectivity="A-B", root_id=0, size=5, settings=settings, lattice=lattice)
+settings = Settings(
+    clustering=clustering_settings,
+    verbose=True
+)
 
+# Create cluster
+lattice = np.array([[10.0, 0.0, 0.0],
+                    [0.0, 10.0, 0.0],
+                    [0.0, 0.0, 10.0]])
+
+cluster = Cluster(
+    connectivity="A-B",
+    root_id=0,
+    size=5,
+    settings=settings,
+    lattice=lattice
+)
+
+# Add nodes
 node1 = Node(symbol="A", node_id=0, position=np.array([0.0, 0.0, 0.0]))
+node2 = Node(symbol="B", node_id=1, position=np.array([1.5, 0.0, 0.0]))
 cluster.add_node(node1)
+cluster.add_node(node2)
 
+# Calculate properties
 cluster.calculate_unwrapped_positions()
 cluster.calculate_center_of_mass()
+cluster.calculate_gyration_radius()
+cluster.calculate_percolation_probability()
 
+# Display results
 print(cluster)
+print(f"Percolates in: {cluster.percolation_probability}")
+print(f"Gyration radius: {cluster.gyration_radius:.3f}")
 ```
+
+***
+
+### Key Improvements
+
+**Robust Percolation Detection**: The new period vector algorithm accurately distinguishes true percolating clusters from large finite clusters by verifying that the cluster connects to itself through periodic boundaries via actual bond connectivity, not just spatial extent.
+
+**Decoration Atoms**: Automatic identification and unwrapping of bridging/decorating atoms (e.g., oxygen in Si-O-Si networks) for complete structural representation.
+
+**Performance**: BFS-based unwrapping with progress bars for user feedback on large clusters.
+
+**Theoretical Foundation**: Implementation based on rigorous algebraic topology methods from computational chemistry literature, ensuring physically meaningful percolation identification.
 
 ### Frame
 

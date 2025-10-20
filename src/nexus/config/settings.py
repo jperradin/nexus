@@ -229,9 +229,9 @@ class LatticeSettings:
         apply_lattice_to_all_frames (bool): Whether to apply the lattice to all frames.
         apply_pbc (bool): Whether to apply periodic boundary conditions.
     """
-    lattice: np.ndarray = field(default_factory=lambda: np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]))
     apply_custom_lattice: bool = False
     custom_lattice: np.ndarray = field(default_factory=lambda: np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]))
+    lattice: np.ndarray = field(default_factory=lambda: np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]))
     get_lattice_from_file: bool = False
     lattice_file_location: str = "./"
     apply_lattice_to_all_frames: bool = True

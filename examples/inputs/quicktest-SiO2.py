@@ -7,18 +7,19 @@ import nexus.config.settings as c
 # path = "./examples/inputs/example-SiO2-27216at.xyz"
 # path = "./examples/inputs/example-SiO2-96000at.xyz"
 # path = "./examples/inputs/example-SiO2-1056000at.xyz"
-path = '../../these/sio2-1008at-11frames--for_snapshots/pos07.xyz'
+# path = "../../these/sio2-1008at-11frames--for_snapshots/pos15.xyz"
+path = "../../these/96000-1b/pos72B.xyz"
 
 # General settings
 config_general = c.GeneralSettings(
-    project_name="example-SiO2",  # Project name
+    project_name="test-SiO2",  # Project name
     export_directory="./examples/outputs",  # Export directory
     file_location=path,  # File location
     range_of_frames=(0, 0),  # Range of frames
     apply_pbc=True,  # Apply periodic boundary conditions
     verbose=True,  # Verbose mode (if True, print title, progress bars, etc.)
     save_logs=True,  # Save logs    (save logs to export_directory/logs.txt)
-    save_performance=True,  # Save performance (save performance data to export_directory/performance...json)
+    save_performance=False,  # Save performance (save performance data to export_directory/performance...json)
 )
 
 # Lattice settings
@@ -29,23 +30,21 @@ config_lattice = c.LatticeSettings(
 # Clustering settings
 config_clustering = c.ClusteringSettings(
     criterion="bond",
-    neighbor_searcher="cell_list",
+    neighbor_searcher="kd_tree",  # only kd_tree is supported for now.
     node_types=["Si", "O"],
     node_masses=[28.0855, 15.9994],
     connectivity=["Si", "O", "Si"],
     cutoffs=[
-        c.Cutoff(
-            type1="Si", type2="Si", distance=3.50
-        ),  # cutoff distance in reduced units
+        # c.Cutoff(type1="Si", type2="Si", distance=3.50),
         c.Cutoff(type1="Si", type2="O", distance=2.30),
-        c.Cutoff(type1="O", type2="O", distance=3.05),
+        # c.Cutoff(type1="O", type2="O", distance=3.05),
     ],
     with_coordination_number=True,
     coordination_mode="O",  # "all_types" or "same_type" or "different_type" or "<node_type>"
-    coordination_range=[4, 6],
+    coordination_range=[5, 5],
     # if all below are False, calculate A_z-B_z cluster connectivity with z = coordination range
-    with_pairwise=False,  # if with_coordination_number is True, calculate pairwise coordination number ie 4-4, 5-5, 6-6 ...
-    with_mixing=True,  # if with_coordination_number is True, calculate mixing coordination number ie 4-5, 5-6, 4-6 ...
+    with_pairwise=True,  # if with_coordination_number is True, calculate pairwise coordination number ie 4-4, 5-5, 6-6 ...
+    with_mixing=False,  # if with_coordination_number is True, calculate mixing coordination number ie 4-5, 5-6, 4-6 ...
     with_alternating=False,  # if with_coordination_number is True, calculate alternating coordination number ie 4-5, 5-6 ...
     with_number_of_shared=False,  # if with_coordination_number is True, calculate number of shared
     with_printed_unwrapped_clusters=True,
@@ -54,7 +53,7 @@ config_clustering = c.ClusteringSettings(
 
 # Analysis settings
 config_analysis = c.AnalysisSettings(
-    with_all=False,
+    with_all=True,
 )
 
 # Build Settings object

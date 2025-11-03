@@ -1393,7 +1393,7 @@ Creates an analyzer for computing weight-average cluster sizes across trajectory
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `average_sizes` (`Dict[str, float]`): Final mean average cluster size for each connectivity type.
 - `std` (`Dict[str, float]`): Standard deviation of average cluster sizes across frames.
-- `fluctuations` (`Dict[str, float]`): Normalized fluctuations (variance/mean) of cluster sizes.
+- `error` (`Dict[str, float]`): Standard error of average cluster sizes across frames.
 - `concentrations` (`Dict[str, float]`): Mean concentration for each connectivity type.
 - `_finalized` (bool): Flag indicating whether final calculations have been performed.
 
@@ -1420,18 +1420,17 @@ Creates an analyzer for computing weight-average cluster sizes across trajectory
   - Computes final statistics by averaging over all processed frames.
   - **Calculation Details**:
     - Calculates mean average cluster size across all frames.
-    - Computes standard deviation using Bessel's correction (ddof=1).
-    - Calculates normalized fluctuations: $\Delta S = \frac{\text{Var}(S)}{\langle S \rangle}$.
+    - Computes standard deviation and standard error using Bessel's correction (ddof=1).
 
 - `get_result() -> Dict[str, Dict[str, float]]`
   - Returns the finalized analysis results without recalculation.
-  - Provides access to concentrations, average cluster sizes, standard deviations, and fluctuations for all connectivity types.
+  - Provides access to concentrations, average cluster sizes, standard deviations, and errors for all connectivity types.
 
 - `print_to_file() -> None`
   - Writes finalized results to a CSV-formatted data file.
   - Output file: `average_cluster_size.dat` in the export directory.
   - Includes header with metadata: date, number of frames analyzed, and column descriptions.
-  - Format: `Connectivity_type,Concentration,Average_cluster_size,Standard_deviation,Fluctuations`
+  - Format: `Connectivity_type,Concentration,Average_cluster_size,Standard_deviation,Standard_error`
   - Automatically removes duplicate lines to prevent data redundancy.
 
 - `_write_header() -> None`
@@ -1459,7 +1458,7 @@ Creates an analyzer for computing cluster size distributions across trajectory f
 #### Attributes
 - `_raw_size_distribution` (`Dict[str, Dict[int, List[int]]]`): Raw per-frame counts of clusters for each size and connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
-- `size_distribution` (`Dict[str, Dict[int, float]]`): Final averaged cluster count per size for each connectivity type.
+- `size_distribution` (`Dict[str, Dict[int, float]]`): Final total number of clusters count per size for each connectivity type.
 - `std` (`Dict[str, Dict[int, float]]`): Standard deviation of cluster counts for each size across frames.
 - `concentrations` (`Dict[str, float]`): Mean concentration for each connectivity type.
 - `_finalized` (bool): Flag indicating whether final calculations have been performed.
@@ -1474,14 +1473,14 @@ Creates an analyzer for computing cluster size distributions across trajectory f
     - Counts the occurrence of each cluster size $s$ to obtain $n_s$.
     - Stores raw counts for later averaging across all frames.
   - **Percolation Theory Significance**:
-    - The cluster size distribution $n_s$ describes the probability of finding a cluster of size $s$.
+    - The cluster size distribution $n_s$ describes the total number of clusters of size $s$ accross each frames.
     - Near the percolation threshold $p_c$, this distribution exhibits power-law scaling: $n_s \sim s^{-\tau}$, where $\tau$ is the Fisher exponent (approximately 2.18 for 3D systems).
     - Percolating clusters are excluded to focus on finite cluster statistics, as the infinite percolating cluster would dominate near and above the threshold.
 
 - `finalize() -> Dict`
   - Computes final statistics by averaging cluster counts over all processed frames.
   - **Calculation Details**:
-    - For each cluster size, calculates the mean number of clusters per frame.
+    - For each cluster size, calculates the total number of clusters in each frame.
     - Computes standard deviation accounting for frames where specific sizes may not appear (zero counts included).
     - Uses Bessel's correction (ddof=1) for unbiased standard deviation estimation.
   - Idempotent operation: can be called multiple times safely.
@@ -1525,7 +1524,7 @@ Creates an analyzer for computing cluster concentrations across trajectory frame
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity type.
 - `concentrations` (`Dict[str, float]`): Final mean concentration for each connectivity type.
 - `std` (`Dict[str, float]`): Standard deviation of concentrations across frames.
-- `fluctuations` (`Dict[str, float]`): Normalized fluctuations (variance/mean) of concentrations.
+- `error` (`Dict[str, float]`): Standard error of concentrations across frames.
 - `_finalized` (bool): Flag indicating whether final calculations have been performed.
 
 
@@ -1546,20 +1545,19 @@ Creates an analyzer for computing cluster concentrations across trajectory frame
   - Computes final statistics by averaging over all processed frames.
   - **Calculation Details**:
     - Calculates mean concentration across all frames.
-    - Computes standard deviation using Bessel's correction (ddof=1).
-    - Calculates normalized fluctuations: $\Delta c = \frac{\text{Var}(c)}{\langle c \rangle}$.
+    - Computes standard deviation and error using Bessel's correction (ddof=1).
   - Idempotent operation: can be called multiple times safely.
-  - Returns dictionary containing concentrations, standard deviations, and fluctuations.
+  - Returns dictionary containing concentrations, standard deviations, and error.
 
 - `get_result() -> Dict[str, Dict[str, float]]`
   - Returns the finalized analysis results without recalculation.
-  - Provides access to concentrations, standard deviations, and fluctuations for all connectivity types.
+  - Provides access to concentrations, standard deviations, and error for all connectivity types.
 
 - `print_to_file() -> None`
   - Writes finalized results to a CSV-formatted data file.
   - Output file: `concentrations.dat` in the export directory.
   - Includes header with metadata: date, number of frames analyzed, and column descriptions.
-  - Format: `Connectivity_type,Concentration,Standard_deviation,Fluctuations`
+  - Format: `Connectivity_type,Concentration,Standard_deviation,Standard_error`
   - Automatically removes duplicate lines to prevent data redundancy.
 
 - `_write_header() -> None`
@@ -1589,7 +1587,7 @@ Creates an analyzer for computing correlation lengths across trajectory frames.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `correlation_length` (`Dict[str, float]`): Final mean correlation length for each connectivity type.
 - `std` (`Dict[str, float]`): Standard deviation of correlation lengths across frames.
-- `fluctuations` (`Dict[str, float]`): Normalized fluctuations (variance/mean) of correlation lengths.
+- `error` (`Dict[str, float]`): Standard error of correlation lengths across frames.
 - `concentrations` (`Dict[str, float]`): Mean concentration for each connectivity type.
 - `_finalized` (bool): Flag indicating whether final calculations have been performed.
 
@@ -1617,20 +1615,19 @@ Creates an analyzer for computing correlation lengths across trajectory frames.
   - Computes final statistics by averaging over all processed frames.
   - **Calculation Details**:
     - Calculates mean correlation length across all frames.
-    - Computes standard deviation using Bessel's correction (ddof=1).
-    - Calculates normalized fluctuations: $\Delta \xi = \frac{\text{Var}(\xi)}{\langle \xi \rangle}$.
+    - Computes standard deviation and error using Bessel's correction (ddof=1).
   - Idempotent operation: can be called multiple times safely.
-  - Returns dictionary containing concentrations, correlation lengths, standard deviations, and fluctuations.
+  - Returns dictionary containing concentrations, correlation lengths, standard deviations, and errors.
 
 - `get_result() -> Dict[str, Dict[str, float]]`
   - Returns the finalized analysis results without recalculation.
-  - Provides access to concentrations, correlation lengths, standard deviations, and fluctuations for all connectivity types.
+  - Provides access to concentrations, correlation lengths, standard deviations, and errors for all connectivity types.
 
 - `print_to_file() -> None`
   - Writes finalized results to a CSV-formatted data file.
   - Output file: `correlation_length.dat` in the export directory.
   - Includes header with metadata: date, number of frames analyzed, and column descriptions.
-  - Format: `Connectivity_type,Concentration,Correlation_length,Standard_deviation,Fluctuations`
+  - Format: `Connectivity_type,Concentration,Correlation_length,Standard_deviation,Standard_error`
   - Automatically removes duplicate lines to prevent data redundancy.
 
 - `_write_header() -> None`
@@ -1732,7 +1729,7 @@ Creates an analyzer for computing largest cluster sizes across trajectory frames
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `largest_cluster_sizes` (`Dict[str, float]`): Final mean largest cluster size for each connectivity type.
 - `std` (`Dict[str, float]`): Standard deviation of largest cluster sizes across frames.
-- `fluctuations` (`Dict[str, float]`): Normalized fluctuations (variance/mean) of largest cluster sizes.
+- `error` (`Dict[str, float]`): Standard error of largest cluster sizes across frames.
 - `concentrations` (`Dict[str, float]`): Mean concentration for each connectivity type.
 - `_finalized` (bool): Flag indicating whether final calculations have been performed.
 
@@ -1757,20 +1754,19 @@ Creates an analyzer for computing largest cluster sizes across trajectory frames
   - Computes final statistics by averaging over all processed frames.
   - **Calculation Details**:
     - Calculates mean largest cluster size across all frames.
-    - Computes standard deviation using Bessel's correction (ddof=1).
-    - Calculates normalized fluctuations: $\Delta S_{\text{max}} = \frac{\text{Var}(S_{\text{max}})}{\langle S_{\text{max}} \rangle}$.
+    - Computes standard deviation and error using Bessel's correction (ddof=1).
   - Idempotent operation: can be called multiple times safely.
-  - Returns dictionary containing concentrations, largest cluster sizes, standard deviations, and fluctuations.
+  - Returns dictionary containing concentrations, largest cluster sizes, standard deviations, and errors.
 
 - `get_result() -> Dict[str, Dict[str, float]]`
   - Returns the finalized analysis results without recalculation.
-  - Provides access to concentrations, largest cluster sizes, standard deviations, and fluctuations for all connectivity types.
+  - Provides access to concentrations, largest cluster sizes, standard deviations, and errors for all connectivity types.
 
 - `print_to_file() -> None`
   - Writes finalized results to a CSV-formatted data file.
   - Output file: `largest_cluster_size.dat` in the export directory.
   - Includes header with metadata: date, number of frames analyzed, and column descriptions.
-  - Format: `Connectivity_type,Concentration,Largest_cluster_size,Standard_deviation,Fluctuations`
+  - Format: `Connectivity_type,Concentration,Largest_cluster_size,Standard_deviation,Standard_error`
   - Automatically removes duplicate lines to prevent data redundancy.
 
 - `_write_header() -> None`
@@ -1938,7 +1934,7 @@ Creates an analyzer for computing spanning cluster sizes across trajectory frame
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `spanning_cluster_sizes` (`Dict[str, float]`): Final mean spanning cluster size for each connectivity type.
 - `std` (`Dict[str, float]`): Standard deviation of spanning cluster sizes across frames.
-- `fluctuations` (`Dict[str, float]`): Normalized fluctuations (variance/mean) of spanning cluster sizes.
+- `error` (`Dict[str, float]`): Standard error of spanning cluster sizes across frames.
 - `concentrations` (`Dict[str, float]`): Mean concentration for each connectivity type.
 - `_finalized` (bool): Flag indicating whether final calculations have been performed.
 
@@ -1963,20 +1959,19 @@ Creates an analyzer for computing spanning cluster sizes across trajectory frame
   - Computes final statistics by averaging over all processed frames.
   - **Calculation Details**:
     - Calculates mean spanning cluster size across all frames.
-    - Computes standard deviation using Bessel's correction (ddof=1).
-    - Calculates normalized fluctuations: $\Delta S_{\text{span}} = \frac{\text{Var}(S_{\text{span}})}{\langle S_{\text{span}} \rangle}$.
+    - Computes standard deviation and error using Bessel's correction (ddof=1).
   - Idempotent operation: can be called multiple times safely.
-  - Returns dictionary containing concentrations, spanning cluster sizes, standard deviations, and fluctuations.
+  - Returns dictionary containing concentrations, spanning cluster sizes, standard deviations, and errors.
 
 - `get_result() -> Dict[str, Dict[str, float]]`
   - Returns the finalized analysis results without recalculation.
-  - Provides access to concentrations, spanning cluster sizes, standard deviations, and fluctuations for all connectivity types.
+  - Provides access to concentrations, spanning cluster sizes, standard deviations, and errors for all connectivity types.
 
 - `print_to_file() -> None`
   - Writes finalized results to a CSV-formatted data file.
   - Output file: `spanning_cluster_size.dat` in the export directory.
   - Includes header with metadata: date, number of frames analyzed, and column descriptions.
-  - Format: `Connectivity_type,Concentration,Spanning_cluster_size,Standard_deviation,Fluctuations`
+  - Format: `Connectivity_type,Concentration,Spanning_cluster_size,Standard_deviation,Standard_error`
   - Automatically removes duplicate lines to prevent data redundancy.
 
 - `_write_header() -> None`

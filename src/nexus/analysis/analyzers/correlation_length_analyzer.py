@@ -29,7 +29,7 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
         self.correlation_length: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
         self.concentrations: Dict[str, float] = {}
-        self.fluctuations: Dict[str, float] = {}
+        self.error: Dict[str, float] = {}
 
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
@@ -91,23 +91,19 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
                 if len(lengths) > 1:
                     self.std[connectivity] = np.std(lengths, ddof=1)
                     mean_length = self.correlation_length[connectivity]
-                    self.fluctuations[connectivity] = (
-                        np.var(lengths, ddof=1) / mean_length
-                        if mean_length > 0
-                        else 0.0
+                    self.error[connectivity] = self.std[connectivity] / np.sqrt(
+                        len(lengths)
                     )
                 else:
                     self.std[connectivity] = 0.0
-                    self.fluctuations[connectivity] = 0.0
+                    self.error[connectivity] = 0.0
             else:
                 self.correlation_length[connectivity] = 0.0
                 self.std[connectivity] = 0.0
-                self.fluctuations[connectivity] = 0.0
+                self.error[connectivity] = 0.0
 
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
-            self.fluctuations[connectivity] = np.nan_to_num(
-                self.fluctuations[connectivity]
-            )
+            self.error[connectivity] = np.nan_to_num(self.error[connectivity])
 
         for connectivity, concs in self._raw_concentrations.items():
             self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
@@ -121,7 +117,7 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
             "concentrations": self.concentrations,
             "correlation_length": self.correlation_length,
             "std": self.std,
-            "fluctuations": self.fluctuations,
+            "error": self.error,
         }
 
     def print_to_file(self) -> None:
@@ -134,9 +130,9 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
                 concentration = output["concentrations"].get(connectivity, 0.0)
                 correlation_length = output["correlation_length"].get(connectivity, 0.0)
                 std = output["std"].get(connectivity, 0.0)
-                fluctuations = output["fluctuations"].get(connectivity, 0.0)
+                error = output["error"].get(connectivity, 0.0)
                 f.write(
-                    f"{connectivity},{concentration},{correlation_length},{std},{fluctuations}\n"
+                    f"{connectivity},{concentration},{correlation_length},{std},{error}\n"
                 )
         remove_duplicate_lines(path)
 
@@ -157,7 +153,7 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(
-                "# Connectivity_type,Concentration,Correlation_length,Standard_deviation_ddof=1,Fluctuations_ddof=1\n"
+                "# Connectivity_type,Concentration,Correlation_length,Standard_deviation_ddof=1,Standard_error_ddof=1\n"
             )
 
     def __str__(self) -> str:

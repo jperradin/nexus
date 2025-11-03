@@ -27,7 +27,7 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         # Public attributes to hold the final, aggregated results
         self.concentrations: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
-        self.fluctuations: Dict[str, float] = {}
+        self.error: Dict[str, float] = {}
 
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
@@ -63,21 +63,19 @@ class ConcentrationAnalyzer(BaseAnalyzer):
                 if len(concs) > 1:
                     self.std[connectivity] = np.std(concs, ddof=1)
                     mean_conc = self.concentrations[connectivity]
-                    self.fluctuations[connectivity] = (
-                        np.var(concs, ddof=1) / mean_conc if mean_conc > 0 else 0.0
+                    self.error[connectivity] = self.std[connectivity] / np.sqrt(
+                        len(concs)
                     )
                 else:
                     self.std[connectivity] = 0.0
-                    self.fluctuations[connectivity] = 0.0
+                    self.error[connectivity] = 0.0
             else:
                 self.concentrations[connectivity] = 0.0
                 self.std[connectivity] = 0.0
-                self.fluctuations[connectivity] = 0.0
+                self.error[connectivity] = 0.0
 
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
-            self.fluctuations[connectivity] = np.nan_to_num(
-                self.fluctuations[connectivity]
-            )
+            self.error[connectivity] = np.nan_to_num(self.error[connectivity])
 
         self._finalized = True
         return self.get_result()
@@ -87,7 +85,7 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         return {
             "concentrations": self.concentrations,
             "std": self.std,
-            "fluctuations": self.fluctuations,
+            "error": self.error,
         }
 
     def print_to_file(self) -> None:
@@ -99,8 +97,8 @@ class ConcentrationAnalyzer(BaseAnalyzer):
             for connectivity in self.concentrations:
                 concentration = output["concentrations"].get(connectivity, 0.0)
                 std = output["std"].get(connectivity, 0.0)
-                fluctuations = output["fluctuations"].get(connectivity, 0.0)
-                f.write(f"{connectivity},{concentration},{std},{fluctuations}\n")
+                error = output["error"].get(connectivity, 0.0)
+                f.write(f"{connectivity},{concentration},{std},{error}\n")
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
@@ -120,7 +118,7 @@ class ConcentrationAnalyzer(BaseAnalyzer):
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(
-                "# Connectivity_type,Concentration,Standard_deviation_ddof=1,Fluctuations_ddof=1\n"
+                "# Connectivity_type,Concentration,Standard_deviation_ddof=1,Standard_error_ddof=1\n"
             )
 
     def __str__(self) -> str:

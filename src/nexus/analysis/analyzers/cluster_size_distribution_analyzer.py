@@ -67,7 +67,7 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict:
         """
-        Calculates the final mean and standard deviation for the cluster size
+        Calculates the total count and standard deviation for the cluster size
         distribution across all processed frames. This method is now idempotent.
         """
         if self._finalized:
@@ -77,11 +77,11 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
             self.size_distribution.setdefault(connectivity, {})
             self.std.setdefault(connectivity, {})
             for size, counts in size_data.items():
-                # The final value is the total count divided by the number of frames
+                # The final value is the total count
                 total_count = np.sum(counts)
                 num_frames = self.frame_processed_count
                 self.size_distribution[connectivity][size] = (
-                    total_count / num_frames if num_frames > 0 else 0.0
+                    total_count  # / num_frames if num_frames > 0 else 0.0
                 )
 
                 # To calculate std dev, we need to account for frames where a size didn't appear
@@ -149,7 +149,7 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(
-                "# Connectivity_type,Concentration,Cluster_size,N_clusters_per_frame,Standard_deviation_ddof=1\n"
+                "# Connectivity_type,Concentration,Cluster_size,N_clusters,Standard_deviation_ddof=1\n"
             )
 
     def __str__(self) -> str:

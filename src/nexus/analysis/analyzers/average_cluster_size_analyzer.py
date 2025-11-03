@@ -31,7 +31,7 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
         # Public attributes to hold the final, aggregated results
         self.average_sizes: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
-        self.fluctuations: Dict[str, float] = {}
+        self.error: Dict[str, float] = {}
         self.concentrations: Dict[str, float] = {}
 
         # A flag to ensure final calculations are only performed once
@@ -86,21 +86,19 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
                 if len(sizes) > 1:
                     self.std[connectivity] = np.std(sizes, ddof=1)
                     mean_size = self.average_sizes[connectivity]
-                    self.fluctuations[connectivity] = (
-                        np.var(sizes, ddof=1) / mean_size if mean_size > 0 else 0.0
+                    self.error[connectivity] = self.std[connectivity] / np.sqrt(
+                        len(sizes)
                     )
                 else:
                     self.std[connectivity] = 0.0
-                    self.fluctuations[connectivity] = 0.0
+                    self.error[connectivity] = 0.0
             else:
                 self.average_sizes[connectivity] = 0.0
                 self.std[connectivity] = 0.0
-                self.fluctuations[connectivity] = 0.0
+                self.error[connectivity] = 0.0
 
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
-            self.fluctuations[connectivity] = np.nan_to_num(
-                self.fluctuations[connectivity]
-            )
+            self.error[connectivity] = np.nan_to_num(self.error[connectivity])
 
         for connectivity, concs in self._raw_concentrations.items():
             self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
@@ -114,7 +112,7 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
             "concentrations": self.concentrations,
             "average_cluster_size": self.average_sizes,
             "std": self.std,
-            "fluctuations": self.fluctuations,
+            "error": self.error,
         }
 
     def print_to_file(self) -> None:
@@ -127,9 +125,9 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
                 concentration = output["concentrations"].get(connectivity, 0.0)
                 average_size = output["average_cluster_size"].get(connectivity, 0.0)
                 std = output["std"].get(connectivity, 0.0)
-                fluctuations = output["fluctuations"].get(connectivity, 0.0)
+                error = output["error"].get(connectivity, 0.0)
                 f.write(
-                    f"{connectivity},{concentration},{average_size},{std},{fluctuations}\n"
+                    f"{connectivity},{concentration},{average_size},{std},{error}\n"
                 )
         remove_duplicate_lines(path)
 
@@ -150,7 +148,7 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(
-                "# Connectivity_type,Concentration,Average_cluster_size,Standard_deviation_ddof=1,Fluctuations_ddof=1\n"
+                "# Connectivity_type,Concentration,Average_cluster_size,Standard_deviation_ddof=1,Standard_error_ddof=1\n"
             )
 
     def __str__(self) -> str:

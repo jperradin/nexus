@@ -105,10 +105,6 @@ class Cluster:
     #     if percolate_y: self.percolation_probability += 'y'
     #     if percolate_z: self.percolation_probability += 'z'
     #     self.is_percolating = 'x' in self.percolation_probability and 'y' in self.percolation_probability and 'z' in self.percolation_probability
-    #     # Debug
-    #     if self.connectivity == "SiO_5-SiO_5":
-    #         breakpoint = 1
-
 
     def calculate_percolation_probability(self) -> None:
         """

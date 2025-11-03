@@ -25,7 +25,7 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
         self.largest_cluster_sizes: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
         self.concentrations: Dict[str, float] = {}
-        self.fluctuations: Dict[str, float] = {}
+        self.error: Dict[str, float] = {}
 
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
@@ -75,22 +75,20 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
                     self.std[connectivity] = np.std(sizes, ddof=1)
                     mean_size = self.largest_cluster_sizes[connectivity]
                     # Avoid division by zero for fluctuations
-                    self.fluctuations[connectivity] = (
-                        np.var(sizes, ddof=1) / mean_size if mean_size > 0 else 0.0
+                    self.error[connectivity] = self.std[connectivity] / np.sqrt(
+                        len(sizes)
                     )
                 else:
                     self.std[connectivity] = 0.0
-                    self.fluctuations[connectivity] = 0.0
+                    self.error[connectivity] = 0.0
             else:
                 self.largest_cluster_sizes[connectivity] = 0.0
                 self.std[connectivity] = 0.0
-                self.fluctuations[connectivity] = 0.0
+                self.error[connectivity] = 0.0
 
             # Replace potential NaN values with 0.0 for robustness
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
-            self.fluctuations[connectivity] = np.nan_to_num(
-                self.fluctuations[connectivity]
-            )
+            self.error[connectivity] = np.nan_to_num(self.error[connectivity])
 
         for connectivity, concs in self._raw_concentrations.items():
             self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
@@ -104,7 +102,7 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
             "concentrations": self.concentrations,
             "largest_cluster_size": self.largest_cluster_sizes,
             "std": self.std,
-            "fluctuations": self.fluctuations,
+            "error": self.error,
         }
 
     def print_to_file(self) -> None:
@@ -119,9 +117,9 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
                 concentration = output["concentrations"].get(connectivity, 0.0)
                 largest_size = output["largest_cluster_size"].get(connectivity, 0.0)
                 std_dev = output["std"].get(connectivity, 0.0)
-                fluct = output["fluctuations"].get(connectivity, 0.0)
+                error = output["error"].get(connectivity, 0.0)
                 f.write(
-                    f"{connectivity},{concentration},{largest_size},{std_dev},{fluct}\n"
+                    f"{connectivity},{concentration},{largest_size},{std_dev},{error}\n"
                 )
         remove_duplicate_lines(path)
 
@@ -146,7 +144,7 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(
-                "# Connectivity_type,Concentration,Largest_cluster_size,Standard_deviation_ddof=1,Fluctuations_ddof=1\n"
+                "# Connectivity_type,Concentration,Largest_cluster_size,Standard_deviation_ddof=1,Standard_error_ddof=1\n"
             )
 
     def __str__(self) -> str:

@@ -30,6 +30,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
         # Public attributes to hold the final, aggregated results
         self.percolation_probabilities: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
+        self.error: Dict[str, float] = {}
         self.concentrations: Dict[str, float] = {}
 
         # A flag to ensure final calculations are only performed once
@@ -77,11 +78,15 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
                 self.percolation_probabilities[connectivity] = np.mean(probs)
                 if len(probs) > 1:
                     self.std[connectivity] = np.std(probs, ddof=1)
+                    self.error[connectivity] = self.std[connectivity] / np.sqrt(
+                        len(probs)
+                    )
                 else:
                     self.std[connectivity] = 0.0
             else:
                 self.percolation_probabilities[connectivity] = 0.0
                 self.std[connectivity] = 0.0
+                self.error[connectivity] = 0.0
 
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
 
@@ -97,6 +102,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
             "concentrations": self.concentrations,
             "percolation_probabilities": self.percolation_probabilities,
             "std": self.std,
+            "error": self.error,
         }
 
     def print_to_file(self) -> None:
@@ -113,8 +119,9 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
                     connectivity, 0.0
                 )
                 std = output["std"].get(connectivity, 0.0)
+                error = output["error"].get(connectivity, 0.0)
                 f.write(
-                    f"{connectivity},{concentration},{percolation_probability},{std}\n"
+                    f"{connectivity},{concentration},{percolation_probability},{std},{error}\n"
                 )
         remove_duplicate_lines(path)
 
@@ -137,7 +144,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(
-                "# Connectivity_type,Concentration,Percolation_probability,Standard_deviation_ddof=1\n"
+                "# Connectivity_type,Concentration,Percolation_probability,Standard_deviation_ddof=1,Standard_error_ddof=1\n"
             )
 
     def __str__(self) -> str:

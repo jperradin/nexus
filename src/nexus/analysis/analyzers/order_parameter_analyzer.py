@@ -28,6 +28,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
         # Public attributes to hold the final, aggregated results
         self.order_parameters: Dict[str, float] = {}
         self.std: Dict[str, float] = {}
+        self.error: Dict[str, float] = {}
         self.concentrations: Dict[str, float] = {}
 
         # A flag to ensure final calculations are only performed once
@@ -84,13 +85,18 @@ class OrderParameterAnalyzer(BaseAnalyzer):
                 self.order_parameters[connectivity] = np.mean(params)
                 if len(params) > 1:
                     self.std[connectivity] = np.std(params, ddof=1)
+                    self.error[connectivity] = self.std[connectivity] / np.sqrt(
+                        len(params)
+                    )
                 else:
                     self.std[connectivity] = 0.0
             else:
                 self.order_parameters[connectivity] = 0.0
                 self.std[connectivity] = 0.0
+                self.error[connectivity] = 0.0
 
             self.std[connectivity] = np.nan_to_num(self.std[connectivity])
+            self.error[connectivity] = np.nan_to_num(self.error[connectivity])
 
         for connectivity, concs in self._raw_concentrations.items():
             self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
@@ -104,6 +110,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
             "concentrations": self.concentrations,
             "order_parameters": self.order_parameters,
             "std": self.std,
+            "error": self.error,
         }
 
     def print_to_file(self) -> None:
@@ -116,7 +123,10 @@ class OrderParameterAnalyzer(BaseAnalyzer):
                 concentration = output["concentrations"].get(connectivity, 0.0)
                 order_parameter = output["order_parameters"].get(connectivity, 0.0)
                 std = output["std"].get(connectivity, 0.0)
-                f.write(f"{connectivity},{concentration},{order_parameter},{std}\n")
+                error = output["error"].get(connectivity, 0.0)
+                f.write(
+                    f"{connectivity},{concentration},{order_parameter},{std},{error}\n"
+                )
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
@@ -136,7 +146,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(
-                "# Connectivity_type,Concentration,Order_parameter,Standard_deviation_ddof=1\n"
+                "# Connectivity_type,Concentration,Order_parameter,Standard_deviation_ddof=1,Standard_error_ddof=1\n"
             )
 
     def __str__(self) -> str:

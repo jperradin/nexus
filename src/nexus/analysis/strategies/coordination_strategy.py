@@ -3,6 +3,7 @@ from scipy.spatial import cKDTree
 import numpy as np
 import os
 from tqdm import tqdm
+import shutil
 
 # Internal imports
 from ...core.node import Node
@@ -172,7 +173,7 @@ class CoordinationStrategy(BaseClusteringStrategy):
         progress_bar_kwargs = {
             "disable": not self._settings.verbose,
             "leave": False,
-            "ncols": os.get_terminal_size().columns,
+            "ncols": shutil.get_terminal_size().columns,
             "colour": "blue"
         }
         progress_bar = tqdm(networking_nodes, desc=f"Finding clusters {connectivity} ...", **progress_bar_kwargs)

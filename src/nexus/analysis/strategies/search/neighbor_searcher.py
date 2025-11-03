@@ -3,6 +3,7 @@ from scipy.spatial import cKDTree
 from tqdm import tqdm
 import os
 from typing import List
+import shutil
 
 from ....core.node import Node
 from ....core.frame import Frame
@@ -50,7 +51,7 @@ class NeighborSearcher:
         progress_bar_kwargs = {
             "disable": not self.settings.verbose,
             "leave": False,
-            "ncols": os.get_terminal_size().columns,
+            "ncols": shutil.get_terminal_size().columns,
             "colour": "green"
         }
         

@@ -3,6 +3,7 @@ import numpy as np
 import os
 from scipy.sparse.csgraph import breadth_first_order
 from tqdm import tqdm
+import shutil
 
 # Internal imports
 from .node import Node
@@ -313,7 +314,7 @@ class Cluster:
         dict_positions = {root_node.node_id: root_node.position}
         visited_nodes = {root_node.node_id}
 
-        progress_bar_kwargs = {"disable": not self.settings.verbose, "leave": False, "ncols": os.get_terminal_size().columns, "colour": "magenta"}
+        progress_bar_kwargs = {"disable": not self.settings.verbose, "leave": False, "ncols": shutil.get_terminal_size().columns, "colour": "magenta"}
         pbar_desc = f"Unwrapping cluster {self.root_id} ({self.connectivity})"
         pbar = tqdm(total=self.size, desc=pbar_desc, **progress_bar_kwargs)
         pbar.update(1)

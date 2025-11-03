@@ -5,6 +5,7 @@ from datetime import datetime
 import psutil
 import uuid
 import time
+import shutil
 
 from .config.settings import Settings
 from .io.reader.reader_factory import ReaderFactory
@@ -80,7 +81,7 @@ def main(settings: Settings):
     progress_bar_kwargs = {
         "disable": not settings.verbose,
         "leave": True,
-        "ncols": os.get_terminal_size().columns,
+        "ncols": shutil.get_terminal_size().columns,
         "colour": "red",
     }
 

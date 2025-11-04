@@ -83,6 +83,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
                     )
                 else:
                     self.std[connectivity] = 0.0
+                    self.error[connectivity] = 0.0
             else:
                 self.percolation_probabilities[connectivity] = 0.0
                 self.std[connectivity] = 0.0

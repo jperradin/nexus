@@ -57,17 +57,35 @@ class SharedStrategy(BaseClusteringStrategy):
         else:
             node.set_coordination(len([n for n in node.neighbors if n.symbol == mode]))
 
-    def get_number_of_shared(self, node_1: Node, node_2: Node) -> int:
+    def calculate_number_of_shared(self, coordination_range: List) -> int:
+        # Calculate the number of shared neighbors between two nodes, account only the number of shared superior to the threshold
+        # TEMPORARY IMPLEMENTATION, IMPLEMENT MODE OPTIONS LATER
         mode = self._settings.clustering.shared_mode
-
-        if mode == 'all_types':
-            return len([n for n in node_1.neighbors if n in node_2.neighbors])
-        elif mode == 'same_type':
-            return len([n for n in node_1.neighbors if n.symbol == node_1.symbol and n in node_2.neighbors])
-        elif mode == 'different_type':
-            return len([n for n in node_1.neighbors if n.symbol != node_1.symbol and n in node_2.neighbors])
-        else:
-            return len([n for n in node_1.neighbors if n.symbol == mode and n in node_2.neighbors])
+        network_nodes = [n for n in self._nodes if n.symbol in [self._settings.clustering.connectivity[0], self._settings.clustering.connectivity[-1]] and n.coordination in coordination_range]
+        networking_nodes = []
+        for i, node in enumerate(network_nodes):
+            if node.symbol in [self._settings.clustering.connectivity[0], self._settings.clustering.connectivity[-1]]:
+                unique_bond = []
+                for neighbor in node.neighbors:
+                    if neighbor.symbol ==  self._settings.clustering.connectivity[1]:
+                        for second_neighbor in neighbor.neighbors:
+                            if second_neighbor.symbol in [self._settings.clustering.connectivity[0], self._settings.clustering.connectivity[-1]]:
+                                unique_bond.append(second_neighbor.node_id)
+                _, counts = np.unique(unique_bond, return_counts=True)
+                for c in counts:
+                    if c >= self._settings.clustering.shared_threshold:
+                        if node not in networking_nodes:
+                            networking_nodes.append(node)
+                        break
+        return networking_nodes
+        # if mode == 'all_types':
+        #     shared = len([n for n in node_1.neighbors if n in node_2.neighbors])
+        # elif mode == 'same_type':
+        #     return len([n for n in node_1.neighbors if n.symbol == node_1.symbol and n in node_2.neighbors])
+        # elif mode == 'different_type':
+        #     return len([n for n in node_1.neighbors if n.symbol != node_1.symbol and n in node_2.neighbors])
+        # else:
+        #     return len([n for n in node_1.neighbors if n.symbol == mode and n in node_2.neighbors])
 
     def find(self, node: Node) -> Node:
         if node.parent != node:
@@ -145,10 +163,16 @@ class SharedStrategy(BaseClusteringStrategy):
     def build_clusters(self) -> None:
         # Select the networking nodes based on clustering settings
         # 1 - check node types
-        if self._settings.clustering.criterion == 'bond':
-            networking_nodes = [node for node in self._nodes if node.symbol in self._settings.clustering.node_types and node.symbol != self._settings.clustering.connectivity[1]]
+        lbound = self._settings.clustering.coordination_range[0]
+        ubound = self._settings.clustering.coordination_range[1]
+        if lbound == ubound:
+            coordination_range = np.array([lbound])
         else:
-            networking_nodes = [node for node in self._nodes if node.symbol in self._settings.clustering.node_types]
+            coordination_range = np.arange(lbound, ubound + 1)
+        if self._settings.clustering.criterion == 'bond':
+            networking_nodes = self.calculate_number_of_shared(coordination_range)
+        else:
+            raise NotImplementedError("SharedStrategy currently supports only 'bond' criterion for clustering.")
         
         # 2 - generate connectivities based on coordination number range
         connectivities = self.get_connectivities()
@@ -193,13 +217,13 @@ class SharedStrategy(BaseClusteringStrategy):
                 for neighbor in node.neighbors:
                     if neighbor.symbol == type2:
                         for neighbor2 in neighbor.neighbors:
+                            if neighbor2 == node:
+                                continue
                             if self._search_mode == "default":
                                 if (node.symbol == type1 and neighbor2.symbol == type3) and (node.coordination in coordination_range and neighbor2.coordination in coordination_range):
-                                    if self.get_number_of_shared(node, neighbor2) >= self._settings.clustering.shared_threshold:
                                         self.union(neighbor2, node)
                             else:
                                 if (node.symbol == type1 and neighbor2.symbol == type3) and (node.coordination == z1 and neighbor2.coordination == z2):
-                                    if self.get_number_of_shared(node, neighbor2) >= self._settings.clustering.shared_threshold:
                                         self.union(neighbor2, node)
         
         elif self._settings.clustering.criterion == 'distance':
@@ -210,11 +234,9 @@ class SharedStrategy(BaseClusteringStrategy):
                 for neighbor in node.neighbors:
                     if self._search_mode == "default":
                         if (node.symbol == type1 and neighbor.symbol == type2) and (node.coordination in coordination_range and neighbor.coordination in coordination_range):
-                            if self.get_number_of_shared(node, neighbor) >= self._settings.clustering.shared_threshold:
                                 self.union(neighbor, node)
                     else:
                         if (node.symbol == type1 and neighbor.symbol == type2) and (node.coordination == z1 and neighbor.coordination == z2):
-                            if self.get_number_of_shared(node, neighbor) >= self._settings.clustering.shared_threshold:
                                 self.union(neighbor, node)
         
         clusters_found = {}

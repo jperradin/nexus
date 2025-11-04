@@ -90,6 +90,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
                     )
                 else:
                     self.std[connectivity] = 0.0
+                    self.error[connectivity] = 0.0
             else:
                 self.order_parameters[connectivity] = 0.0
                 self.std[connectivity] = 0.0

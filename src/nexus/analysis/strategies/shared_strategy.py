@@ -69,14 +69,18 @@ class SharedStrategy(BaseClusteringStrategy):
                 for neighbor in node.neighbors:
                     if neighbor.symbol ==  self._settings.clustering.connectivity[1]:
                         for second_neighbor in neighbor.neighbors:
+                            if second_neighbor == node:
+                                continue
                             if second_neighbor.symbol in [self._settings.clustering.connectivity[0], self._settings.clustering.connectivity[-1]]:
                                 unique_bond.append(second_neighbor.node_id)
                 _, counts = np.unique(unique_bond, return_counts=True)
+                counter = 0
                 for c in counts:
                     if c >= self._settings.clustering.shared_threshold:
-                        if node not in networking_nodes:
-                            networking_nodes.append(node)
-                        break
+                        counter += 1
+                if counter >= 2:
+                    if node not in networking_nodes:
+                        networking_nodes.append(node)
         return networking_nodes
         # if mode == 'all_types':
         #     shared = len([n for n in node_1.neighbors if n in node_2.neighbors])

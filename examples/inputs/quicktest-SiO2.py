@@ -58,6 +58,7 @@ config_clustering = c.ClusteringSettings(
 config_analysis = c.AnalysisSettings(
     with_all=True,
 )
+config_analysis.overwrite = False  # Overwrite previous results
 
 # Build Settings object
 settings = (

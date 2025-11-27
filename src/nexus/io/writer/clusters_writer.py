@@ -108,6 +108,8 @@ class ClustersWriter(BaseWriter):
                     cluster_map, unique_ids = self._write_cluster_atoms(xyz_file, cluster, current_local_index, unique_ids)
                     current_local_index += len(cluster_map)
                     self._write_cluster_bonds(bonds_file, cluster, cluster_map)
+        # debug
+        hold = 1
             
     def _write_individual(self) -> None:
         path = os.path.join(self._settings.export_directory, "unwrapped_clusters")

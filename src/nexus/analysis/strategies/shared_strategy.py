@@ -211,6 +211,7 @@ class SharedStrategy(BaseClusteringStrategy):
             "colour": "blue"
         }
         progress_bar = tqdm(networking_nodes, desc=f"Finding clusters {connectivity} ...", **progress_bar_kwargs)
+        indices = [node.node_id for node in networking_nodes]
 
         if self._settings.clustering.criterion == 'bond':
             type1 = self._settings.clustering.connectivity[0]
@@ -222,6 +223,8 @@ class SharedStrategy(BaseClusteringStrategy):
                     if neighbor.symbol == type2:
                         for neighbor2 in neighbor.neighbors:
                             if neighbor2 == node:
+                                continue
+                            if neighbor2.node_id not in indices:
                                 continue
                             if self._search_mode == "default":
                                 if (node.symbol == type1 and neighbor2.symbol == type3) and (node.coordination in coordination_range and neighbor2.coordination in coordination_range):

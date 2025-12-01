@@ -1,0 +1,5 @@
+# Average Cluster Size Results
+# Date: 2025-11-29 14:46:15.679121
+# Frames averaged: 100
+# Connectivity_type,Concentration,Average_cluster_size,Standard_deviation_ddof=1,Standard_error_ddof=1
+1-1,0.9359996288655245,10.85892516627512,8.760287273931391,0.8760287273931391

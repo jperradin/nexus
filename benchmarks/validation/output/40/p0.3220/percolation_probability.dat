@@ -1,0 +1,5 @@
+# Percolation Probability Results
+# Date: 2025-11-29 16:54:03.427196
+# Frames averaged: 100
+# Connectivity_type,Concentration,Percolation_probability,Standard_deviation_ddof=1,Standard_error_ddof=1
+1-1,0.9028425084513327,0.62,0.4878317312145633,0.04878317312145633

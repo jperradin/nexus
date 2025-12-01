@@ -1,0 +1,1449 @@
+# Grace project file
+#
+@version 50125
+@page size 842, 595
+@page scroll 5%
+@page inout 5%
+@link page off
+@map font 8 to "Courier", "Courier"
+@map font 10 to "Courier-Bold", "Courier-Bold"
+@map font 11 to "Courier-BoldOblique", "Courier-BoldOblique"
+@map font 9 to "Courier-Oblique", "Courier-Oblique"
+@map font 4 to "Helvetica", "Helvetica"
+@map font 6 to "Helvetica-Bold", "Helvetica-Bold"
+@map font 7 to "Helvetica-BoldOblique", "Helvetica-BoldOblique"
+@map font 5 to "Helvetica-Oblique", "Helvetica-Oblique"
+@map font 22 to "NimbusMonoPS-Bold", "NimbusMonoPS-Bold"
+@map font 23 to "NimbusMonoPS-BoldItalic", "NimbusMonoPS-BoldItalic"
+@map font 24 to "NimbusMonoPS-Italic", "NimbusMonoPS-Italic"
+@map font 25 to "NimbusMonoPS-Regular", "NimbusMonoPS-Regular"
+@map font 26 to "NimbusRoman-Bold", "NimbusRoman-Bold"
+@map font 27 to "NimbusRoman-BoldItalic", "NimbusRoman-BoldItalic"
+@map font 28 to "NimbusRoman-Italic", "NimbusRoman-Italic"
+@map font 29 to "NimbusRoman-Regular", "NimbusRoman-Regular"
+@map font 34 to "NimbusSans-Bold", "NimbusSans-Bold"
+@map font 35 to "NimbusSans-BoldItalic", "NimbusSans-BoldItalic"
+@map font 36 to "NimbusSans-Italic", "NimbusSans-Italic"
+@map font 37 to "NimbusSans-Regular", "NimbusSans-Regular"
+@map font 46 to "NimbusSansNarrow-Bold", "NimbusSansNarrow-Bold"
+@map font 47 to "NimbusSansNarrow-BoldOblique", "NimbusSansNarrow-BoldOblique"
+@map font 48 to "NimbusSansNarrow-Oblique", "NimbusSansNarrow-Oblique"
+@map font 49 to "NimbusSansNarrow-Regular", "NimbusSansNarrow-Regular"
+@map font 50 to "P052-Bold", "P052-Bold"
+@map font 51 to "P052-BoldItalic", "P052-BoldItalic"
+@map font 52 to "P052-Italic", "P052-Italic"
+@map font 53 to "P052-Roman", "P052-Roman"
+@map font 55 to "StandardSymbolsPS-Regular", "StandardSymbolsPS-Regular"
+@map font 12 to "Symbol", "Symbol"
+@map font 2 to "Times-Bold", "Times-Bold"
+@map font 3 to "Times-BoldItalic", "Times-BoldItalic"
+@map font 1 to "Times-Italic", "Times-Italic"
+@map font 0 to "Times-Roman", "Times-Roman"
+@map font 61 to "URWBookman-Demi", "URWBookman-Demi"
+@map font 62 to "URWBookman-DemiItalic", "URWBookman-DemiItalic"
+@map font 63 to "URWBookman-Light", "URWBookman-Light"
+@map font 64 to "URWBookman-LightItalic", "URWBookman-LightItalic"
+@map font 70 to "URWGothic-Book", "URWGothic-Book"
+@map font 71 to "URWGothic-BookOblique", "URWGothic-BookOblique"
+@map font 72 to "URWGothic-Demi", "URWGothic-Demi"
+@map font 73 to "URWGothic-DemiOblique", "URWGothic-DemiOblique"
+@map font 82 to "Z003-MediumItalic", "Z003-MediumItalic"
+@map font 13 to "ZapfDingbats", "ZapfDingbats"
+@map color 0 to (255, 255, 255), "white"
+@map color 1 to (0, 0, 0), "black"
+@map color 2 to (105, 105, 105), "dimgray"
+@map color 3 to (128, 128, 128), "darkgray"
+@map color 4 to (169, 169, 169), "gray"
+@map color 5 to (192, 192, 192), "silver"
+@map color 6 to (211, 211, 211), "lightgray"
+@map color 7 to (220, 220, 220), "gainsboro"
+@map color 8 to (245, 245, 245), "whitesmoke"
+@map color 9 to (188, 143, 143), "rosybrown"
+@map color 10 to (240, 128, 128), "lightcoral"
+@map color 11 to (205, 92, 92), "indianred"
+@map color 12 to (165, 42, 42), "brown"
+@map color 13 to (178, 34, 34), "firebrick"
+@map color 14 to (139, 0, 0), "darkred"
+@map color 15 to (255, 0, 0), "red"
+@map color 16 to (255, 228, 225), "salmon"
+@map color 17 to (255, 99, 71), "tomato"
+@map color 18 to (233, 150, 122), "darksalmon"
+@map color 19 to (250, 128, 114), "coral"
+@map color 20 to (255, 69, 0), "orangered"
+@map color 21 to (255, 160, 122), "lightsalmon"
+@map color 22 to (160, 82, 45), "sienna"
+@map color 23 to (255, 245, 238), "seashell"
+@map color 24 to (210, 105, 30), "chocolate"
+@map color 25 to (139, 69, 19), "saddlebrown"
+@map color 26 to (244, 164, 96), "sandybrown"
+@map color 27 to (255, 218, 185), "peachpuff"
+@map color 28 to (205, 133, 63), "peru"
+@map color 29 to (250, 240, 230), "linen"
+@map color 30 to (255, 228, 196), "bisque"
+@map color 31 to (255, 140, 0), "darkorange"
+@map color 32 to (222, 184, 135), "burlywood"
+@map color 33 to (250, 235, 215), "antiquewhite"
+@map color 34 to (210, 180, 140), "tan"
+@map color 35 to (255, 222, 173), "navajowhite"
+@map color 36 to (255, 235, 205), "blanchedalmond"
+@map color 37 to (255, 239, 213), "papayawhip"
+@map color 38 to (255, 228, 181), "moccasin"
+@map color 39 to (255, 165, 0), "orange"
+@map color 40 to (245, 222, 179), "wheat"
+@map color 41 to (250, 240, 230), "oldlace"
+@map color 42 to (255, 250, 240), "floralwhite"
+@map color 43 to (184, 134, 11), "darkgoldenrod"
+@map color 44 to (218, 165, 32), "goldenrod"
+@map color 45 to (255, 248, 220), "cornsilk"
+@map color 46 to (255, 215, 0), "gold"
+@map color 47 to (255, 250, 205), "lemonchiffon"
+@map color 48 to (240, 230, 140), "khaki"
+@map color 49 to (238, 232, 170), "palegoldenrod"
+@map color 50 to (189, 183, 107), "darkkhaki"
+@map color 51 to (255, 255, 240), "ivory"
+@map color 52 to (245, 245, 220), "beige"
+@map color 53 to (255, 255, 224), "lightyellow"
+@map color 54 to (250, 250, 210), "lightgoldenrodyellow"
+@map color 55 to (128, 128, 0), "olive"
+@map color 56 to (255, 255, 0), "yellow"
+@map color 57 to (107, 142, 35), "olivedrab"
+@map color 58 to (154, 205, 50), "yellowgreen"
+@map color 59 to (85, 107, 47), "darkolivegreen"
+@map color 60 to (173, 255, 47), "greenyellow"
+@map color 61 to (127, 255, 0), "chartreuse"
+@map color 62 to (124, 252, 0), "lawngreen"
+@map color 63 to (240, 255, 240), "honeydew"
+@map color 64 to (143, 188, 143), "darkseagreen"
+@map color 65 to (152, 251, 152), "palegreen"
+@map color 66 to (144, 238, 144), "lightgreen"
+@map color 67 to (34, 139, 34), "forestgreen"
+@map color 68 to (50, 205, 50), "limegreen"
+@map color 69 to (0, 100, 0), "darkgreen"
+@map color 70 to (0, 128, 0), "green"
+@map color 71 to (0, 255, 0), "lime"
+@map color 72 to (46, 139, 87), "seagreen"
+@map color 73 to (60, 179, 113), "mediumseagreen"
+@map color 74 to (0, 255, 127), "springgreen"
+@map color 75 to (245, 255, 250), "mintcream"
+@map color 76 to (0, 250, 154), "mediumspringgreen"
+@map color 77 to (102, 205, 170), "mediumaquamarine"
+@map color 78 to (127, 255, 212), "aquamarine"
+@map color 79 to (64, 224, 208), "turquoise"
+@map color 80 to (32, 178, 170), "lightseagreen"
+@map color 81 to (72, 209, 204), "mediumturquoise"
+@map color 82 to (240, 255, 255), "azure"
+@map color 83 to (224, 255, 255), "lightcyan"
+@map color 84 to (175, 238, 238), "paleturquoise"
+@map color 85 to (47, 79, 79), "darkslategray"
+@map color 86 to (0, 128, 128), "teal"
+@map color 87 to (0, 139, 139), "darkcyan"
+@map color 88 to (0, 255, 255), "aqua"
+@map color 89 to (0, 255, 255), "aqua"
+@map color 90 to (0, 206, 209), "darkturquoise"
+@map color 91 to (95, 158, 160), "cadetblue"
+@map color 92 to (176, 224, 230), "powderblue"
+@map color 93 to (173, 216, 230), "lightblue"
+@map color 94 to (0, 191, 255), "deepskyblue"
+@map color 95 to (135, 206, 235), "skyblue"
+@map color 96 to (135, 206, 250), "lightskyblue"
+@map color 97 to (70, 130, 180), "steelblue"
+@map color 98 to (240, 248, 255), "aliceblue"
+@map color 99 to (30, 144, 255), "dodgerblue"
+@map color 100 to (119, 136, 153), "lightslategray"
+@map color 101 to (112, 128, 144), "slategray"
+@map color 102 to (176, 196, 222), "lightsteelblue"
+@map color 103 to (100, 149, 237), "cornflowerblue"
+@map color 104 to (65, 105, 225), "royalblue"
+@map color 105 to (248, 248, 255), "ghostwhite"
+@map color 106 to (230, 230, 250), "lavender"
+@map color 107 to (25, 25, 112), "midnightblue"
+@map color 108 to (0, 0, 128), "navy"
+@map color 109 to (0, 0, 139), "darkblue"
+@map color 110 to (0, 0, 205), "mediumblue"
+@map color 111 to (0, 0, 255), "blue"
+@map color 112 to (106, 90, 205), "slateblue"
+@map color 113 to (72, 61, 139), "darkslateblue"
+@map color 114 to (123, 104, 238), "mediumslateblue"
+@map color 115 to (147, 112, 219), "mediumpurple"
+@map color 116 to (102, 51, 153), "rebeccapurple"
+@map color 117 to (138, 43, 226), "blueviolet"
+@map color 118 to (75, 0, 130), "indigo"
+@map color 119 to (153, 50, 204), "darkorchid"
+@map color 120 to (148, 0, 211), "darkviolet"
+@map color 121 to (186, 85, 211), "mediumorchid"
+@map color 122 to (216, 191, 216), "thistle"
+@map color 123 to (221, 160, 221), "plum"
+@map color 124 to (238, 130, 238), "violet"
+@map color 125 to (128, 0, 128), "purple"
+@map color 126 to (139, 0, 139), "darkmagenta"
+@map color 127 to (255, 0, 255), "magenta"
+@map color 128 to (255, 0, 255), "fuchsia"
+@map color 129 to (218, 112, 214), "orchid"
+@map color 130 to (218, 112, 214), "mediumvioletred"
+@map color 131 to (255, 20, 147), "deepink"
+@map color 132 to (255, 240, 245), "lavenderblush"
+@map color 133 to (219, 112, 147), "palevioletred"
+@map color 134 to (220, 20, 60), "crimson"
+@map color 135 to (255, 192, 203), "pink"
+@map color 136 to (255, 182, 193), "lightpink"
+@reference date 0
+@date wrap off
+@date wrap year 1950
+@default linewidth 1.0
+@default linestyle 1
+@default color 1
+@default pattern 1
+@default font 0
+@default char size 1.000000
+@default symbol size 1.000000
+@default sformat "%.8g"
+@background color 0
+@page background fill on
+@timestamp off
+@timestamp 0.03, 0.03
+@timestamp color 1
+@timestamp rot 0
+@timestamp font 0
+@timestamp char size 1.000000
+@timestamp def "Sun Nov 30 19:03:43 2025"
+@r0 off
+@link r0 to g0
+@r0 type above
+@r0 linestyle 1
+@r0 linewidth 1.0
+@r0 color 1
+@r0 line 0, 0, 0, 0
+@r1 off
+@link r1 to g0
+@r1 type above
+@r1 linestyle 1
+@r1 linewidth 1.0
+@r1 color 1
+@r1 line 0, 0, 0, 0
+@r2 off
+@link r2 to g0
+@r2 type above
+@r2 linestyle 1
+@r2 linewidth 1.0
+@r2 color 1
+@r2 line 0, 0, 0, 0
+@r3 off
+@link r3 to g0
+@r3 type above
+@r3 linestyle 1
+@r3 linewidth 1.0
+@r3 color 1
+@r3 line 0, 0, 0, 0
+@r4 off
+@link r4 to g0
+@r4 type above
+@r4 linestyle 1
+@r4 linewidth 1.0
+@r4 color 1
+@r4 line 0, 0, 0, 0
+@g0 on
+@g0 hidden false
+@g0 type XY
+@g0 stacked false
+@g0 bar hgap 0.000000
+@g0 fixedpoint off
+@g0 fixedpoint type 0
+@g0 fixedpoint xy 0.000000, 0.000000
+@g0 fixedpoint format general general
+@g0 fixedpoint prec 6, 6
+@with g0
+@    world 18.1134009, 320.258009, 55.2077439, 3930.97245
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view 0.120000, 0.570000, 0.650000, 0.978198
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Logarithmic
+@    yaxes scale Logarithmic
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label "L"
+@    xaxis  label layout para
+@    xaxis  label place spec
+@    xaxis  label place 0.000000, 0.055000
+@    xaxis  label char size 1.230000
+@    xaxis  label font 4
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 10
+@    xaxis  tick minor ticks 9
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 2.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 2.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 0.990000
+@    xaxis  ticklabel font 4
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type both
+@    xaxis  tick spec 11
+@    xaxis  tick major 0, 10
+@    xaxis  ticklabel 0, "10"
+@    xaxis  tick major 1, 20
+@    xaxis  ticklabel 1, "20"
+@    xaxis  tick major 2, 30
+@    xaxis  ticklabel 2, "30"
+@    xaxis  tick major 3, 40
+@    xaxis  ticklabel 3, "40"
+@    xaxis  tick major 4, 50
+@    xaxis  ticklabel 4, "50"
+@    xaxis  tick minor 5, 60
+@    xaxis  tick minor 6, 70
+@    xaxis  tick minor 7, 80
+@    xaxis  tick minor 8, 90
+@    xaxis  tick minor 9, 100
+@    xaxis  tick major 10, 100
+@    xaxis  ticklabel 10, "100"
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label "\x\ca\C\f{}S\x\cq\C\f{}"
+@    yaxis  label layout para
+@    yaxis  label place spec
+@    yaxis  label place 0.000000, 0.085000
+@    yaxis  label char size 1.310000
+@    yaxis  label font 4
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 10
+@    yaxis  tick minor ticks 9
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 2.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 2.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 0.990000
+@    yaxis  ticklabel font 4
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type both
+@    yaxis  tick spec 21
+@    yaxis  tick major 0, 100
+@    yaxis  ticklabel 0, "100"
+@    yaxis  tick minor 1, 200
+@    yaxis  tick minor 2, 300
+@    yaxis  tick minor 3, 400
+@    yaxis  tick major 4, 500
+@    yaxis  ticklabel 4, "500"
+@    yaxis  tick minor 5, 600
+@    yaxis  tick minor 6, 700
+@    yaxis  tick minor 7, 800
+@    yaxis  tick minor 8, 900
+@    yaxis  tick minor 9, 1000
+@    yaxis  tick major 10, 1000
+@    yaxis  ticklabel 10, "1000"
+@    yaxis  tick major 11, 2000
+@    yaxis  ticklabel 11, "2000"
+@    yaxis  tick major 12, 3000
+@    yaxis  ticklabel 12, "3000"
+@    yaxis  tick minor 13, 4000
+@    yaxis  tick minor 14, 5000
+@    yaxis  tick minor 15, 6000
+@    yaxis  tick minor 16, 7000
+@    yaxis  tick minor 17, 8000
+@    yaxis  tick minor 18, 9000
+@    yaxis  tick minor 19, 10000
+@    yaxis  tick major 20, 10000
+@    yaxis  ticklabel 20, "10000"
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend 0.145928838754, 0.958976830431
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 0
+@    legend box fill color 0
+@    legend box fill pattern 1
+@    legend font 5
+@    legend char size 0.950000
+@    legend color 1
+@    legend length 7
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 2.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xydy
+@    s0 symbol 1
+@    s0 symbol size 0.870000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 15
+@    s0 symbol fill pattern 1
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 1
+@    s0 line linewidth 1.5
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/jperradin/repos/nexus/benchmarks/validation/output/scaling_laws/fit-average_cluster_size.dat"
+@    s0 legend  "\x\ca\C\f{}S\x\cq\C\f{}(L\sc\N)"
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 0
+@    s1 symbol size 0.560000
+@    s1 symbol color 1
+@    s1 symbol pattern 1
+@    s1 symbol fill color 1
+@    s1 symbol fill pattern 1
+@    s1 symbol linewidth 1.0
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 3
+@    s1 line linewidth 3.0
+@    s1 line color 1
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 1
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "validation2.agr"
+@    s1 legend  "fit \xg/n\f{} = 2.09 \x\c1\C\f{} 0.12"
+@g1 on
+@g1 hidden false
+@g1 type XY
+@g1 stacked false
+@g1 bar hgap 0.000000
+@g1 fixedpoint off
+@g1 fixedpoint type 0
+@g1 fixedpoint xy 0.000000, 0.000000
+@g1 fixedpoint format general general
+@g1 fixedpoint prec 6, 6
+@with g1
+@    world 18.1134009262, 11.1557815, 55.2077439281, 44.9262325
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view 0.770000, 0.570000, 1.300000, 0.981105
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Logarithmic
+@    yaxes scale Logarithmic
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label "L"
+@    xaxis  label layout para
+@    xaxis  label place spec
+@    xaxis  label place 0.000000, 0.055000
+@    xaxis  label char size 1.230000
+@    xaxis  label font 4
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 10
+@    xaxis  tick minor ticks 9
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 2.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 2.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 0.990000
+@    xaxis  ticklabel font 4
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type both
+@    xaxis  tick spec 11
+@    xaxis  tick major 0, 10
+@    xaxis  ticklabel 0, "10"
+@    xaxis  tick major 1, 20
+@    xaxis  ticklabel 1, "20"
+@    xaxis  tick major 2, 30
+@    xaxis  ticklabel 2, "30"
+@    xaxis  tick major 3, 40
+@    xaxis  ticklabel 3, "40"
+@    xaxis  tick major 4, 50
+@    xaxis  ticklabel 4, "50"
+@    xaxis  tick minor 5, 60
+@    xaxis  tick minor 6, 70
+@    xaxis  tick minor 7, 80
+@    xaxis  tick minor 8, 90
+@    xaxis  tick minor 9, 100
+@    xaxis  tick major 10, 100
+@    xaxis  ticklabel 10, "100"
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label "\xx"
+@    yaxis  label layout para
+@    yaxis  label place spec
+@    yaxis  label place 0.000000, 0.085000
+@    yaxis  label char size 1.310000
+@    yaxis  label font 4
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 10
+@    yaxis  tick minor ticks 9
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 2.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 2.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 0.990000
+@    yaxis  ticklabel font 4
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type both
+@    yaxis  tick spec 11
+@    yaxis  tick major 0, 10
+@    yaxis  ticklabel 0, "10"
+@    yaxis  tick major 1, 20
+@    yaxis  ticklabel 1, "20"
+@    yaxis  tick major 2, 30
+@    yaxis  ticklabel 2, "30"
+@    yaxis  tick major 3, 40
+@    yaxis  ticklabel 3, "40"
+@    yaxis  tick minor 4, 50
+@    yaxis  tick minor 5, 60
+@    yaxis  tick minor 6, 70
+@    yaxis  tick minor 7, 80
+@    yaxis  tick minor 8, 90
+@    yaxis  tick minor 9, 100
+@    yaxis  tick major 10, 100
+@    yaxis  ticklabel 10, "100"
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend 0.809232748, 0.945105457
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 0
+@    legend box fill color 0
+@    legend box fill pattern 1
+@    legend font 5
+@    legend char size 0.950000
+@    legend color 1
+@    legend length 6
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 2.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xydy
+@    s0 symbol 1
+@    s0 symbol size 0.870000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 111
+@    s0 symbol fill pattern 1
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 1
+@    s0 line linewidth 1.5
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/jperradin/repos/nexus/benchmarks/validation/output/scaling_laws/fit-correlation_length.dat"
+@    s0 legend  "\xx\f{}(L\sc\N)"
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 0
+@    s1 symbol size 0.560000
+@    s1 symbol color 1
+@    s1 symbol pattern 1
+@    s1 symbol fill color 1
+@    s1 symbol fill pattern 1
+@    s1 symbol linewidth 1.0
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 3
+@    s1 line linewidth 3.0
+@    s1 line color 1
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 1
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "validation2.agr"
+@    s1 legend  "fit a = 1.00 \x\c1\C\f{} 0.05"
+@g2 on
+@g2 hidden false
+@g2 type XY
+@g2 stacked false
+@g2 bar hgap 0.000000
+@g2 fixedpoint off
+@g2 fixedpoint type 0
+@g2 fixedpoint xy 0.000000, 0.000000
+@g2 fixedpoint format general general
+@g2 fixedpoint prec 6, 6
+@with g2
+@    world 18.1134009262, 608.835546, 55.2077439281, 13046.6797
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view 0.770000, 0.080000, 1.300000, 0.480000
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Logarithmic
+@    yaxes scale Logarithmic
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label "L"
+@    xaxis  label layout para
+@    xaxis  label place spec
+@    xaxis  label place 0.000000, 0.055000
+@    xaxis  label char size 1.230000
+@    xaxis  label font 4
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 10
+@    xaxis  tick minor ticks 9
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 2.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 2.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 0.990000
+@    xaxis  ticklabel font 4
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type both
+@    xaxis  tick spec 11
+@    xaxis  tick major 0, 10
+@    xaxis  ticklabel 0, "10"
+@    xaxis  tick major 1, 20
+@    xaxis  ticklabel 1, "20"
+@    xaxis  tick major 2, 30
+@    xaxis  ticklabel 2, "30"
+@    xaxis  tick major 3, 40
+@    xaxis  ticklabel 3, "40"
+@    xaxis  tick major 4, 50
+@    xaxis  ticklabel 4, "50"
+@    xaxis  tick minor 5, 60
+@    xaxis  tick minor 6, 70
+@    xaxis  tick minor 7, 80
+@    xaxis  tick minor 8, 90
+@    xaxis  tick minor 9, 100
+@    xaxis  tick major 10, 100
+@    xaxis  ticklabel 10, "100"
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label "S\smax"
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 1.310000
+@    yaxis  label font 4
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 10
+@    yaxis  tick minor ticks 9
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 2.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 2.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 0.990000
+@    yaxis  ticklabel font 4
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type both
+@    yaxis  tick spec 21
+@    yaxis  tick major 0, 100
+@    yaxis  ticklabel 0, "100"
+@    yaxis  tick minor 1, 200
+@    yaxis  tick minor 2, 300
+@    yaxis  tick minor 3, 400
+@    yaxis  tick major 4, 500
+@    yaxis  ticklabel 4, "500"
+@    yaxis  tick minor 5, 600
+@    yaxis  tick minor 6, 700
+@    yaxis  tick minor 7, 800
+@    yaxis  tick minor 8, 900
+@    yaxis  tick minor 9, 1000
+@    yaxis  tick major 10, 1000
+@    yaxis  ticklabel 10, "1000"
+@    yaxis  tick major 11, 2000
+@    yaxis  ticklabel 11, "2000"
+@    yaxis  tick major 12, 3000
+@    yaxis  ticklabel 12, "3000"
+@    yaxis  tick minor 13, 4000
+@    yaxis  tick minor 14, 5000
+@    yaxis  tick minor 15, 6000
+@    yaxis  tick minor 16, 7000
+@    yaxis  tick minor 17, 8000
+@    yaxis  tick minor 18, 9000
+@    yaxis  tick minor 19, 10000
+@    yaxis  tick major 20, 10000
+@    yaxis  ticklabel 20, "10000"
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend 0.787795169665, 0.463390450144
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 0
+@    legend box fill color 0
+@    legend box fill pattern 0
+@    legend font 5
+@    legend char size 0.950000
+@    legend color 1
+@    legend length 6
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 2.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xydy
+@    s0 symbol 1
+@    s0 symbol size 0.870000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 68
+@    s0 symbol fill pattern 1
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 1
+@    s0 line linewidth 1.5
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/jperradin/repos/nexus/benchmarks/validation/output/scaling_laws/fit-spanning_cluster_size.dat"
+@    s0 legend  "S\smax\N(L\sc\N)"
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 0
+@    s1 symbol size 0.560000
+@    s1 symbol color 1
+@    s1 symbol pattern 1
+@    s1 symbol fill color 1
+@    s1 symbol fill pattern 1
+@    s1 symbol linewidth 1.0
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 3
+@    s1 line linewidth 3.0
+@    s1 line color 1
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 1
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "validation2.agr"
+@    s1 legend  "fit D\sf\N = 2.54 \x\c1\C\f{} 0.09"
+@g3 on
+@g3 hidden true
+@g3 type XY
+@g3 stacked false
+@g3 bar hgap 0.000000
+@g3 fixedpoint off
+@g3 fixedpoint type 0
+@g3 fixedpoint xy 0.000000, 0.000000
+@g3 fixedpoint format general general
+@g3 fixedpoint prec 6, 6
+@with g3
+@    world 18.1134009, 320.258009, 55.2077439, 3930.97245
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view 0.120000, 0.080000, 0.650000, 0.480000
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Logarithmic
+@    yaxes scale Logarithmic
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label "L"
+@    xaxis  label layout para
+@    xaxis  label place spec
+@    xaxis  label place 0.000000, 0.055000
+@    xaxis  label char size 1.230000
+@    xaxis  label font 4
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 10
+@    xaxis  tick minor ticks 9
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 2.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 2.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 0.990000
+@    xaxis  ticklabel font 4
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type both
+@    xaxis  tick spec 11
+@    xaxis  tick major 0, 10
+@    xaxis  ticklabel 0, "10"
+@    xaxis  tick major 1, 20
+@    xaxis  ticklabel 1, "20"
+@    xaxis  tick major 2, 30
+@    xaxis  ticklabel 2, "30"
+@    xaxis  tick major 3, 40
+@    xaxis  ticklabel 3, "40"
+@    xaxis  tick major 4, 50
+@    xaxis  ticklabel 4, "50"
+@    xaxis  tick minor 5, 60
+@    xaxis  tick minor 6, 70
+@    xaxis  tick minor 7, 80
+@    xaxis  tick minor 8, 90
+@    xaxis  tick minor 9, 100
+@    xaxis  tick major 10, 100
+@    xaxis  ticklabel 10, "100"
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label "\x\ca\C\f{}S\x\cq\C\f{}"
+@    yaxis  label layout para
+@    yaxis  label place spec
+@    yaxis  label place 0.000000, 0.085000
+@    yaxis  label char size 1.310000
+@    yaxis  label font 4
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 10
+@    yaxis  tick minor ticks 9
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 2.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 2.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 0.990000
+@    yaxis  ticklabel font 4
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type both
+@    yaxis  tick spec 21
+@    yaxis  tick major 0, 100
+@    yaxis  ticklabel 0, "100"
+@    yaxis  tick minor 1, 200
+@    yaxis  tick minor 2, 300
+@    yaxis  tick minor 3, 400
+@    yaxis  tick major 4, 500
+@    yaxis  ticklabel 4, "500"
+@    yaxis  tick minor 5, 600
+@    yaxis  tick minor 6, 700
+@    yaxis  tick minor 7, 800
+@    yaxis  tick minor 8, 900
+@    yaxis  tick minor 9, 1000
+@    yaxis  tick major 10, 1000
+@    yaxis  ticklabel 10, "1000"
+@    yaxis  tick major 11, 2000
+@    yaxis  ticklabel 11, "2000"
+@    yaxis  tick major 12, 3000
+@    yaxis  ticklabel 12, "3000"
+@    yaxis  tick minor 13, 4000
+@    yaxis  tick minor 14, 5000
+@    yaxis  tick minor 15, 6000
+@    yaxis  tick minor 16, 7000
+@    yaxis  tick minor 17, 8000
+@    yaxis  tick minor 18, 9000
+@    yaxis  tick minor 19, 10000
+@    yaxis  tick major 20, 10000
+@    yaxis  ticklabel 20, "10000"
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend 0.168627452, 0.92745098
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 0
+@    legend box fill color 0
+@    legend box fill pattern 1
+@    legend font 4
+@    legend char size 1.210000
+@    legend color 1
+@    legend length 6
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 2.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xydy
+@    s0 symbol 1
+@    s0 symbol size 0.560000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 83
+@    s0 symbol fill pattern 1
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 1
+@    s0 line linewidth 1.0
+@    s0 line color 6
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/jperradin/repos/nexus/benchmarks/validation/output/scaling_laws/fit-order_parameter.dat"
+@    s0 legend  ""
+@target G0.S0
+@type xydy
+20 412.09417 17.12529
+25 668.17834 28.60098
+30 997.55976 43.27272
+35 1334.687 63.10826
+40 1758.919 72.48491
+45 2333.1947 100.65549
+50 2749.1276 126.85906
+&
+@target G0.S1
+@type xy
+20 417.78958
+26 722.39721
+32 1114.2675
+38 1595.0051
+44 2165.9573
+50 2828.2882
+&
+@target G1.S0
+@type xydy
+20 12.88267 0.24841
+25 16.67854 0.32105
+30 19.71957 0.35149
+35 22.79761 0.45071
+40 26.26189 0.44663
+45 29.72529 0.52829
+50 32.04943 0.61795
+&
+@target G1.S1
+@type xy
+20 13.112272
+26 17.028925
+32 20.942105
+38 24.852474
+44 28.760482
+50 32.666453
+&
+@target G2.S0
+@type xydy
+20 829.59 26.03145
+25 1480.055 46.03903
+30 2383.63 72.27701
+35 3416.555 114.73914
+40 4906.03 145.38381
+45 6678.125 210.13193
+50 8404.62 279.05645
+&
+@target G2.S1
+@type xy
+20 837.5821
+26 1631.149
+32 2764.2795
+38 4277.4426
+44 6207.7135
+50 8589.5439
+&
+@target G3.S0
+@type xydy
+20 0.03987 0.01077
+25 0.01968 0.00736
+30 0.01205 0.00537
+35 0.02399 0.00746
+40 0.01643 0.00579
+45 0.01436 0.00537
+50 0.02938 0.00765
+&

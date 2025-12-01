@@ -1,0 +1,69 @@
+{
+  "id": "8ddb84a0-2dbd-4271-8372-f68767134489",
+  "name": "universal_benchmark-437400-90-run_20251129_135114",
+  "timestamp": "2025-11-29T13:51:14.485652",
+  "execution_time_ms": 1966267.643213272,
+  "memory_usage_mb": 664.484375,
+  "cpu_usage_percent": 141.8,
+  "metrics": {
+    "scan_trajectory_time_ms": 33.00309181213379,
+    "frame_number": 0,
+    "neighbor_finding_time_ms": 9746.038675308228,
+    "cluster_finding_time_ms": 1954329.3731212616,
+    "analysis_time_ms": 755.7089328765869,
+    "number_nodes": 437400,
+    "total_frames_processed": 1,
+    "memory_increase_mb": 19.96875,
+    "avg_frame_time_ms": 1965919.2078113556,
+    "avg_neighbor_time_ms": 9746.038675308228,
+    "avg_cluster_time_ms": 1954329.3731212616,
+    "avg_analysis_time_ms": 755.7089328765869,
+    "avg_number_nodes": 437400.0
+  },
+  "history": [
+    {
+      "timestamp": "2025-11-29T13:51:14.519534",
+      "execution_time_ms": null,
+      "memory_usage_mb": null,
+      "cpu_usage_percent": null,
+      "metrics": {
+        "scan_trajectory_time_ms": 33.00309181213379
+      }
+    },
+    {
+      "timestamp": "2025-11-29T14:24:00.746336",
+      "execution_time_ms": 1965919.2078113556,
+      "memory_usage_mb": 664.484375,
+      "cpu_usage_percent": 0.0,
+      "metrics": {
+        "scan_trajectory_time_ms": 33.00309181213379,
+        "frame_number": 0,
+        "neighbor_finding_time_ms": 9746.038675308228,
+        "cluster_finding_time_ms": 1954329.3731212616,
+        "analysis_time_ms": 755.7089328765869,
+        "number_nodes": 437400
+      }
+    },
+    {
+      "timestamp": "2025-11-29T14:24:00.753399",
+      "execution_time_ms": 1966267.643213272,
+      "memory_usage_mb": 664.484375,
+      "cpu_usage_percent": 141.8,
+      "metrics": {
+        "scan_trajectory_time_ms": 33.00309181213379,
+        "frame_number": 0,
+        "neighbor_finding_time_ms": 9746.038675308228,
+        "cluster_finding_time_ms": 1954329.3731212616,
+        "analysis_time_ms": 755.7089328765869,
+        "number_nodes": 437400,
+        "total_frames_processed": 1,
+        "memory_increase_mb": 19.96875,
+        "avg_frame_time_ms": 1965919.2078113556,
+        "avg_neighbor_time_ms": 9746.038675308228,
+        "avg_cluster_time_ms": 1954329.3731212616,
+        "avg_analysis_time_ms": 755.7089328765869,
+        "avg_number_nodes": 437400.0
+      }
+    }
+  ]
+}

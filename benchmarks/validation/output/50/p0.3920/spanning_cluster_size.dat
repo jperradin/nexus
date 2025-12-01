@@ -1,0 +1,5 @@
+# Spanning Cluster Size Results
+# Date: 2025-11-30 01:50:55.450852
+# Frames averaged: 100
+# Connectivity_type,Concentration,Spanning_cluster_size,Standard_deviation_ddof=1,Standard_error_ddof=1
+1-1,0.9495668233572292,43.24,13.856493937588407,1.3856493937588408

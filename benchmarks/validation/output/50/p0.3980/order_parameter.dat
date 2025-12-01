@@ -1,0 +1,5 @@
+# Order Parameter Results
+# Date: 2025-11-30 02:05:36.530670
+# Frames averaged: 100
+# Connectivity_type,Concentration,Order_parameter,Standard_deviation_ddof=1,Standard_error_ddof=1
+1-1,0.9524185735908464,0.9439260559919151,0.0033186074913174038,0.0003318607491317404

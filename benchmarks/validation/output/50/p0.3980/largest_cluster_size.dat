@@ -1,0 +1,5 @@
+# Largest Cluster Size Results
+# Date: 2025-11-30 02:05:36.524826
+# Frames averaged: 100
+# Connectivity_type,Concentration,Largest_cluster_size,Standard_deviation_ddof=1,Standard_error_ddof=1
+1-1,0.9524185735908464,44728.27,335.6006481675878,33.56006481675878

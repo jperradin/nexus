@@ -1,0 +1,9 @@
+# Cluster Size Distribution Results for 12_1-12_1
+# Date: 2025-11-28 17:33:27.020981
+# Frames averaged: 1
+# Connectivity_type,Concentration,Cluster_size,N_clusters,Standard_deviation_ddof=1
+12_1-12_1,0.05525976646402583,6,1,0.0
+12_1-12_1,0.05525976646402583,5,4,0.0
+12_1-12_1,0.05525976646402583,4,52,0.0
+12_1-12_1,0.05525976646402583,3,468,0.0
+12_1-12_1,0.05525976646402583,2,3426,0.0

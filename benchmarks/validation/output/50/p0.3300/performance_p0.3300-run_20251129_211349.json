@@ -1,0 +1,209 @@
+{
+  "id": "eb1bda49-9add-43c5-ada5-86a895163037",
+  "name": "p0.3300-run_20251129_211349",
+  "timestamp": "2025-11-29T21:13:49.566921",
+  "execution_time_ms": 1912033.6079597473,
+  "memory_usage_mb": 279.03515625,
+  "cpu_usage_percent": 243.6,
+  "metrics": {
+    "scan_trajectory_time_ms": 327.37135887145996,
+    "frame_number": 99,
+    "neighbor_finding_time_ms": 914.9253368377686,
+    "cluster_finding_time_ms": 13669.389724731445,
+    "analysis_time_ms": 41.913509368896484,
+    "number_nodes": 40980,
+    "total_frames_processed": 100,
+    "memory_increase_mb": -6.3515625,
+    "avg_frame_time_ms": 19059.85194683075,
+    "avg_neighbor_time_ms": 895.0973749160767,
+    "avg_cluster_time_ms": 18031.986520290375,
+    "avg_analysis_time_ms": 39.620091915130615,
+    "avg_number_nodes": 41248.08
+  },
+  "history": [
+    {
+      "timestamp": "2025-11-29T21:13:49.895448",
+      "execution_time_ms": null,
+      "memory_usage_mb": null,
+      "cpu_usage_percent": null,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:14:16.925391",
+      "execution_time_ms": 26972.561836242676,
+      "memory_usage_mb": 285.625,
+      "cpu_usage_percent": 0.0,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 0,
+        "neighbor_finding_time_ms": 977.0157337188721,
+        "cluster_finding_time_ms": 25896.183967590332,
+        "analysis_time_ms": 39.95466232299805,
+        "number_nodes": 41465
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:17:22.828749",
+      "execution_time_ms": 21786.85235977173,
+      "memory_usage_mb": 289.75,
+      "cpu_usage_percent": 108.3,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 10,
+        "neighbor_finding_time_ms": 947.4070072174072,
+        "cluster_finding_time_ms": 20472.692012786865,
+        "analysis_time_ms": 35.407304763793945,
+        "number_nodes": 41516
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:20:26.035840",
+      "execution_time_ms": 14267.868041992188,
+      "memory_usage_mb": 289.71484375,
+      "cpu_usage_percent": 108.0,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 20,
+        "neighbor_finding_time_ms": 881.3772201538086,
+        "cluster_finding_time_ms": 13294.151782989502,
+        "analysis_time_ms": 35.1409912109375,
+        "number_nodes": 41172
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:23:39.618259",
+      "execution_time_ms": 20039.92009162903,
+      "memory_usage_mb": 288.31640625,
+      "cpu_usage_percent": 108.8,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 30,
+        "neighbor_finding_time_ms": 855.8940887451172,
+        "cluster_finding_time_ms": 19080.71780204773,
+        "analysis_time_ms": 41.60642623901367,
+        "number_nodes": 41444
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:26:43.500134",
+      "execution_time_ms": 16771.915197372437,
+      "memory_usage_mb": 288.31640625,
+      "cpu_usage_percent": 108.6,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 40,
+        "neighbor_finding_time_ms": 910.3734493255615,
+        "cluster_finding_time_ms": 15772.411346435547,
+        "analysis_time_ms": 35.91728210449219,
+        "number_nodes": 41253
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:29:50.325289",
+      "execution_time_ms": 17223.670721054077,
+      "memory_usage_mb": 282.9765625,
+      "cpu_usage_percent": 109.1,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 50,
+        "neighbor_finding_time_ms": 908.2231521606445,
+        "cluster_finding_time_ms": 16211.658477783203,
+        "analysis_time_ms": 41.43023490905762,
+        "number_nodes": 41175
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:33:15.802703",
+      "execution_time_ms": 20081.950426101685,
+      "memory_usage_mb": 277.74609375,
+      "cpu_usage_percent": 108.1,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 60,
+        "neighbor_finding_time_ms": 896.5764045715332,
+        "cluster_finding_time_ms": 19084.715843200684,
+        "analysis_time_ms": 41.57829284667969,
+        "number_nodes": 41302
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:36:28.761790",
+      "execution_time_ms": 20814.374208450317,
+      "memory_usage_mb": 277.74609375,
+      "cpu_usage_percent": 108.2,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 70,
+        "neighbor_finding_time_ms": 1009.8316669464111,
+        "cluster_finding_time_ms": 19714.460372924805,
+        "analysis_time_ms": 36.443471908569336,
+        "number_nodes": 41322
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:39:36.829001",
+      "execution_time_ms": 15017.044305801392,
+      "memory_usage_mb": 278.77734375,
+      "cpu_usage_percent": 108.5,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 80,
+        "neighbor_finding_time_ms": 899.2571830749512,
+        "cluster_finding_time_ms": 14030.7137966156,
+        "analysis_time_ms": 44.19088363647461,
+        "number_nodes": 40988
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:42:43.232822",
+      "execution_time_ms": 15476.543188095093,
+      "memory_usage_mb": 278.77734375,
+      "cpu_usage_percent": 108.9,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 90,
+        "neighbor_finding_time_ms": 886.8935108184814,
+        "cluster_finding_time_ms": 14496.062755584717,
+        "analysis_time_ms": 39.50953483581543,
+        "number_nodes": 41071
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:45:41.559654",
+      "execution_time_ms": 14675.643682479858,
+      "memory_usage_mb": 279.03515625,
+      "cpu_usage_percent": 108.5,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 99,
+        "neighbor_finding_time_ms": 914.9253368377686,
+        "cluster_finding_time_ms": 13669.389724731445,
+        "analysis_time_ms": 41.913509368896484,
+        "number_nodes": 40980
+      }
+    },
+    {
+      "timestamp": "2025-11-29T21:45:41.600686",
+      "execution_time_ms": 1912033.6079597473,
+      "memory_usage_mb": 279.03515625,
+      "cpu_usage_percent": 243.6,
+      "metrics": {
+        "scan_trajectory_time_ms": 327.37135887145996,
+        "frame_number": 99,
+        "neighbor_finding_time_ms": 914.9253368377686,
+        "cluster_finding_time_ms": 13669.389724731445,
+        "analysis_time_ms": 41.913509368896484,
+        "number_nodes": 40980,
+        "total_frames_processed": 100,
+        "memory_increase_mb": -6.3515625,
+        "avg_frame_time_ms": 19059.85194683075,
+        "avg_neighbor_time_ms": 895.0973749160767,
+        "avg_cluster_time_ms": 18031.986520290375,
+        "avg_analysis_time_ms": 39.620091915130615,
+        "avg_number_nodes": 41248.08
+      }
+    }
+  ]
+}

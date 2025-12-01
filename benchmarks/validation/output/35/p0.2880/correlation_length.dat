@@ -1,0 +1,5 @@
+# Correlation Length Results
+# Date: 2025-11-29 15:38:23.302447
+# Frames averaged: 100
+# Connectivity_type,Concentration,Correlation_length,Standard_deviation_ddof=1,Standard_error_ddof=1
+1-1,0.8691491005630492,10.925581606693038,2.614816501439168,0.26148165014391683

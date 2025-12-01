@@ -3,7 +3,6 @@ __pycache__/
 archive/
 dist/
 build/
-benchmarks/
 tools/
 examples/outputs/*
 examples/inputs/ordinary_percolation/
@@ -12,3 +11,5 @@ examples/inputs/nexus_inputs_all
 examples/inputs/quicktest-perco.py
 nexus_cat.egg-info
 .vscode/
+benchmarks/validation/data.tar.gz
+benchmarks/validation/snapshot.png

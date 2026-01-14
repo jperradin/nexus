@@ -131,6 +131,8 @@ class Cluster:
         self.percolation_probability = self._get_percolation_directions(period_vectors)
         
         # True 3D percolation requires spanning all three dimensions
+        check = percolation_dim == len(self.percolation_probability)
+        self.is_percolating = len(self.percolation_probability) == 3
         self.is_percolating = percolation_dim == 3
 
     def _detect_period_vectors(self) -> List[np.ndarray]:
@@ -237,6 +239,8 @@ class Cluster:
         
         # Find linearly independent period vectors
         independent_periods = self._get_independent_periods(period_vectors)
+        if not independent_periods:
+            return ""
         
         # Check which directions each independent period spans
         directions = {'x': False, 'y': False, 'z': False}

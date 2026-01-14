@@ -67,7 +67,7 @@ class SharedStrategy(BaseClusteringStrategy):
             if node.symbol in [self._settings.clustering.connectivity[0], self._settings.clustering.connectivity[-1]]:
                 unique_bond = []
                 for neighbor in node.neighbors:
-                    if neighbor.symbol ==  self._settings.clustering.connectivity[1]:
+                    if neighbor.symbol == mode:
                         for second_neighbor in neighbor.neighbors:
                             if second_neighbor == node:
                                 continue

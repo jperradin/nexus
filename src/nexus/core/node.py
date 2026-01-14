@@ -89,7 +89,7 @@ class Node:
         self.coordination = coordination
 
     def __str__(self) -> str:
-        return f"Node {self.node_id} ({self.symbol}) | coordination: {self.coordination} | neighbors: {len(self.neighbors)} | position: {self.position}"
+        return f"Node {self.node_id} ({self.symbol}) | Z = {self.coordination} | neighbors: {len(self.neighbors)} | position: {self.position}"
 
     def __repr__(self) -> str:
         return self.__str__()

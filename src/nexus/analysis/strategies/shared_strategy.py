@@ -61,6 +61,7 @@ class SharedStrategy(BaseClusteringStrategy):
         # Calculate the number of shared neighbors between two nodes, account only the number of shared superior to the threshold
         # TEMPORARY IMPLEMENTATION, IMPLEMENT MODE OPTIONS LATER
         mode = self._settings.clustering.shared_mode
+        t_mode = self._settings.clustering.shared_threshold_mode
         network_nodes = [n for n in self._nodes if n.symbol in [self._settings.clustering.connectivity[0], self._settings.clustering.connectivity[-1]] and n.coordination in coordination_range]
         networking_nodes = []
         for i, node in enumerate(network_nodes):
@@ -76,8 +77,14 @@ class SharedStrategy(BaseClusteringStrategy):
                 _, counts = np.unique(unique_bond, return_counts=True)
                 counter = 0
                 for c in counts:
-                    if c >= self._settings.clustering.shared_threshold:
-                        counter += 1
+                    if t_mode == 'exact':
+                        if c == self._settings.clustering.shared_threshold: 
+                            counter += 1
+                    elif t_mode == 'minimum':
+                        if c >= self._settings.clustering.shared_threshold: 
+                            counter += 1
+                    else:
+                        raise ValueError(f"Unknown shared threshold mode: {t_mode}. Supported modes are 'exact' and 'minimum'.")
                 if counter >= 2:
                     if node not in networking_nodes:
                         networking_nodes.append(node)

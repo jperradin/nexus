@@ -13,3 +13,6 @@ nexus_cat.egg-info
 .vscode/
 benchmarks/validation/data.tar.gz
 benchmarks/validation/snapshot.png
+benchmarks/data/
+benchmarks/outputsAB/
+benchmarks/*.xyz

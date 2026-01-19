@@ -82,6 +82,7 @@ class ClusteringSettings:
     with_number_of_shared: bool = False # Whether to calculate the number of shared
     shared_mode: str = "all_types" # "all_types", "same_type", "different_type", "<node_type>"
     shared_threshold: int = 1 # Minimum shared threshold
+    shared_threshold_mode: str = "exact" # "exact", "minimum" 
 
     def get_max_cutoff(self) -> float:
         max_cutoff = 0.0
@@ -115,6 +116,8 @@ class ClusteringSettings:
                 elif not self.with_number_of_shared and key == "shared_mode":
                     continue
                 elif not self.with_number_of_shared and key == "shared_threshold":
+                    continue
+                elif not self.with_number_of_shared and key == "shared_threshold_mode":
                     continue
                 if key == "cutoffs":
                     line1 = f"\t\t|- {key:}:"
@@ -404,6 +407,9 @@ class SettingsBuilder:
 
         if clustering.with_number_of_shared and clustering.shared_threshold is None:
             raise ValueError(f"Invalid shared threshold: {clustering.shared_threshold}")
+        
+        if clustering.with_number_of_shared and clustering.shared_threshold_mode not in ['exact', 'at_least']:
+            raise ValueError(f"Invalid threshold mode: {clustering.shared_threshold_mode}")
 
         if clustering.node_types is None:
             raise ValueError(f"Invalid node types: {clustering.node_types}")

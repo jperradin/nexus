@@ -132,7 +132,6 @@ class Cluster:
         
         # True 3D percolation requires spanning all three dimensions
         check = percolation_dim == len(self.percolation_probability)
-        self.is_percolating = len(self.percolation_probability) == 3
         self.is_percolating = percolation_dim == 3
 
     def _detect_period_vectors(self) -> List[np.ndarray]:

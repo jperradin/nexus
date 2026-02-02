@@ -142,8 +142,6 @@ This workflow design prioritizes **flexibility** (multiple clustering criteria a
 
 [1](https://github.com/jperradin/nexus/blob/main/assets/workflow-Nexus.jpg../assets/workflow-Nexus.jpg)
 
-
-
 ### Quick Start Example
 
 1.  **Prepare a trajectory file** in the `Extended XYZ` format. The trajectory file must have the following format:

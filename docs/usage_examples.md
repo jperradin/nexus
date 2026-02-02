@@ -49,8 +49,6 @@ config_clustering = c.ClusteringSettings(
     with_alternating=True,                  # Calculate alternating coordination
     
     with_number_of_shared=False,            # Don't calculate shared neighbors
-    shared_mode="O",                        
-    shared_threshold=2,                     
 
     with_printed_unwrapped_clusters=False,  # Don't print cluster coordinates
     print_mode="connectivity"               # Mode for printing clusters
@@ -84,6 +82,9 @@ This example shows how to change settings and rerun the analysis with different 
 # Update clustering settings to focus on specific coordination
 config_clustering.with_number_of_shared = True  # Now calculate shared neighbors
 config_clustering.coordination_range = [6, 6]   # Look only for SiO6-SiO6 connections
+config_clustering.shared_mode="O",              # O atoms as shared neighbors (bridges between Si)          
+config_clustering.shared_threshold=2,           # threshold for the number of shared O atoms between Si           
+config_clustering.shared_threshold_mode="exact" # exact match for shared neighbors 
 config_analysis.overwrite = False               # Preserve previous results
 
 # Rebuild settings with updated configuration

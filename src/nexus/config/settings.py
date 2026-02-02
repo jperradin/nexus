@@ -69,11 +69,11 @@ class ClusteringSettings:
     coordination_range: List[int] = field(default_factory=lambda: []) # Minimum and maximum coordination numbers to consider
 
     # Calls clustering algorithm with alternating clusters (with coordination number)
-    # - with_pairwise: calculate pairwise coordination number ie A4-B5, B2-A3
+    # - with_pairwise: calculate pairwise coordination number ie A4-B4, B3-A3
     with_pairwise: bool = False
     # - with_mixing: calculate mixing coordination number ie A4-B5, B2-A3
     with_mixing: bool = False
-    # - with_alternating: calculate alternating coordination number ie A4-B5, B2-A3
+    # - with_alternating: calculate alternating coordination number ie A4-B6, B2-A3
     with_alternating: bool = False
     # if with_coordination_number is True and not with_pairwise, with_mixing or with_alternating (default mode)
     with_connectivity_name: str = "" # Name of the connectivity

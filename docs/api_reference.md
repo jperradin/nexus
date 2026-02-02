@@ -10,9 +10,11 @@ This section provides a detailed reference for the Nexus-CAT API. For a complete
 Main entry function to test the package by processing frames of data according to the specified settings. It initializes necessary components, executes frame-by-frame analysis with neighbor finding, clustering, and analysis strategies, tracks and records performance metrics, and saves relevant output and logs.
 
 **Parameters:**
+
 - `settings (Settings)`: Configuration object containing parameters for project setup, verbosity, frame ranges, analysis options, export paths, logging, and performance tracking.
 
 **Descriptions**
+
 - Initializes a performance tracker with a unique ID and timestamped run name if enabled.
 - Sets up resource tracking including memory and CPU usage if `performance` is enabled.
 - Prints version title and detailed settings if `verbosity` is enabled.
@@ -35,6 +37,7 @@ Main entry function to test the package by processing frames of data according t
     - Saves overall performance metrics if enabled.
 
 **Behavior and Side Effects**
+
 - Creates and manages directories and files for output.
 - Utilizes multiple factory classes (`ReaderFactory`, `StrategyFactory`, `AnalyzerFactory`, `WriterFactory`) to modularize component creation.
 - Uses `psutil` to obtain CPU and memory usage stats.
@@ -42,6 +45,7 @@ Main entry function to test the package by processing frames of data according t
 - Saves logs, cluster data, and performance data conditionally based on settings.
 
 **Usage Example**
+
 ```python
 from nexus import SettingsBuilder, main
 import nexus.config.settings as c
@@ -87,6 +91,7 @@ main(settings)
 Represents general project-level settings used globally in the package.
 
 #### Attributes
+
 - `project_name` (str): Name of the project. Default: `"Project"`.
 - `export_directory` (str): Directory path to export results. Default: `"exports"`.
 - `file_location` (str): Path to the trajectory file. Default: `""`.
@@ -102,11 +107,13 @@ Represents general project-level settings used globally in the package.
 Represents a cutoff distance setting between two node types.
 
 #### Attributes
+
 - `type1` (str): First node type.
 - `type2` (str): Second node type.
 - `distance` (float): Cutoff distance between the node types.
 
 #### Methods
+
 - `__str__()`: Returns formatted string representation.
 - `get_distance() -> float`: Returns the cutoff distance.
 
@@ -116,6 +123,7 @@ Represents a cutoff distance setting between two node types.
 Holds settings related to clustering operations.
 
 #### Attributes
+
 - `criterion` (str): Clustering criterion, either `"distance"` or `"bond"`. Default: `"distance"`.
 - `neighbor_searcher` (str): Method for neighbor searching, e.g., `"kd_tree"`. Default: `"kd_tree"`.
 - `node_types` (List[str]): List of node types.
@@ -124,9 +132,31 @@ Holds settings related to clustering operations.
 - `cutoffs` (List[Cutoff]): List of cutoff distances.
 - `with_printed_unwrapped_clusters` (bool): Flag to print unwrapped clusters. Default: `False`.
 - `print_mode` (str): Print mode among `"all"`, `"connectivity"`, `"individual"`, or `"none"`. Default: `"none"`.
-- Additional flags and settings for coordination number calculations, pairwise/mixing/alternating coordination, shared neighbor settings, with relevant modes and thresholds.
+- `with_coordination_number` (bool): Flag to enable coordination number constraints. Default: `False`.
+- `coordination_mode` (str): Mode for coordination number calculation, either: 
+  - `"all_types"`: counts all the neighbors regardless of type.
+  - `"same_type"`: counts only neighbors of the same type as the central node.
+  - `"different_type"`: counts only neighbors of different types than the central node.
+  - `<node_type>`: counts only neighbors of the specified node type, i.e., 'O', 'Si' etc. Default: `"all_types"`.
+- `coordination_range` (List[int]): Minimum and maximum coordination numbers to consider. Default: `[]`. (e.g., `[4, 6]`)
+- `with_pairwise` (bool): Flag to enable pairwise coordination number constraints. Default: `False`.
+- `with_mixing` (bool): Flag to enable mixing coordination number constraints. Default: `False`.
+- `with_alternating` (bool): Flag to enable alternating coordination number constraints. Default: `False`.
+- `with_connectivity_name` (str): Name of the connectivity to apply coordination number constraints to. Default: `""`.
+- `with_number_of_shared` (bool): Flag to enable shared neighbor constraints. Default: `False`.
+- `shared_mode` (str): Mode for shared neighbor calculation, either:
+  - `"all_types"`: counts all shared neighbors regardless of type.
+  - `"same_type"`: counts only shared neighbors of the same type as the central node.
+  - `"different_type"`: counts only shared neighbors of different types than the central node.
+  - `<node_type>`: counts only shared neighbors of the specified node type, i.e., 'O', 'Si' etc. Default: `"all_types"`.
+- `shared_threshold` (int): Minimum number of shared neighbors required. Default: `1`.
+- `shared_threshold_mode` (str): Mode for shared neighbor threshold behavior, either:
+  - `"exact"`: requires exactly the specified number of shared neighbors to account the connectivity between the nodes.
+  - `"minimum"`: requires at least the specified number of shared neighbors to account the connectivity between the nodes.
+  - `"maximum"`: requires at most the specified number of shared neighbors to account the connectivity between the nodes. Default: `"exact"`.
 
 #### Methods
+
 - `get_cutoff(type1: str, type2: str) -> Optional[float]`: Returns the cutoff distance between two node types or `None`.
 - `__str__()`: Returns a formatted multi-line string detailing the clustering settings.
 
@@ -136,11 +166,13 @@ Holds settings related to clustering operations.
 Contains flags to specify which analyzers and analysis metrics to calculate.
 
 #### Attributes
+
 - Boolean flags per analysis type, e.g., `with_average_cluster_size`, `with_largest_cluster_size`, `with_concentration`, `with_gyration_radius`, etc.
 - `overwrite` (bool): Whether to overwrite existing output files. Default: `True`.
 - `with_all` (bool): Enables all analysis flags at once. Default: `False`.
 
 #### Methods
+
 - `get_analyzers() -> List[str]`: Returns list of analyzer class names based on active flags.
 - `__str__()`: Returns formatted string reporting enabled analyzers.
 
@@ -150,6 +182,7 @@ Contains flags to specify which analyzers and analysis metrics to calculate.
 Settings for specifying lattice parameters and application.
 
 #### Attributes
+
 - `lattice` (np.ndarray): Base lattice matrix. Default zero 3x3 matrix.
 - `apply_custom_lattice` (bool): Whether to apply a user-defined lattice. Default: `False`.
 - `custom_lattice` (np.ndarray): Custom lattice matrix. Default zero 3x3 matrix.
@@ -158,6 +191,7 @@ Settings for specifying lattice parameters and application.
 - `apply_lattice_to_all_frames` (bool): Whether to apply lattice across all frames. Default: `True`.
 
 #### Methods
+
 - `__str__()`: Returns detailed string representation including lattice matrices.
 
 
@@ -166,6 +200,7 @@ Settings for specifying lattice parameters and application.
 Composite settings class aggregating general, lattice, clustering, and analysis settings.
 
 #### Attributes
+
 - `project_name` (str): Project identifier. Default: `"default"`.
 - `export_directory` (str): Base directory for exports. Default: `"export"`.
 - `file_location` (str): Path of trajectory file. Default: `"./"`.
@@ -179,9 +214,11 @@ Composite settings class aggregating general, lattice, clustering, and analysis 
   - `analysis` (AnalysisSettings)
 
 #### Properties
+
 - `output_directory` (str): Combines export directory and project name.
 
 #### Methods
+
 - `set_range_of_frames(start: int, end: Optional[int] = None)`: Sets the frame range with validation.
 - `__str__()`: Returns formatted string summarizing major settings (excluding general).
 
@@ -190,6 +227,7 @@ Composite settings class aggregating general, lattice, clustering, and analysis 
 Builder pattern class for incrementally constructing a `Settings` instance with validation.
 
 #### Methods
+
 - `with_lattice(lattice: LatticeSettings) -> SettingsBuilder`: Sets lattice settings.
 - `with_general(general: GeneralSettings) -> SettingsBuilder`: Sets general settings with validation.
 - `with_analysis(analysis: AnalysisSettings) -> SettingsBuilder`: Sets analysis settings.
@@ -253,6 +291,7 @@ This reference summarizes all the key settings classes and the builder for confi
 Represents a node in the system, encapsulating properties like position, neighbors, mass, and coordination. Utilizes Python dataclasses with slots and ordering for efficient and comparable instances.
 
 #### Attributes
+
 - `symbol` (str): Symbolic identifier of the node (i.e., "1", "2", "A", "B", "Si", "O", etc.).
 - `node_id` (int): Unique identifier (auto-incremented if not provided).
 - `position` (np.ndarray): 3D coordinates of the node.
@@ -266,6 +305,7 @@ Represents a node in the system, encapsulating properties like position, neighbo
 - `other` (Optional[List[str]]): List for additional arbitrary attributes.
 
 #### Initialization
+
 - Auto-assigns default values for optional attributes after creation:
   - Default position as zero vector if none provided.
   - Auto-incrementation of `node_id` if none assigned.
@@ -323,12 +363,14 @@ Here's the API reference for the `Cluster` class in the core module:
 Represents a cluster of nodes with connectivity, spatial properties, and robust percolation detection using period vector analysis. Handles periodic boundary conditions and computes structural properties for percolation theory analysis.
 
 #### Initialization
+
 ```python
 Cluster(connectivity: str, root_id: int, size: int, settings: Settings, lattice: np.ndarray)
 ```
 Creates a cluster with a connectivity label, root node ID, size, settings, and lattice matrix.
 
 ##### Parameters
+
 - `connectivity` (str): Connectivity descriptor (e.g., `"Si-O-Si"` or `"Si4-Si4"`).
 - `root_id` (int): ID of the root node defining the cluster.
 - `size` (int): Number of nodes in the cluster.
@@ -339,6 +381,7 @@ Creates a cluster with a connectivity label, root node ID, size, settings, and l
 #### Attributes
 
 **Basic Properties:**
+
 - `nodes` (List[Node]): List of nodes belonging to the cluster.
 - `connectivity` (str): Connectivity descriptor identifying cluster type.
 - `root_id` (int): Unique identifier of the cluster's root node.
@@ -351,22 +394,26 @@ Creates a cluster with a connectivity label, root node ID, size, settings, and l
 - `_all_connectivities` (Set[str]): Set of all connectivity types in the analysis.
 
 **Structural Properties:**
+
 - `center_of_mass` (np.ndarray): Wrapped center of mass position in Cartesian coordinates.
 - `unwrapped_positions` (np.ndarray): Node positions unwrapped across periodic boundaries.
 - `gyration_radius` (float): Radius of gyration quantifying spatial extent.
 
 **Percolation Properties:**
+
 - `percolation_probability` (str): Directions in which cluster percolates (e.g., `"x"`, `"xy"`, `"xyz"`).
 - `order_parameter` (list): Order parameters `[P∞_x, P∞_y, P∞_z]` for each dimension.
 - `is_percolating` (bool): `True` if cluster percolates in all three dimensions.
 - `is_spanning` (bool): `True` if cluster is the largest in its connectivity type.
 
 **Connectivity Data:**
+
 - `linkages` (List[Tuple[int, int]]): List of node ID pairs representing bonds between networking nodes.
 - `_linkage_set` (Set[Tuple[int, int]]): Internal set for efficient linkage tracking during unwrapping.
 - `decoration_atoms` (Dict[int, Dict]): Dictionary of decorating nodes (e.g., bridging atoms in bond-based clustering). Keys are node IDs, values contain `symbol`, `position`, and `coordination`.
 
 **Statistical Properties:**
+
 - `total_nodes` (int): Total number of networking nodes in the system (for normalization).
 - `concentration` (float): Fractional concentration: `size / total_nodes`.
 
@@ -572,6 +619,7 @@ print(f"Gyration radius: {cluster.gyration_radius:.3f}")
 Represents a trajectory frame containing nodes, lattice information, and cluster data.
 
 #### Attributes
+
 - `frame_id` (int): Unique identifier of the frame.
 - `nodes` (List[Node]): List of nodes contained in this frame.
 - `lattice` (np.ndarray): 3x3 lattice matrix defining the periodic box.
@@ -581,6 +629,7 @@ Represents a trajectory frame containing nodes, lattice information, and cluster
 - `connectivities` (Optional[List[str]]): List of connectivity descriptors associated with clusters.
 
 #### Initialization and Validation
+
 - `__post_init__()`: Ensures that `nodes` is a list and `lattice` is a 3x3 numpy array.
   
 #### Methods
@@ -650,7 +699,6 @@ Represents a trajectory frame containing nodes, lattice information, and cluster
 - `__del__() -> None`
   - Cleans up references to nodes, clusters, lattice, data, and connectivities.
 
-
 ### Usage Example
 
 Similarly to the `Node` and `Cluster` classes, the `Frame` objects are created automatically by the `System` object, and the following lines are not recommended and are only for illustration purposes if needed.
@@ -687,6 +735,7 @@ System(reader: BaseReader, settings: Settings)
 Constructs a `System` instance with a file reader and configuration settings.
 
 ##### Parameters
+
 - `reader` (`BaseReader`): File reader object used to load trajectory data.
 - `settings` (`Settings`): Configuration object with parameters like file location and frame ranges.
 
@@ -761,17 +810,20 @@ for frame in system:
 Factory class responsible for managing and providing clustering strategies based on given frame data and settings.
 
 #### Initialization
+
 ```python
 StrategyFactory(frame: Frame, settings: Settings)
 ```
 Creates a `StrategyFactory` instance by initializing and registering available clustering strategies using the provided frame and settings.
 
 ##### Parameters
+
 - `frame` (`Frame`): The frame of trajectory data on which clustering strategies operate.
 - `settings` (`Settings`): Configuration settings to determine the appropriate strategy.
 
 
 #### Attributes
+
 - `_strategies` (dict): Internal mapping of strategy class names to instantiated strategy objects.
 
 
@@ -796,20 +848,24 @@ Creates a `StrategyFactory` instance by initializing and registering available c
 A clustering strategy that connects nodes based on direct distance criteria. Forms clusters by linking nodes of specified types that are within a given cutoff distance.
 
 #### Inheritance
+
 Inherits from `BaseClusteringStrategy`.
 
 #### Initialization
+
 ```python
 DistanceStrategy(frame: Frame, settings: Settings)
 ```
 Creates a distance-based clustering strategy for the given frame.
 
 ##### Parameters
+
 - `frame` (`Frame`): The trajectory frame containing nodes to be clustered.
 - `settings` (`Settings`): Configuration settings specifying clustering parameters, cutoffs, and node types.
 
 
 #### Attributes
+
 - `frame` (`Frame`): The frame being processed.
 - `clusters` (`List[Cluster]`): List of identified clusters.
 - `_lattice` (`np.ndarray`): Lattice matrix from the frame.
@@ -888,17 +944,20 @@ A clustering strategy that connects two nodes via a bridging third node. Identif
 Inherits from `BaseClusteringStrategy`.
 
 #### Initialization
+
 ```python
 BondingStrategy(frame: Frame, settings: Settings)
 ```
 Creates a bond-based clustering strategy for the given frame.
 
 ##### Parameters
+
 - `frame` (`Frame`): The trajectory frame containing nodes to be clustered.
 - `settings` (`Settings`): Configuration settings specifying clustering parameters, cutoffs, and node types.
 
 
 #### Attributes
+
 - `frame` (`Frame`): The frame being processed.
 - `clusters` (`List[Cluster]`): List of identified clusters.
 - `_lattice` (`np.ndarray`): Lattice matrix from the frame.
@@ -980,20 +1039,24 @@ main(settings)
 A clustering strategy that groups nodes based on their coordination number. Extends basic bonding patterns by adding constraints on the coordination number of networking nodes, forming clusters only when connected nodes meet specified coordination criteria.
 
 #### Inheritance
+
 Inherits from `BaseClusteringStrategy`.
 
 #### Initialization
+
 ```python
 CoordinationStrategy(frame: Frame, settings: Settings)
 ```
 Creates a coordination-based clustering strategy for the given frame.
 
 ##### Parameters
+
 - `frame` (`Frame`): The trajectory frame containing nodes to be clustered.
 - `settings` (`Settings`): Configuration settings specifying clustering parameters, coordination ranges, and node types.
 
 
 #### Attributes
+
 - `frame` (`Frame`): The frame being processed.
 - `clusters` (`List[Cluster]`): List of identified clusters.
 - `_lattice` (`np.ndarray`): Lattice matrix from the frame.
@@ -1216,20 +1279,24 @@ clustering_settings = c.ClusteringSettings(
 A clustering strategy that connects nodes based on a minimum number of shared neighbors. Advanced strategy using coordination numbers and shared neighbor counts to distinguish between different types of polyhedral linkages such as corner-sharing, edge-sharing, or face-sharing polyhedra in amorphous materials.
 
 #### Inheritance
+
 Inherits from `BaseClusteringStrategy`.
 
 #### Initialization
+
 ```python
 SharedStrategy(frame: Frame, settings: Settings)
 ```
 Creates a shared-neighbor-based clustering strategy for the given frame.
 
 ##### Parameters
+
 - `frame` (`Frame`): The trajectory frame containing nodes to be clustered.
 - `settings` (`Settings`): Configuration settings specifying clustering parameters, coordination ranges, shared thresholds, and node types.
 
 
 #### Attributes
+
 - `frame` (`Frame`): The frame being processed.
 - `clusters` (`List[Cluster]`): List of identified clusters.
 - `_lattice` (`np.ndarray`): Lattice matrix from the frame.
@@ -1302,12 +1369,10 @@ Creates a shared-neighbor-based clustering strategy for the given frame.
   - Only connects nodes if the number of shared neighbors meets or exceeds the configured threshold.
   - Creates and stores resulting clusters.
 
-
 ### Usage Example
 
 ```python
 ...
-
 clustering_settings = c.ClusteringSettings(
     criterion="bond",
     node_types=["Si", "O"],
@@ -1328,7 +1393,6 @@ clustering_settings = c.ClusteringSettings(
     with_alternating=False,
     with_connectivity_name="Stishovite"
 )
-
 ...
 ```
 
@@ -1337,17 +1401,20 @@ clustering_settings = c.ClusteringSettings(
 Factory class responsible for managing and providing analysis components that calculate various cluster properties and metrics from trajectory data.
 
 #### Initialization
+
 ```python
 AnalyzerFactory(settings: Settings, verbose: bool = True)
 ```
 Creates an `AnalyzerFactory` instance by initializing and registering all available analyzer types.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings used to initialize analyzers with appropriate parameters.
 - `verbose` (bool): Flag controlling verbosity of output. Default: `True`.
 
 
 #### Attributes
+
 - `_analyzers` (dict): Internal mapping of analyzer class names to instantiated analyzer objects.
 
 
@@ -1376,19 +1443,23 @@ Creates an `AnalyzerFactory` instance by initializing and registering all availa
 Computes the weight-average cluster size $\langle S \rangle$, a fundamental metric in percolation theory that characterizes the mean size of finite clusters and exhibits divergent behavior at the percolation threshold.
 
 #### Inheritance
+
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 AverageClusterSizeAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing weight-average cluster sizes across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_average_sizes` (`Dict[str, List[float]]`): Raw per-frame average cluster sizes for each connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `average_sizes` (`Dict[str, float]`): Final mean average cluster size for each connectivity type.
@@ -1443,19 +1514,23 @@ Creates an analyzer for computing weight-average cluster sizes across trajectory
 Computes the cluster size distribution $n_s$, tracking the number of clusters of each size for each connectivity type. This distribution is fundamental in percolation theory for characterizing the scaling behavior and fractal properties of cluster formation.
 
 #### Inheritance
+
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 ClusterSizeDistributionAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing cluster size distributions across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_size_distribution` (`Dict[str, Dict[int, List[int]]]`): Raw per-frame counts of clusters for each size and connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `size_distribution` (`Dict[str, Dict[int, float]]`): Final total number of clusters count per size for each connectivity type.
@@ -1508,19 +1583,23 @@ Creates an analyzer for computing cluster size distributions across trajectory f
 Computes the concentration of clusters for each connectivity type, defined as the fraction of nodes participating in clusters. This metric quantifies the extent of network formation.
 
 #### Inheritance
+
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 ConcentrationAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing cluster concentrations across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity type.
 - `concentrations` (`Dict[str, float]`): Final mean concentration for each connectivity type.
 - `std` (`Dict[str, float]`): Standard deviation of concentrations across frames.
@@ -1570,19 +1649,23 @@ Creates an analyzer for computing cluster concentrations across trajectory frame
 Computes the correlation length $\xi$, a fundamental length scale in percolation theory that characterizes the typical spatial extent of clusters and diverges at the percolation threshold.
 
 #### Inheritance
+
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 CorrelationLengthAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing correlation lengths across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_correlation_lengths` (`Dict[str, List[float]]`): Raw per-frame correlation length values for each connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `correlation_length` (`Dict[str, float]`): Final mean correlation length for each connectivity type.
@@ -1643,16 +1726,19 @@ Computes the distribution of gyration radii as a function of cluster size for ea
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 GyrationRadiusAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing gyration radius distributions across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_gyration_radii` (`Dict[str, Dict[int, List[float]]]`): Raw per-frame gyration radii for each cluster size and connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `gyration_radii` (`Dict[str, Dict[int, float]]`): Final averaged gyration radius for each cluster size and connectivity type.
@@ -1712,19 +1798,23 @@ Creates an analyzer for computing gyration radius distributions across trajector
 Analyzes the size of the largest cluster for each connectivity type, tracking the dominant structural feature in the system. This metric serves as a key indicator of percolation transitions and the emergence of system-spanning connectivity.
 
 #### Inheritance
+
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 LargestClusterSizeAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing largest cluster sizes across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_sizes` (`Dict[str, List[float]]`): Raw per-frame largest cluster sizes for each connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `largest_cluster_sizes` (`Dict[str, float]`): Final mean largest cluster size for each connectivity type.
@@ -1780,19 +1870,23 @@ Computes the percolation order parameter $P_\infty$, the fundamental signature o
 Note that the order parameter is computed for the xx, yy, and zz directions only (no triclinic geometry support for now).
 
 #### Inheritance
+
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 OrderParameterAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing order parameters across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_order_parameters` (`Dict[str, List[float]]`): Raw per-frame order parameter values for each connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `order_parameters` (`Dict[str, float]`): Final mean order parameter for each connectivity type.
@@ -1849,19 +1943,23 @@ Computes the percolation probability $\Pi$, the likelihood of finding at least o
 Note that the percolation probability is computed for the xx, yy, and zz directions only (no triclinic geometry support for now).
 
 #### Inheritance
+
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 PercolationProbabilityAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing percolation probabilities across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_percolation_prob_x` (`Dict[str, List[float]]`): Raw per-frame binary indicators (1.0 or 0.0) of percolation occurrence for each connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `percolation_probabilities` (`Dict[str, float]`): Final mean percolation probability for each connectivity type.
@@ -1917,19 +2015,23 @@ Creates an analyzer for computing percolation probabilities across trajectory fr
 Computes the size of the largest finite (non-percolating) cluster, a descriptor for characterizing the sub-critical regime and the approach to the percolation threshold from below.
 
 #### Inheritance
+
 Inherits from `BaseAnalyzer`.
 
 #### Initialization
+
 ```python
 SpanningClusterSizeAnalyzer(settings: Settings)
 ```
 Creates an analyzer for computing spanning cluster sizes across trajectory frames.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying analysis parameters and output paths.
 
 
 #### Attributes
+
 - `_raw_spanning_sizes` (`Dict[str, List[float]]`): Raw per-frame largest non-percolating cluster sizes for each connectivity type.
 - `_raw_concentrations` (`Dict[str, List[float]]`): Raw per-frame concentration values for each connectivity.
 - `spanning_cluster_sizes` (`Dict[str, float]`): Final mean spanning cluster size for each connectivity type.
@@ -1987,16 +2089,19 @@ Utility class for discovering trajectory files in a directory and parsing associ
 ***
 
 #### Initialization
+
 ```python
 Parser(file_location: str, format: str)
 ```
 Creates a parser instance that scans for trajectory files and loads metadata.
 
 ##### Parameters
+
 - `file_location` (str): Path to either a trajectory file or directory containing trajectory files.
 - `format` (str): File extension format to search for (e.g., `"xyz"`, `"dat"`).
 
 ##### Raises
+
 - `ValueError`: If the specified `file_location` does not exist.
 - `ValueError`: If `info.csv` is empty or has mismatched line count with trajectory files.
 - `ValueError`: If `info.csv` is not found in the directory.
@@ -2004,6 +2109,7 @@ Creates a parser instance that scans for trajectory files and loads metadata.
 ***
 
 #### Attributes
+
 - `file_location` (str): Path to the file or directory being parsed.
 - `format` (str): File extension format to filter.
 - `files` (List[str]): List of discovered trajectory file paths, sorted alphabetically.
@@ -2093,16 +2199,19 @@ system_003,400.0,1.0,0.79
 Factory class for creating and managing file writer instances based on writer type. Implements the factory pattern to provide centralized writer instantiation with shared settings.
 
 #### Initialization
+
 ```python
 WriterFactory(settings: Settings)
 ```
 Creates a writer factory instance and registers all available writer types.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings shared across all writer instances.
 
 
 #### Attributes
+
 - `_writers` (dict): Internal registry mapping writer class names to writer classes.
 - `_settings` (`Settings`): Configuration settings used to initialize writers.
 
@@ -2142,20 +2251,24 @@ The factory automatically registers the following writer types:
 Writes cluster data to XYZ and bond files, including unwrapped atomic positions for both networking nodes and decorating atoms (e.g., bridging oxygens). Supports multiple output modes for flexible data organization.
 
 #### Inheritance
+
 Inherits from `BaseWriter`.
 
 #### Initialization
+
 ```python
 ClustersWriter(settings: Settings)
 ```
 Creates a cluster file writer with specified configuration settings.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings controlling output behavior and file paths.
 
 ***
 
 #### Attributes
+
 - `_settings` (`Settings`): Configuration settings.
 - `_clusters` (`List[Cluster]`): List of clusters to write, sorted by size (largest first).
 
@@ -2291,20 +2404,24 @@ config_clustering = c.ClusteringSettings(
 Writes execution logs containing version information and configuration settings to a text file. Provides a record of analysis runs for reproducibility and debugging.
 
 #### Inheritance
+
 Inherits from `BaseWriter`.
 
 #### Initialization
+
 ```python
 LogsWriter(settings: Settings)
 ```
 Creates a logs file writer with specified configuration settings.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings to be logged.
 
 ***
 
 #### Attributes
+
 - `_settings` (`Settings`): Configuration settings to write to log file.
 
 ***
@@ -2340,15 +2457,18 @@ Aggregates analysis results from multiple data files across directory structures
 ** Note that this writer is not stable and may not work as expected. **
 
 #### Inheritance
+
 Inherits from `BaseWriter`.
 
 #### Initialization
+
 ```python
 MultipleFilesSummaryWriter(settings: Settings, mode: str = "all")
 ```
 Creates a summary writer for aggregating multiple analysis result files.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying export directory and paths.
 - `mode` (str): Summary output mode. Options:
   - `"all"`: Combines all connectivity types into single summary files.
@@ -2357,6 +2477,7 @@ Creates a summary writer for aggregating multiple analysis result files.
 
 
 #### Attributes
+
 - `_settings` (`Settings`): Configuration settings.
 - `_mode` (str): Output mode controlling summary file organization.
 
@@ -2470,20 +2591,24 @@ writer_by_conn.write()
 Writes performance metrics to JSON files with datetime serialization support. Stores execution time, memory usage, CPU utilization, and custom metrics for analysis runs.
 
 #### Inheritance
+
 Inherits from `BaseWriter`.
 
 #### Initialization
+
 ```python
 PerformanceWriter(settings: Settings)
 ```
 Creates a performance data writer with specified configuration settings.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings specifying export directory and output paths.
 
 ***
 
 #### Attributes
+
 - `_settings` (`Settings`): Configuration settings controlling file output location.
 
 ***
@@ -2526,17 +2651,20 @@ Factory class for creating and managing file reader instances based on file type
 ***
 
 #### Initialization
+
 ```python
 ReaderFactory(settings: Settings)
 ```
 Creates a reader factory instance and registers all available reader types.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings containing file location and other parameters.
 
 ***
 
 #### Attributes
+
 - `_readers` (dict): Internal registry mapping file extensions to reader instances.
 - `_settings` (`Settings`): Configuration settings shared across reader instances.
 
@@ -2607,20 +2735,24 @@ The factory pattern provides:
 Reader for parsing extended XYZ format trajectory files. Efficiently scans and indexes frames for random access, supporting large trajectory files with frame-level seeking capabilities.
 
 #### Inheritance
+
 Inherits from `BaseReader`.
 
 #### Initialization
+
 ```python
 XYZReader(settings: Settings)
 ```
 Creates an XYZ file reader with specified configuration settings.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings containing file location, lattice parameters, and other options.
 
 ***
 
 #### Attributes
+
 - `frame_indices` (List[FrameIndex]): List of frame metadata objects containing frame IDs, node counts, lattice matrices, and byte offsets.
 - `num_frames` (int): Total number of frames indexed in the trajectory file.
 - `is_indexed` (bool): Flag indicating whether the file has been scanned and indexed.
@@ -2754,20 +2886,24 @@ config_general = c.GeneralSettings(
 Reader for parsing LAMMPS trajectory dump files. Efficiently scans and indexes frames for random access, supporting multiple LAMMPS file extensions and custom column layouts.
 
 #### Inheritance
+
 Inherits from `BaseReader`.
 
 #### Initialization
+
 ```python
 LAMMPSReader(settings: Settings)
 ```
 Creates a LAMMPS file reader with specified configuration settings.
 
 ##### Parameters
+
 - `settings` (`Settings`): Configuration settings containing file location, lattice parameters, and other options.
 
 ***
 
 #### Attributes
+
 - `frame_indices` (List[FrameIndex]): List of frame metadata objects containing frame IDs, node counts, lattice matrices, and byte offsets.
 - `num_frames` (int): Total number of frames indexed in the trajectory file.
 - `is_indexed` (bool): Flag indicating whether the file has been scanned and indexed.
@@ -3113,7 +3249,6 @@ __all__ = [
     'fractional_to_cartesian'
 ]
 ```
-
 
 #### Performance Optimization
 

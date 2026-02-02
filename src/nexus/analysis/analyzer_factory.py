@@ -12,6 +12,9 @@ from .analyzers.gyration_radius_analyzer import GyrationRadiusAnalyzer
 from .analyzers.correlation_length_analyzer import CorrelationLengthAnalyzer
 
 class AnalyzerFactory:
+    """
+        This is the analyzer factory # temporary
+    """
     def __init__(self, settings: Settings, verbose: bool = True):
         self._analyzers = {}
         # Register other analyzers here

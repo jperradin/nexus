@@ -13,7 +13,7 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
     Computes the distribution of cluster sizes, n(s), for each connectivity type.
 
     This analyzer tracks how many clusters of each size exist for each connectivity
-    type across all processed frames, which is fundamental for percolation theory.
+    type across all processed frames.
     It excludes percolating clusters from the analysis to focus on the finite clusters.
     """
 
@@ -25,9 +25,9 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
         self._raw_concentrations: Dict[str, List[float]] = {}
 
         # Public attributes to hold the final, aggregated results
-        self.size_distribution: Dict[str, Dict[int, float]] = {}
-        self.std: Dict[str, Dict[int, float]] = {}
-        self.concentrations: Dict[str, float] = {}
+        self.size_distribution: Dict[str, Dict[int, float | np.float64]] = {}
+        self.std: Dict[str, Dict[int, float | np.float64]] = {}
+        self.concentrations: Dict[str, float | np.float64] = {}
 
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
@@ -87,12 +87,14 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
                 # To calculate std dev, we need to account for frames where a size didn't appear
                 all_counts_for_size = counts + [0] * (num_frames - len(counts))
                 if len(all_counts_for_size) > 1:
-                    self.std[connectivity][size] = np.std(all_counts_for_size, ddof=1)
+                    self.std[connectivity][size] = np.std(
+                        all_counts_for_size, ddof=1)
                 else:
                     self.std[connectivity][size] = 0.0
 
         for connectivity, concs in self._raw_concentrations.items():
-            self.concentrations[connectivity] = np.mean(concs) if concs else 0.0
+            self.concentrations[connectivity] = np.mean(
+                concs) if concs else 0.0
 
         self._finalized = True
         return self.get_result()
@@ -123,10 +125,13 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
 
             with open(path, "a") as f:
                 for size in sorted_sizes:
-                    concentration = output["concentrations"].get(connectivity, 0.0)
-                    n_s = output["size_distribution"][connectivity].get(size, 0.0)
+                    concentration = output["concentrations"].get(
+                        connectivity, 0.0)
+                    n_s = output["size_distribution"][connectivity].get(
+                        size, 0.0)
                     std_dev = output["std"][connectivity].get(size, 0.0)
-                    f.write(f"{connectivity},{concentration},{size},{n_s},{std_dev}\n")
+                    f.write(
+                        f"{connectivity},{concentration},{size},{n_s},{std_dev}\n")
             remove_duplicate_lines(path)
 
     def _write_header(self, connectivity: str) -> None:
@@ -145,7 +150,8 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
             mode = "a"
 
         with open(path, mode, encoding="utf-8") as output:
-            output.write(f"# Cluster Size Distribution Results for {connectivity}\n")
+            output.write(
+                f"# Cluster Size Distribution Results for {connectivity}\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(

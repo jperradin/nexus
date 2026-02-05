@@ -90,7 +90,6 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
                 self.correlation_length[connectivity] = np.mean(lengths)
                 if len(lengths) > 1:
                     self.std[connectivity] = np.std(lengths, ddof=1)
-                    mean_length = self.correlation_length[connectivity]
                     self.error[connectivity] = self.std[connectivity] / np.sqrt(
                         len(lengths)
                     )

@@ -8,7 +8,6 @@ import numpy as np
 import os
 from datetime import datetime
 
-
 class AverageClusterSizeAnalyzer(BaseAnalyzer):
     """
     Computes the weight-average cluster size <S>, a key metric in percolation theory.
@@ -20,26 +19,25 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
     This quantity diverges at the percolation threshold. The calculation excludes
     percolating clusters to focus on the properties of the finite cluster distribution.
     """
-
     def __init__(self, settings: Settings) -> None:
         """Initializes the analyzer."""
         super().__init__(settings)
         # Private attributes to store raw, per-frame data
-        self._raw_average_sizes: Dict[str, List[float]] = {}
-        self._raw_concentrations: Dict[str, List[float]] = {}
+        self._raw_average_sizes: Dict[str, List[float | np.float64]] = {}
+        self._raw_concentrations: Dict[str, List[float | np.float64]] = {}
 
         # Public attributes to hold the final, aggregated results
-        self.average_sizes: Dict[str, float] = {}
-        self.std: Dict[str, float] = {}
-        self.error: Dict[str, float] = {}
-        self.concentrations: Dict[str, float] = {}
+        self.average_sizes: Dict[str, float | np.float64] = {}
+        self.std: Dict[str, float | np.float64] = {}
+        self.error: Dict[str, float | np.float64] = {}
+        self.concentrations: Dict[str, float | np.float64] = {}
 
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes a single frame to compute the average cluster size for each
+        Analyzes the current frame to compute the average cluster size for each
         connectivity type and stores the raw data.
         """
         clusters = frame.get_clusters()
@@ -72,10 +70,10 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
 
         self.update_frame_processed()
 
-    def finalize(self) -> Dict[str, Dict[str, float]]:
+    def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
-        Calculates the final mean, standard deviation, and fluctuation for all
-        processed frames. This method is now idempotent.
+        Calculates the final mean, standard deviation, and standard error for all
+        processed frames.
         """
         if self._finalized:
             return self.get_result()
@@ -85,7 +83,6 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
                 self.average_sizes[connectivity] = np.mean(sizes)
                 if len(sizes) > 1:
                     self.std[connectivity] = np.std(sizes, ddof=1)
-                    mean_size = self.average_sizes[connectivity]
                     self.error[connectivity] = self.std[connectivity] / np.sqrt(
                         len(sizes)
                     )
@@ -106,7 +103,7 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
         self._finalized = True
         return self.get_result()
 
-    def get_result(self) -> Dict[str, Dict[str, float]]:
+    def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
         """Returns the finalized analysis results."""
         return {
             "concentrations": self.concentrations,
@@ -144,7 +141,7 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
             mode = "a"
 
         with open(path, mode, encoding="utf-8") as output:
-            output.write(f"# Average Cluster Size Results\n")
+            output.write("# Average Cluster Size Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(

@@ -24,9 +24,9 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
         self._raw_concentrations: Dict[str, List[float]] = {}
 
         # Final aggregated results
-        self.gyration_radii: Dict[str, Dict[int, float]] = {}
-        self.std: Dict[str, Dict[int, float]] = {}
-        self.concentrations: Dict[str, float] = {}
+        self.gyration_radii: Dict[str, Dict[int, float | np.float64]] = {}
+        self.std: Dict[str, Dict[int, float | np.float64]] = {}
+        self.concentrations: Dict[str, float | np.float64] = {}
 
         self._finalized: bool = False
 
@@ -47,7 +47,9 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
                 if c.get_connectivity() == connectivity and not c.is_percolating:
                     size = c.get_size()
                     gyr = c.gyration_radius
-                    self._raw_gyration_radii[connectivity].setdefault(size, []).append(gyr)
+                    self._raw_gyration_radii[connectivity].setdefault(size, []).append(
+                        gyr
+                    )
 
             self._raw_concentrations[connectivity].append(
                 concentrations.get(connectivity, 0.0)
@@ -125,7 +127,7 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
                 mode = "a"
 
             with open(path, mode, encoding="utf-8") as output:
-                output.write(f"# Gyration Radius Distribution Results\n")
+                output.write("# Gyration Radius Distribution Results\n")
                 output.write(f"# Date: {datetime.now()}\n")
                 output.write(f"# Frames averaged: {number_of_frames}\n")
                 output.write(

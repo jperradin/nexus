@@ -26,10 +26,10 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
         self._raw_concentrations: Dict[str, List[float]] = {}
 
         # Public attributes to hold the final, aggregated results
-        self.spanning_cluster_sizes: Dict[str, float] = {}
-        self.std: Dict[str, float] = {}
-        self.concentrations: Dict[str, float] = {}
-        self.error: Dict[str, float] = {}
+        self.spanning_cluster_sizes: Dict[str, float | np.float64] = {}
+        self.std: Dict[str, float | np.float64] = {}
+        self.concentrations: Dict[str, float | np.float64] = {}
+        self.error: Dict[str, float | np.float64 | np.float64] = {}
 
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
@@ -66,7 +66,7 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
 
         self.update_frame_processed()
 
-    def finalize(self) -> Dict[str, Dict[str, float]]:
+    def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
         Calculates the final mean, standard deviation, and fluctuation for the
         spanning cluster size across all processed frames. This method is now idempotent.
@@ -79,7 +79,6 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
                 self.spanning_cluster_sizes[connectivity] = np.mean(sizes)
                 if len(sizes) > 1:
                     self.std[connectivity] = np.std(sizes, ddof=1)
-                    mean_size = self.spanning_cluster_sizes[connectivity]
                     self.error[connectivity] = self.std[connectivity] / np.sqrt(
                         len(sizes)
                     )
@@ -100,7 +99,7 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
         self._finalized = True
         return self.get_result()
 
-    def get_result(self) -> Dict[str, Dict[str, float]]:
+    def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
         """Returns the finalized analysis results."""
         return {
             "concentrations": self.concentrations,
@@ -142,7 +141,7 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
             mode = "a"
 
         with open(path, mode, encoding="utf-8") as output:
-            output.write(f"# Spanning Cluster Size Results\n")
+            output.write("# Spanning Cluster Size Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(

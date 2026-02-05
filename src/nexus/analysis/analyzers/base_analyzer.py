@@ -48,7 +48,7 @@ class BaseAnalyzer(ABC):
         self.frame_processed_count += 1
 
     @abstractmethod
-    def finalize(self) -> None:
+    def finalize(self) -> Dict:
         """
         Finalize the analysis after all frames have been processed.
 
@@ -62,7 +62,7 @@ class BaseAnalyzer(ABC):
         pass
 
     @abstractmethod
-    def get_result(self) -> Dict[str, float]:
+    def get_result(self) -> Dict:
         """
         Get the current analysis results.
 
@@ -101,4 +101,3 @@ class BaseAnalyzer(ABC):
             str: A string representation that could be used to recreate the analyzer.
         """
         return f"{self.__class__.__name__}()"
-

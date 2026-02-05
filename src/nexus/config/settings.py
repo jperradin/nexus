@@ -1,34 +1,40 @@
 import os
 from dataclasses import dataclass, field
 import numpy as np
-from typing import Tuple, Optional, List, Dict
-
-from nexus.core import cluster
+from typing import Tuple, Optional, List
 
 
 @dataclass
 class GeneralSettings:
     """
     General settings that contains all the general settings.
-    
+
     Attributes:
     """
-    project_name: str = "Project" # Name of the project
-    export_directory: str = "exports" # Directory to export results
-    file_location: str = "" # Path to the trajectory file
-    range_of_frames: Tuple[int, int] = (0, -1) # Range of frames to process (0 to -1 = all frames)
-    apply_pbc: bool = False # Whether to apply periodic boundary conditions
-    verbose: bool = False # Whether to print settings, progress bars and other information
-    save_logs: bool = False # Whether to save logs
-    save_performance: bool = False # Whether to save performance
+
+    project_name: str = "Project"  # Name of the project
+    export_directory: str = "exports"  # Directory to export results
+    file_location: str = ""  # Path to the trajectory file
+    range_of_frames: Tuple[int, int] = (
+        0,
+        -1,
+    )  # Range of frames to process (0 to -1 = all frames)
+    apply_pbc: bool = False  # Whether to apply periodic boundary conditions
+    verbose: bool = (
+        False  # Whether to print settings, progress bars and other information
+    )
+    save_logs: bool = False  # Whether to save logs
+    save_performance: bool = False  # Whether to save performance
+
 
 @dataclass
 class Cutoff:
     """
     Cutoff that contains all the cutoffs.
-    
+
     Attributes:
     """
+
     type1: str
     type2: str
     distance: float
@@ -45,28 +51,41 @@ class Cutoff:
 @dataclass
 class ClusteringSettings:
     """
-    Clustering settings that contains all the clustering settings. 
-    
+    Clustering settings that contains all the clustering settings.
+
     Attributes:
     """
-    criterion: str = "distance" # "distance" or "bond"
-    neighbor_searcher: str = "kd_tree" # "kd_tree", TODO : "cell_list"
-    node_types: List[str] = field(default_factory=lambda: []) # List of node types
-    node_masses: List[float] = field(default_factory=lambda: []) # List of node masses in reduced units
-    connectivity: List[str] = field(default_factory=lambda: []) # List of connectivity
-    cutoffs: List[Cutoff] = field(default_factory=lambda: []) # Cutoffs for distance and bond criterion
-    with_printed_unwrapped_clusters: bool = False # Whether to print the unwrapped clusters
-    print_mode: str = 'none' # "all", "connectivity", "individual", "none"
+
+    criterion: str = "distance"  # "distance" or "bond"
+    neighbor_searcher: str = "kd_tree"  # "kd_tree", TODO : "cell_list"
+    node_types: List[str] = field(default_factory=lambda: [])  # List of node types
+    node_masses: List[float] = field(
+        default_factory=lambda: []
+    )  # List of node masses in reduced units
+    connectivity: List[str] = field(default_factory=lambda: [])  # List of connectivity
+    cutoffs: List[Cutoff] = field(
+        default_factory=lambda: []
+    )  # Cutoffs for distance and bond criterion
+    with_printed_unwrapped_clusters: bool = (
+        False  # Whether to print the unwrapped clusters
+    )
+    print_mode: str = "none"  # "all", "connectivity", "individual", "none"
 
     # Coordination number ie number of nearest neighbors
     # - all_types: all types of nodes are considered A-AB, B-AB
     # - same_type: only nodes of the same type are considered A-A, B-B
     # - different_type: only nodes of the different types are considered A-B, B-A
-    
+
     # Calls clustering algorithm with coordination number
-    with_coordination_number: bool = False # Whether to calculate the coordination number
-    coordination_mode: str = "all_types" # "all_types", "same_type", "different_type", "<node_type>"
-    coordination_range: List[int] = field(default_factory=lambda: []) # Minimum and maximum coordination numbers to consider
+    with_coordination_number: bool = (
+        False  # Whether to calculate the coordination number
+    )
+    coordination_mode: str = (
+        "all_types"  # "all_types", "same_type", "different_type", "<node_type>"
+    )
+    coordination_range: List[int] = field(
+        default_factory=lambda: []
+    )  # Minimum and maximum coordination numbers to consider
 
     # Calls clustering algorithm with alternating clusters (with coordination number)
     # - with_pairwise: calculate pairwise coordination number ie A4-B4, B3-A3
@@ -76,13 +95,15 @@ class ClusteringSettings:
     # - with_alternating: calculate alternating coordination number ie A4-B6, B2-A3
     with_alternating: bool = False
     # if with_coordination_number is True and not with_pairwise, with_mixing or with_alternating (default mode)
-    with_connectivity_name: str = "" # Name of the connectivity
+    with_connectivity_name: str = ""  # Name of the connectivity
 
     # Calls clustering algorithm with shared
-    with_number_of_shared: bool = False # Whether to calculate the number of shared
-    shared_mode: str = "all_types" # "all_types", "same_type", "different_type", "<node_type>"
-    shared_threshold: int = 1 # Minimum shared threshold
-    shared_threshold_mode: str = "exact" # "exact", "minimum" 
+    with_number_of_shared: bool = False  # Whether to calculate the number of shared
+    shared_mode: str = (
+        "all_types"  # "all_types", "same_type", "different_type", "<node_type>"
+    )
+    shared_threshold: int = 1  # Minimum shared threshold
+    shared_threshold_mode: str = "exact"  # "exact", "minimum"
 
     def get_max_cutoff(self) -> float:
         max_cutoff = 0.0
@@ -103,7 +124,10 @@ class ClusteringSettings:
         lines = []
         for key, value in self.__dict__.items():
             if value is not None:
-                if not self.with_coordination_number and key == "with_coordination_number":
+                if (
+                    not self.with_coordination_number
+                    and key == "with_coordination_number"
+                ):
                     continue
                 elif not self.with_coordination_number and key == "coordination_mode":
                     continue
@@ -122,35 +146,47 @@ class ClusteringSettings:
                 if key == "cutoffs":
                     line1 = f"\t\t|- {key:}:"
                     for cutoff in value:
-                        line1+=f"\n\t\t\t{str(cutoff)}"
+                        line1 += f"\n\t\t\t{str(cutoff)}"
                     lines.append(line1)
                 else:
                     lines.append(f"\t\t|- {key}: {value}")
-        output = '''
+        output = """
         Clustering Settings:
         -----------------
 {}
-        '''.format('\n'.join(lines))
+        """.format("\n".join(lines))
         return output
+
 
 @dataclass
 class AnalysisSettings:
-    """ 
-    Analysis settings that contains all the analyzer settings. 
-    
+    """
+    Analysis settings that contains all the analyzer settings.
+
     Attributes:
     """
-    overwrite: bool = True # Whether to overwrite the existing file, if False, appends results to the file
-    with_all: bool = False # Whether to calculate all the properties
-    with_average_cluster_size: bool = False # Whether to calculate the average cluster size
-    with_largest_cluster_size: bool = False # Whether to calculate the largest cluster size
-    with_concentration: bool = False # Whether to calculate the concentration
-    with_spanning_cluster_size: bool = False # Whether to calculate the spanning cluster size
-    with_gyration_radius: bool = False # Whether to calculate the gyration radius
-    with_correlation_length: bool = False # Whether to calculate the correlation length
-    with_percolation_probability: bool = False # Whether to calculate the percolation probability
-    with_order_parameter: bool = False # Whether to calculate the order parameter
-    with_cluster_size_distribution: bool = False # Whether to calculate the cluster size distribution
+
+    overwrite: bool = True  # Whether to overwrite the existing file, if False, appends results to the file
+    with_all: bool = False  # Whether to calculate all the properties
+    with_average_cluster_size: bool = (
+        False  # Whether to calculate the average cluster size
+    )
+    with_largest_cluster_size: bool = (
+        False  # Whether to calculate the largest cluster size
+    )
+    with_concentration: bool = False  # Whether to calculate the concentration
+    with_spanning_cluster_size: bool = (
+        False  # Whether to calculate the spanning cluster size
+    )
+    with_gyration_radius: bool = False  # Whether to calculate the gyration radius
+    with_correlation_length: bool = False  # Whether to calculate the correlation length
+    with_percolation_probability: bool = (
+        False  # Whether to calculate the percolation probability
+    )
+    with_order_parameter: bool = False  # Whether to calculate the order parameter
+    with_cluster_size_distribution: bool = (
+        False  # Whether to calculate the cluster size distribution
+    )
 
     def get_analyzers(self) -> List[str]:
         analyzers = []
@@ -190,37 +226,56 @@ class AnalysisSettings:
             if value is not None:
                 if not self.with_all and key == "with_all":
                     continue
-                elif not self.with_average_cluster_size and key == "with_average_cluster_size":
+                elif (
+                    not self.with_average_cluster_size
+                    and key == "with_average_cluster_size"
+                ):
                     continue
                 elif not self.with_concentration and key == "with_concentration":
                     continue
-                elif not self.with_largest_cluster_size and key == "with_largest_cluster_size":
+                elif (
+                    not self.with_largest_cluster_size
+                    and key == "with_largest_cluster_size"
+                ):
                     continue
-                elif not self.with_spanning_cluster_size and key == "with_spanning_cluster_size":
+                elif (
+                    not self.with_spanning_cluster_size
+                    and key == "with_spanning_cluster_size"
+                ):
                     continue
                 elif not self.with_gyration_radius and key == "with_gyration_radius":
                     continue
-                elif not self.with_correlation_length and key == "with_correlation_length":
+                elif (
+                    not self.with_correlation_length
+                    and key == "with_correlation_length"
+                ):
                     continue
-                elif not self.with_percolation_probability and key == "with_percolation_probability":
+                elif (
+                    not self.with_percolation_probability
+                    and key == "with_percolation_probability"
+                ):
                     continue
                 elif not self.with_order_parameter and key == "with_order_parameter":
                     continue
-                elif not self.with_cluster_size_distribution and key == "with_cluster_size_distribution":
+                elif (
+                    not self.with_cluster_size_distribution
+                    and key == "with_cluster_size_distribution"
+                ):
                     continue
                 lines.append(f"\t\t|- {key}: {value}")
-        output = '''
+        output = """
         Analysis Settings:
         -----------------
 {}
-        '''.format('\n'.join(lines))
+        """.format("\n".join(lines))
         return output
+
 
 @dataclass
 class LatticeSettings:
-    """ 
-    Lattice settings. 
-    
+    """
+    Lattice settings.
+
     TODO implement lattice fetcher from file
          implement the handling of lattice settings in the system
 
@@ -232,9 +287,18 @@ class LatticeSettings:
         apply_lattice_to_all_frames (bool): Whether to apply the lattice to all frames.
         apply_pbc (bool): Whether to apply periodic boundary conditions.
     """
+
     apply_custom_lattice: bool = False
-    custom_lattice: np.ndarray = field(default_factory=lambda: np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]))
-    lattice: np.ndarray = field(default_factory=lambda: np.array([[0., 0., 0.], [0., 0., 0.], [0., 0., 0.]]))
+    custom_lattice: np.ndarray = field(
+        default_factory=lambda: np.array(
+            [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+        )
+    )
+    lattice: np.ndarray = field(
+        default_factory=lambda: np.array(
+            [[0.0, 0.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]]
+        )
+    )
     get_lattice_from_file: bool = False
     lattice_file_location: str = "./"
     apply_lattice_to_all_frames: bool = True
@@ -245,26 +309,42 @@ class LatticeSettings:
             if value is not None:
                 if not self.apply_custom_lattice and key == "apply_custom_lattice":
                     lines.append(f"\t\t|- {key}: {value}")
-                    break                    
+                    break
                 elif key == "custom_lattice":
                     line1 = f"\t\t|- {key}:"
-                    lx = np.array2string(value[0], separator=', ', formatter={'float_kind': lambda x: f'{x}'})
-                    ly = np.array2string(value[1], separator=', ', formatter={'float_kind': lambda x: f'{x}'})
-                    lz = np.array2string(value[2], separator=', ', formatter={'float_kind': lambda x: f'{x}'})
-                    lines.append(f"{line1}\n\t\t\tlx = {lx}\n\t\t\tly = {ly}\n\t\t\tlz = {lz}")
+                    lx = np.array2string(
+                        value[0],
+                        separator=", ",
+                        formatter={"float_kind": lambda x: f"{x}"},
+                    )
+                    ly = np.array2string(
+                        value[1],
+                        separator=", ",
+                        formatter={"float_kind": lambda x: f"{x}"},
+                    )
+                    lz = np.array2string(
+                        value[2],
+                        separator=", ",
+                        formatter={"float_kind": lambda x: f"{x}"},
+                    )
+                    lines.append(
+                        f"{line1}\n\t\t\tlx = {lx}\n\t\t\tly = {ly}\n\t\t\tlz = {lz}"
+                    )
                 else:
                     lines.append(f"\t\t|- {key}: {value}")
-        output = '''
+        output = """
 
         Lattice Settings:
         -----------------
 {}
-        '''.format('\n'.join(lines))
+        """.format("\n".join(lines))
         return output
+
 
 @dataclass
 class Settings:
-    """ Settings for the Reve package and it is constructed using the SettingsBuilder. """
+    """Settings for the Reve package and it is constructed using the SettingsBuilder."""
+
     project_name: str = "default"
     export_directory: str = "export"
     file_location: str = "./"
@@ -295,22 +375,23 @@ class Settings:
         lines = []
         for key, value in self.__dict__.items():
             if value is not None:
-                if key =='general':
+                if key == "general":
                     continue
-                elif key == 'lattice':
+                elif key == "lattice":
                     lines.append(f"\t{str(self.lattice)}")
-                elif key == 'analysis':
+                elif key == "analysis":
                     lines.append(f"\t{str(self.analysis)}")
-                elif key == 'clustering':
+                elif key == "clustering":
                     lines.append(f"\t{str(self.clustering)}")
                 else:
                     lines.append(f"\t|- {key}: {value}")
-        output = '''
+        output = """
         General Settings:
         ----------------
 {}
-        '''.format('\n'.join(lines))
+        """.format("\n".join(lines))
         return output
+
 
 class SettingsBuilder:
     def __init__(self):
@@ -358,48 +439,81 @@ class SettingsBuilder:
     def with_clustering(self, clustering: ClusteringSettings):
         if not isinstance(clustering, ClusteringSettings):
             raise ValueError(f"Invalid clustering settings: {clustering}")
-            
-        if clustering.criterion not in ['bond', 'distance']:
+
+        if clustering.criterion not in ["bond", "distance"]:
             raise ValueError(f"Invalid criterion: {clustering.criterion}")
 
         if clustering.connectivity is None:
             raise ValueError(f"Invalid connectivity: {clustering.connectivity}")
 
-        if clustering.criterion == 'bond' and len(clustering.connectivity) != 3:
-            raise ValueError(f"Invalid connectivity, connectivity must be a list of 3 elements, got {len(clustering.connectivity)}")
+        if clustering.criterion == "bond" and len(clustering.connectivity) != 3:
+            raise ValueError(
+                f"Invalid connectivity, connectivity must be a list of 3 elements, got {len(clustering.connectivity)}"
+            )
 
-        if clustering.criterion == 'distance' and len(clustering.connectivity) != 2:
-            raise ValueError(f"Invalid connectivity, connectivity must be a list of 2 elements, got {len(clustering.connectivity)}")
+        if clustering.criterion == "distance" and len(clustering.connectivity) != 2:
+            raise ValueError(
+                f"Invalid connectivity, connectivity must be a list of 2 elements, got {len(clustering.connectivity)}"
+            )
 
         if clustering.with_coordination_number:
             modes = ["all_types", "same_type", "different_type"]
-            if clustering.coordination_mode not in modes and clustering.coordination_mode not in clustering.node_types:
-                raise ValueError(f"Invalid coordination mode: {clustering.coordination_mode}")
+            if (
+                clustering.coordination_mode not in modes
+                and clustering.coordination_mode not in clustering.node_types
+            ):
+                raise ValueError(
+                    f"Invalid coordination mode: {clustering.coordination_mode}"
+                )
             if len(clustering.coordination_range) != 2:
-                raise ValueError(f"Invalid coordination range: {clustering.coordination_range}")
+                raise ValueError(
+                    f"Invalid coordination range: {clustering.coordination_range}"
+                )
             if clustering.coordination_range[0] < 1:
-                raise ValueError(f"Invalid coordination range: {clustering.coordination_range}")
+                raise ValueError(
+                    f"Invalid coordination range: {clustering.coordination_range}"
+                )
             if clustering.coordination_range[0] > clustering.coordination_range[1]:
-                raise ValueError(f"Invalid coordination range: {clustering.coordination_range}")
+                raise ValueError(
+                    f"Invalid coordination range: {clustering.coordination_range}"
+                )
             if clustering.coordination_mode is None:
-                raise ValueError(f"Invalid coordination mode: {clustering.coordination_mode} with with_coordination_number set to True")
-        
+                raise ValueError(
+                    f"Invalid coordination mode: {clustering.coordination_mode} with with_coordination_number set to True"
+                )
+
         if clustering.with_pairwise and not clustering.with_coordination_number:
             raise ValueError(f"Activate with_coordination_number before with_pairwise")
 
         if clustering.with_alternating and not clustering.with_coordination_number:
-            raise ValueError(f"Activate with_coordination_number before with_alternating")
+            raise ValueError(
+                f"Activate with_coordination_number before with_alternating"
+            )
 
         if clustering.with_mixing and not clustering.with_coordination_number:
             raise ValueError(f"Activate with_coordination_number before with_mixing")
 
-        if clustering.with_coordination_number and not clustering.with_pairwise and not clustering.with_alternating and not clustering.with_mixing and clustering.with_connectivity_name == "":
-            raise ValueError(f"Default mode with_coordination_number requires a connectivity name")
-        
-        if clustering.with_number_of_shared and not clustering.with_coordination_number:
-            raise ValueError(f"Activate with_coordination_number before with_number_of_shared")
+        if (
+            clustering.with_coordination_number
+            and not clustering.with_pairwise
+            and not clustering.with_alternating
+            and not clustering.with_mixing
+            and clustering.with_connectivity_name == ""
+        ):
+            raise ValueError(
+                f"Default mode with_coordination_number requires a connectivity name"
+            )
 
-        if clustering.with_number_of_shared and clustering.shared_mode not in modes and clustering.shared_mode not in clustering.node_types:
+        if clustering.with_number_of_shared and not clustering.with_coordination_number:
+            raise ValueError(
+                f"Activate with_coordination_number before with_number_of_shared"
+            )
+
+        if (
+            clustering.with_number_of_shared
+            and clustering.shared_mode not in modes
+            and clustering.shared_mode not in clustering.node_types
+        ):
             raise ValueError(f"Invalid shared mode: {clustering.shared_mode}")
 
         if clustering.with_number_of_shared and clustering.shared_threshold < 1:
@@ -407,9 +521,14 @@ class SettingsBuilder:
 
         if clustering.with_number_of_shared and clustering.shared_threshold is None:
             raise ValueError(f"Invalid shared threshold: {clustering.shared_threshold}")
-        
-        if clustering.with_number_of_shared and clustering.shared_threshold_mode not in ['exact', 'at_least']:
-            raise ValueError(f"Invalid threshold mode: {clustering.shared_threshold_mode}")
+
+        if (
+            clustering.with_number_of_shared
+            and clustering.shared_threshold_mode not in ["exact", "at_least"]
+        ):
+            raise ValueError(
+                f"Invalid threshold mode: {clustering.shared_threshold_mode}"
+            )
 
         if clustering.node_types is None:
             raise ValueError(f"Invalid node types: {clustering.node_types}")
@@ -418,9 +537,16 @@ class SettingsBuilder:
             raise ValueError(f"Invalid node masses: {clustering.node_masses}")
 
         if len(clustering.node_types) != len(clustering.node_masses):
-            raise ValueError(f"Invalid node types and masses: {clustering.node_types} and {clustering.node_masses}")
+            raise ValueError(
+                f"Invalid node types and masses: {clustering.node_types} and {clustering.node_masses}"
+            )
 
-        if clustering.with_printed_unwrapped_clusters and clustering.print_mode not in ["all", "connectivity", "individual", "none"]:
+        if clustering.with_printed_unwrapped_clusters and clustering.print_mode not in [
+            "all",
+            "connectivity",
+            "individual",
+            "none",
+        ]:
             raise ValueError(f"Invalid print_mode: {clustering.print_mode}")
 
         self._settings.clustering = clustering
@@ -428,6 +554,7 @@ class SettingsBuilder:
 
     def build(self) -> Settings:
         return self._settings
+
 
 __all__ = [
     Settings,
@@ -437,3 +564,4 @@ __all__ = [
     LatticeSettings,
     Cutoff,
 ]
+

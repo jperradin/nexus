@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from typing import List
+import numpy as np
 
 from ...core.frame import Frame
 from ...core.node import Node
@@ -24,6 +25,7 @@ class BaseClusteringStrategy(ABC):
         _nodes (List[Node]): A direct reference to the list of nodes in the frame.
         _settings (Settings): The application settings object, providing access to clustering parameters.
     """
+
     def __init__(self, frame: Frame, settings: Settings) -> None:
         self.frame: Frame = frame
         self._lattice: np.ndarray = self.frame.lattice
@@ -45,7 +47,7 @@ class BaseClusteringStrategy(ABC):
         """
         root_1 = self.find(node_1)
         root_2 = self.find(node_2)
-        
+
         if root_1 != root_2:
             root_2.parent = root_1
 
@@ -53,7 +55,7 @@ class BaseClusteringStrategy(ABC):
     def build_clusters(self) -> List[Cluster]:
         """
         Executes the clustering algorithm to find and construct all clusters.
-        This method must be implemented by all concrete strategies.
+        This method must be implemented by all the strategies.
         """
         pass
 

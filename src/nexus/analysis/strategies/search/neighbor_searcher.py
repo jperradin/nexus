@@ -1,7 +1,6 @@
 import numpy as np
 from scipy.spatial import cKDTree
 from tqdm import tqdm
-import os
 from typing import List
 import shutil
 
@@ -9,6 +8,7 @@ from ....core.node import Node
 from ....core.frame import Frame
 from ....config.settings import Settings
 from ....utils.geometry import cartesian_to_fractional
+
 
 class NeighborSearcher:
     """
@@ -18,6 +18,7 @@ class NeighborSearcher:
     This class encapsulates the neighbor search logic, allowing different
     clustering finders to reuse it without code duplication.
     """
+
     def __init__(self, frame: Frame, settings: Settings):
         """
         Initializes the NeighborSearcher.
@@ -30,9 +31,12 @@ class NeighborSearcher:
         self.settings: Settings = settings
         self._nodes: List[Node] = frame.nodes
         self._lattice: np.ndarray = frame.lattice
-        self._max_cutoff: float = max(c.distance for c in self.settings.clustering.cutoffs)
+        self._max_cutoff: float = max(
+            c.distance for c in self.settings.clustering.cutoffs
+        )
 
     def execute(self) -> None:
+        """Search for all nearest neighbors within the largest cutoff distance."""
         positions = self.frame.get_wrapped_positions()
 
         # Build the k-d tree, handling periodic boundary conditions
@@ -42,7 +46,9 @@ class NeighborSearcher:
             query_positions = positions_frac
             # Estimate fractional cutoff. This is an approximation but is only used for broad-phase search.
             # The exact distance check will perform the precise filtering.
-            search_radius = self._max_cutoff / np.linalg.norm(self._lattice, axis=0).max()
+            search_radius = (
+                self._max_cutoff / np.linalg.norm(self._lattice, axis=0).max()
+            )
         else:
             kdtree = cKDTree(positions)
             query_positions = positions
@@ -52,27 +58,33 @@ class NeighborSearcher:
             "disable": not self.settings.verbose,
             "leave": False,
             "ncols": shutil.get_terminal_size().columns,
-            "colour": "green"
+            "colour": "green",
         }
-        
-        progress_bar = tqdm(range(len(self._nodes)), desc="Fetching nearest neighbors ...", **progress_bar_kwargs)
+
+        progress_bar = tqdm(
+            range(len(self._nodes)),
+            desc="Fetching nearest neighbors ...",
+            **progress_bar_kwargs,
+        )
 
         for i in progress_bar:
             node = self._nodes[i]
-            
+
             # Find candidate neighbors within the max cutoff radius
             indices = kdtree.query_ball_point(query_positions[i], search_radius)
 
             # Refine neighbors with exact distance checks
             self._filter_and_assign_neighbors(node, indices)
-    
-    def _filter_and_assign_neighbors(self, node: Node, candidate_indices: List[int]) -> None:
+
+    def _filter_and_assign_neighbors(
+        self, node: Node, candidate_indices: List[int]
+    ) -> None:
         """
         Filters candidate neighbors based on exact cutoffs and assigns them to the node.
         """
         new_neighbors = []
         new_distances = []
-        
+
         node_pos = node.position
 
         for neighbor_idx in candidate_indices:
@@ -92,7 +104,10 @@ class NeighborSearcher:
                 # You should implement calculate_pbc_distance in geometry.py
                 # For now, we assume it exists
                 from ....utils.geometry import calculate_pbc_distance
-                dist = calculate_pbc_distance(node_pos, neighbor.position, self._lattice)
+
+                dist = calculate_pbc_distance(
+                    node_pos, neighbor.position, self._lattice
+                )
             else:
                 dist = np.linalg.norm(node_pos - neighbor.position)
 

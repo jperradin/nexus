@@ -25,9 +25,9 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         self._raw_concentrations: Dict[str, List[float]] = {}
 
         # Public attributes to hold the final, aggregated results
-        self.concentrations: Dict[str, float] = {}
-        self.std: Dict[str, float] = {}
-        self.error: Dict[str, float] = {}
+        self.concentrations: Dict[str, float | np.float64] = {}
+        self.std: Dict[str, float | np.float64] = {}
+        self.error: Dict[str, float | np.float64] = {}
 
         # A flag to ensure final calculations are only performed once
         self._finalized: bool = False
@@ -49,10 +49,10 @@ class ConcentrationAnalyzer(BaseAnalyzer):
 
         self.update_frame_processed()
 
-    def finalize(self) -> Dict[str, Dict[str, float]]:
+    def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
-        Calculates the final mean, standard deviation, and fluctuation for the
-        concentrations across all processed frames. This method is now idempotent.
+        Calculates the final mean, standard deviation, and standard error for the
+        concentrations across all processed frames.
         """
         if self._finalized:
             return self.get_result()
@@ -62,7 +62,6 @@ class ConcentrationAnalyzer(BaseAnalyzer):
                 self.concentrations[connectivity] = np.mean(concs)
                 if len(concs) > 1:
                     self.std[connectivity] = np.std(concs, ddof=1)
-                    mean_conc = self.concentrations[connectivity]
                     self.error[connectivity] = self.std[connectivity] / np.sqrt(
                         len(concs)
                     )
@@ -80,7 +79,7 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         self._finalized = True
         return self.get_result()
 
-    def get_result(self) -> Dict[str, Dict[str, float]]:
+    def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
         """Returns the finalized analysis results."""
         return {
             "concentrations": self.concentrations,
@@ -114,7 +113,7 @@ class ConcentrationAnalyzer(BaseAnalyzer):
             mode = "a"
 
         with open(path, mode, encoding="utf-8") as output:
-            output.write(f"# Concentration Results\n")
+            output.write("# Concentration Results\n")
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(

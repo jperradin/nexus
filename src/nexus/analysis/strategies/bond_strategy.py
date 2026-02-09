@@ -70,7 +70,7 @@ class BondingStrategy(BaseClusteringStrategy):
         Build clusters of networking nodes connected through bridging nodes.
 
         Applies union-find over networking node pairs that share a common
-        bridging neighbor, then computes physical properties for each cluster.
+        bridging neighbor, then computes cluster properties for each cluster.
 
         Returns:
             List[Cluster]: The clusters found.

@@ -19,7 +19,16 @@ from .version import __version__
 
 def main(settings: Settings):
     """
-    Main function to test the package.
+    Run the full analysis pipeline.
+
+    Executes the sequential workflow: scan trajectory file, iterate frames,
+    find neighbors, build clusters via union-find, run enabled analyzers,
+    and write results to the export directory. Performance metrics are
+    optionally recorded at each step.
+
+    Args:
+        settings (Settings): Fully configured settings object built with
+            ``SettingsBuilder``.
     """
 
     perf = performance.Performance(

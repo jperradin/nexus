@@ -7,7 +7,7 @@ This section provides a detailed reference for the Nexus-CAT API. For a complete
 
 ### `main` function
 
-Main entry function to test the package by processing frames of data according to the specified settings. It initializes necessary components, executes frame-by-frame analysis with neighbor finding, clustering, and analysis strategies, tracks and records performance metrics, and saves relevant output and logs.
+Run the full analysis pipeline. Executes the sequential workflow: scan trajectory file, iterate frames, find neighbors, build clusters via union-find, run enabled analyzers, and write results to the export directory. Performance metrics are optionally recorded at each step.
 
 **Parameters:**
 
@@ -88,7 +88,7 @@ main(settings)
 
 ### GeneralSettings
 
-Represents general project-level settings used globally in the package.
+General configuration parameters for the analysis pipeline.
 
 #### Attributes
 
@@ -104,13 +104,13 @@ Represents general project-level settings used globally in the package.
 
 ### Cutoff
 
-Represents a cutoff distance setting between two node types.
+Distance cutoff between two node types for neighbor searching.
 
 #### Attributes
 
-- `type1` (str): First node type.
-- `type2` (str): Second node type.
-- `distance` (float): Cutoff distance between the node types.
+- `type1` (str): Symbol of the first node type.
+- `type2` (str): Symbol of the second node type.
+- `distance` (float): Maximum distance for this pair to be considered neighbors.
 
 #### Methods
 
@@ -120,7 +120,7 @@ Represents a cutoff distance setting between two node types.
 
 ### ClusteringSettings
 
-Holds settings related to clustering operations.
+Configuration parameters for the clustering algorithm. Controls which clustering strategy is selected, the neighbor search method, node filtering, cutoff distances, and optional coordination or shared-neighbor analysis modes.
 
 #### Attributes
 
@@ -163,7 +163,7 @@ Holds settings related to clustering operations.
 
 ### AnalysisSettings
 
-Contains flags to specify which analyzers and analysis metrics to calculate.
+Configuration parameters controlling which analyzers are enabled. Each ``with_*`` flag enables the corresponding analyzer in the pipeline. Setting ``with_all`` enables every available analyzer at once.
 
 #### Attributes
 
@@ -179,7 +179,7 @@ Contains flags to specify which analyzers and analysis metrics to calculate.
 
 ### LatticeSettings
 
-Settings for specifying lattice parameters and application.
+Configuration parameters for the simulation cell lattice. Controls whether a custom lattice is applied, the lattice matrix values, and whether the lattice is read from an external file.
 
 #### Attributes
 
@@ -197,7 +197,7 @@ Settings for specifying lattice parameters and application.
 
 ### Settings
 
-Composite settings class aggregating general, lattice, clustering, and analysis settings.
+Composite configuration object for the entire analysis pipeline. Aggregates general, lattice, clustering, and analysis sub-settings into a single object. Constructed via ``SettingsBuilder`` which validates constraints between fields.
 
 #### Attributes
 
@@ -224,7 +224,7 @@ Composite settings class aggregating general, lattice, clustering, and analysis 
 
 ### SettingsBuilder
 
-Builder pattern class for incrementally constructing a `Settings` instance with validation.
+Builder for constructing and validating a ``Settings`` object. Provides a fluent interface for setting sub-configurations. Each ``with_*`` method validates its input and returns ``self`` for chaining. Call ``build()`` to obtain the final ``Settings`` instance.
 
 #### Methods
 
@@ -288,11 +288,11 @@ This reference summarizes all the key settings classes and the builder for confi
 
 ### Node
 
-Represents a node in the system, encapsulating properties like position, neighbors, mass, and coordination. Utilizes Python dataclasses with slots and ordering for efficient and comparable instances.
+Dataclass representing a node in the simulation frame. A Node is the fundamental unit of the cluster analysis pipeline. It stores properties (symbol, position, mass) and participates in the union-find algorithm through its parent field. Nodes self-parent by default, meaning each node starts as the root of its own cluster.
 
 #### Attributes
 
-- `symbol` (str): Symbolic identifier of the node (i.e., "1", "2", "A", "B", "Si", "O", etc.).
+- `symbol` (str): Chemical symbol of the atom (e.g., "Si", "O").
 - `node_id` (int): Unique identifier (auto-incremented if not provided).
 - `position` (np.ndarray): 3D coordinates of the node.
 - `parent` (Optional[Node]): Reference to parent node; defaults to self if not set.
@@ -300,7 +300,7 @@ Represents a node in the system, encapsulating properties like position, neighbo
 - `cluster_id` (Optional[int]): Identifier of the cluster the node belongs to; defaults to its own node_id.
 - `distances` (Optional[List[float]]): Distances to each neighbor.
 - `indices` (Optional[List[int]]): Indices corresponding to neighbors.
-- `mass` (Optional[float]): Mass of the node; defaults to 0.0 if not set.
+- `mass` (Optional[float]): Mass of the node; defaults to 1.0 if not set.
 - `coordination` (Optional[int]): Coordination number; defaults to 0.
 - `other` (Optional[List[str]]): List for additional arbitrary attributes.
 
@@ -360,7 +360,7 @@ Here's the API reference for the `Cluster` class in the core module:
 
 ### Cluster
 
-Represents a cluster of nodes with connectivity, spatial properties, and robust percolation detection using period vector analysis. Handles periodic boundary conditions and computes structural properties for percolation theory analysis.
+Represents a group of connected nodes forming a single cluster. A cluster is produced by a clustering strategy and consumed by analyzers. It holds the set of member nodes and provides methods to compute physical properties such as unwrapped positions, center of mass, gyration radius, percolation probability, and order parameter.
 
 #### Initialization
 
@@ -616,7 +616,7 @@ print(f"Gyration radius: {cluster.gyration_radius:.3f}")
 
 ### Frame
 
-Represents a trajectory frame containing nodes, lattice information, and cluster data.
+Represents a single snapshot of a trajectory. A frame holds the raw node data, the simulation cell lattice, and the clusters produced by a clustering strategy. It is created by a reader, populated during the analysis pipeline, and consumed by analyzers.
 
 #### Attributes
 
@@ -724,7 +724,7 @@ print(frame)  # e.g., Frame 0 (num_nodes=..., num_clusters=None)
 
 ### System
 
-Manages trajectory data for atomic systems, interfacing with file readers, loading frames, and iterating through trajectory frames based on settings.
+Manages trajectory data and provides frame-level access through a file reader. Wraps a reader with lazy frame iteration. On initialization it configures the reader's filename from settings and triggers a file scan to index frame offsets. Frames can then be accessed individually or iterated over as a generator.
 
 #### Initialization
 
@@ -807,7 +807,7 @@ for frame in system:
 
 ### StrategyFactory
 
-Factory class responsible for managing and providing clustering strategies based on given frame data and settings.
+Factory class responsible for creating, registering, and retrieving clustering strategy instances. Implements the factory design pattern to manage a collection of clustering strategies. Selects the appropriate one based on the clustering settings flags.
 
 #### Initialization
 
@@ -845,7 +845,7 @@ Creates a `StrategyFactory` instance by initializing and registering available c
 
 ### DistanceStrategy
 
-A clustering strategy that connects nodes based on direct distance criteria. Forms clusters by linking nodes of specified types that are within a given cutoff distance.
+Clustering strategy based on a direct distance criterion. Connects any two nodes of specified types that are within a cutoff distance of each other. Requires a 2-element connectivity specification (e.g., ``["Si", "Si"]``).
 
 #### Inheritance
 
@@ -938,7 +938,7 @@ main(settings)
 
 ### BondingStrategy
 
-A clustering strategy that connects two nodes via a bridging third node. Identifies clusters based on a three-node connectivity pattern where two nodes of one type are linked through a shared node of another type.
+Clustering strategy that connects networking nodes via a bridging node. Uses a 3-element connectivity pattern (e.g., ``["Si", "O", "Si"]``) to form clusters by linking networking nodes that share a common bridging node of the specified type.
 
 #### Inheritance
 Inherits from `BaseClusteringStrategy`.
@@ -1036,7 +1036,7 @@ main(settings)
 
 ### CoordinationStrategy
 
-A clustering strategy that groups nodes based on their coordination number. Extends basic bonding patterns by adding constraints on the coordination number of networking nodes, forming clusters only when connected nodes meet specified coordination criteria.
+Clustering strategy that groups nodes by coordination number. Extends the bonding pattern by constraining the coordination number of networking nodes. Supports several pairing modes: pairwise, mixing, alternating, and default.
 
 #### Inheritance
 
@@ -1276,7 +1276,7 @@ clustering_settings = c.ClusteringSettings(
 
 ### SharedStrategy
 
-A clustering strategy that connects nodes based on a minimum number of shared neighbors. Advanced strategy using coordination numbers and shared neighbor counts to distinguish between different types of polyhedral linkages such as corner-sharing, edge-sharing, or face-sharing polyhedra in amorphous materials.
+Clustering strategy based on a minimum or exact number of shared neighbors. Extends the coordination strategy by additionally requiring that two networking nodes share at least or exactly a threshold number of common bridging neighbors. This distinguishes polyhedral linkage types such as corner-sharing, edge-sharing, or face-sharing.
 
 #### Inheritance
 
@@ -1398,7 +1398,7 @@ clustering_settings = c.ClusteringSettings(
 
 ### AnalyzerFactory
 
-Factory class responsible for managing and providing analysis components that calculate various cluster properties and metrics from trajectory data.
+Factory class responsible for creating, registering, and retrieving analyzer instances. Implements the factory design pattern to manage a collection of analyzer objects.
 
 #### Initialization
 
@@ -1440,7 +1440,7 @@ Creates an `AnalyzerFactory` instance by initializing and registering all availa
 
 ### AverageClusterSizeAnalyzer
 
-Computes the weight-average cluster size $\langle S \rangle$, a fundamental metric in percolation theory that characterizes the mean size of finite clusters and exhibits divergent behavior at the percolation threshold.
+Computes the weight-average cluster size ``<S>``. Uses the formula ``<S> = sum(s^2 * n(s)) / sum(s * n(s))`` where *s* is the cluster size and *n(s)* the number of clusters of size *s*. Percolating clusters are excluded to focus on the finite-cluster distribution.
 
 #### Inheritance
 
@@ -1511,7 +1511,7 @@ Creates an analyzer for computing weight-average cluster sizes across trajectory
 
 ### ClusterSizeDistributionAnalyzer
 
-Computes the cluster size distribution $n_s$, tracking the number of clusters of each size for each connectivity type. This distribution is fundamental in percolation theory for characterizing the scaling behavior and fractal properties of cluster formation.
+Computes the cluster size distribution ``n(s)`` for each connectivity type. Counts how many clusters of each size *s* exist per connectivity across all frames. Percolating clusters are excluded from the distribution. Results are written to one file per connectivity.
 
 #### Inheritance
 
@@ -1580,7 +1580,7 @@ Creates an analyzer for computing cluster size distributions across trajectory f
 
 ### ConcentrationAnalyzer
 
-Computes the concentration of clusters for each connectivity type, defined as the fraction of nodes participating in clusters. This metric quantifies the extent of network formation.
+Computes the node concentration for each connectivity type. The concentration is defined as the ratio of the number of nodes participating in clusters of a given connectivity to the total number of networking nodes.
 
 #### Inheritance
 
@@ -1646,7 +1646,7 @@ Creates an analyzer for computing cluster concentrations across trajectory frame
 
 ### CorrelationLengthAnalyzer
 
-Computes the correlation length $\xi$, a fundamental length scale in percolation theory that characterizes the typical spatial extent of clusters and diverges at the percolation threshold.
+Computes the correlation length (xi) of the cluster size distribution. Defined as ``xi^2 = sum(2 * R_s^2 * s^2 * n_s) / sum(s^2 * n_s)`` where *R_s* is the gyration radius and *s* the cluster size. Only non-percolating clusters contribute.
 
 #### Inheritance
 
@@ -1720,7 +1720,7 @@ Creates an analyzer for computing correlation lengths across trajectory frames.
 
 ### GyrationRadiusAnalyzer
 
-Computes the distribution of gyration radii as a function of cluster size for each connectivity type. The radius of gyration characterizes the spatial extent and geometric compactness of clusters, revealing their fractal structure near the percolation threshold.
+Computes the mean gyration radius binned by cluster size for each connectivity. Collects the gyration radius of all non-percolating clusters, groups them by cluster size, and averages over all processed frames. Results are written to one file per connectivity.
 
 #### Inheritance
 Inherits from `BaseAnalyzer`.
@@ -1795,7 +1795,7 @@ Creates an analyzer for computing gyration radius distributions across trajector
 
 ### LargestClusterSizeAnalyzer
 
-Analyzes the size of the largest cluster for each connectivity type, tracking the dominant structural feature in the system. This metric serves as a key indicator of percolation transitions and the emergence of system-spanning connectivity.
+Computes the size of the largest cluster for each connectivity type. Tracks the maximum cluster size per connectivity across frames and provides ensemble-averaged results with standard deviation and error.
 
 #### Inheritance
 
@@ -1866,8 +1866,7 @@ Creates an analyzer for computing largest cluster sizes across trajectory frames
 
 ### OrderParameterAnalyzer
 
-Computes the percolation order parameter $P_\infty$, the fundamental signature of the percolation phase transition. This metric quantifies the fraction of networking nodes belonging to the percolating cluster and vanishes below the percolation threshold.
-Note that the order parameter is computed for the xx, yy, and zz directions only (no triclinic geometry support for now).
+Computes the percolation order parameter (P_inf) for each connectivity type. The order parameter is the fraction of networking nodes that belong to the percolating cluster.
 
 #### Inheritance
 
@@ -1939,8 +1938,7 @@ Creates an analyzer for computing order parameters across trajectory frames.
 
 ### PercolationProbabilityAnalyzer
 
-Computes the percolation probability $\Pi$, the likelihood of finding at least one system-spanning cluster along a specified direction. This metric exhibits a sharp transition at the percolation threshold, serving as a primary diagnostic for identifying the critical point.
-Note that the percolation probability is computed for the xx, yy, and zz directions only (no triclinic geometry support for now).
+Computes the percolation probability (Pi) for each connectivity type. The percolation probability is the fraction of frames in which at least one cluster spans the simulation box *in all three dimensions*. A value of 1.0 indicates percolation in every frame; 0.0 indicates it never occurs.
 
 #### Inheritance
 
@@ -1971,10 +1969,10 @@ Creates an analyzer for computing percolation probabilities across trajectory fr
 #### Methods
 
 - `analyze(frame: Frame, connectivities: List[str]) -> None`
-  - Analyzes a single frame to determine if percolation occurs along the x-direction for each connectivity type.
+  - Check whether percolation occurs for each connectivity in the frame.
   - **Calculation Methodology**:
     - For each connectivity, examines all clusters to detect percolation.
-    - A cluster is considered percolating in the x-direction if its spatial extent exceeds the simulation box dimension along x-axis.
+    - A cluster is considered percolating if it spans the simulation box in all three dimensions (percolation_probability contains "xyz").
     - Records binary outcome: 1.0 if percolation occurs, 0.0 otherwise.
     - Stores raw values for later averaging across all frames.
   - **Percolation Theory Significance**:
@@ -2008,11 +2006,11 @@ Creates an analyzer for computing percolation probabilities across trajectory fr
   - Internal method to write the file header with analysis metadata.
   - Respects overwrite settings: creates new file or appends to existing based on configuration.
   - Includes timestamp and frame count for reproducibility.
-  - Notes that analysis focuses on x-direction percolation.
+  - Analysis checks percolation in all three dimensions.
 
 ### SpanningClusterSizeAnalyzer
 
-Computes the size of the largest finite (non-percolating) cluster, a descriptor for characterizing the sub-critical regime and the approach to the percolation threshold from below.
+Computes the size of the largest finite (non-percolating) cluster. Tracks the maximum non-percolating cluster size per connectivity across frames.
 
 #### Inheritance
 
@@ -3069,7 +3067,7 @@ for frame_id in [0, 10, 50]:
 
 ### aesthetics module
 
-Utility module providing functions for visual output formatting, color generation, and file management.
+Utility functions for terminal output, color gradients, and file deduplication.
 
 
 #### Functions
@@ -3125,7 +3123,7 @@ __all__ = [
 
 ### geometry module
 
-Utility module providing optimized geometric calculations for periodic systems, including coordinate transformations, distance computations, angle measurements, and cluster property calculations.
+Numba-accelerated geometric calculations for periodic systems: coordinate transformations, distance and angle computations, and gyration radius.
 
 
 #### Functions
@@ -3260,7 +3258,7 @@ Most functions use Numba's JIT compilation with:
 
 ### Performance
 
-A dataclass for storing, tracking, and analyzing performance metrics across system operations, with support for custom metrics and historical data collection.
+Stores and tracks performance metrics for pipeline operations. Records execution time, memory usage, and CPU usage for a named operation. Supports custom metrics and historical snapshots for trend analysis.
 
 
 #### Attributes

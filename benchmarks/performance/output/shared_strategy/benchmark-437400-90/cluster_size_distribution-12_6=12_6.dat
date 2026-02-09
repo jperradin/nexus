@@ -1,9 +1,0 @@
-# Cluster Size Distribution Results for 12_6=12_6
-# Date: 2025-11-29 14:24:00.753217
-# Frames averaged: 1
-# Connectivity_type,Concentration,Cluster_size,N_clusters,Standard_deviation_ddof=1
-12_6=12_6,0.003779355044845608,6,1,0.0
-12_6=12_6,0.003779355044845608,5,2,0.0
-12_6=12_6,0.003779355044845608,4,15,0.0
-12_6=12_6,0.003779355044845608,3,60,0.0
-12_6=12_6,0.003779355044845608,2,286,0.0

@@ -1,9 +1,0 @@
-# Cluster Size Distribution Results for 12_3=12_3
-# Date: 2025-11-29 12:17:21.465094
-# Frames averaged: 1
-# Connectivity_type,Concentration,Cluster_size,N_clusters,Standard_deviation_ddof=1
-12_3=12_3,0.01763798951588036,6,3,0.0
-12_3=12_3,0.01763798951588036,5,21,0.0
-12_3=12_3,0.01763798951588036,4,56,0.0
-12_3=12_3,0.01763798951588036,3,253,0.0
-12_3=12_3,0.01763798951588036,2,734,0.0

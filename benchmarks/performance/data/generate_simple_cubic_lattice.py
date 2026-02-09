@@ -3,16 +3,18 @@ import os
 from tqdm import tqdm
 from numba import njit, prange
 
+
 # @njit(parallel=True)
 def generate_sites(num_sites, lattice_size):
     networking_sites = []
     bridge_sites = []
     network_hash = set()
     bridge_hash = set()
-    
+    limit = np.int32(lattice_size**3)
+
     for _ in tqdm(range(num_sites)):
         choice = np.random.randint(0, 2)
-        if choice == 0:
+        if choice == 0 and len(bridge_sites) < limit:
             while True:
                 x = np.random.randint(0, lattice_size)
                 y = np.random.randint(0, lattice_size)
@@ -37,6 +39,7 @@ def generate_sites(num_sites, lattice_size):
 
     return networking_sites, bridge_sites
 
+
 if __name__ == "__main__":
     """
     Generate simple cubic lattice data as two intricated percolation lattice 1 and 2.
@@ -49,8 +52,8 @@ if __name__ == "__main__":
      137200 - 70 - 0.4
      205800 - 70 - 0.6
      204800 - 80 - 0.4
-     291600 - 90 - 0.6
      307200 - 80 - 0.4
+     291600 - 90 - 0.6
      437400 - 90 - 0.6
      400000 - 100 - 0.4
      600000 - 100 - 0.6
@@ -63,23 +66,23 @@ if __name__ == "__main__":
         (137200, 70),
         (205800, 70),
         (204800, 80),
-        (291600, 90),
         (307200, 80),
+        (291600, 90),
         (437400, 90),
         (400000, 100),
-        (600000, 100)
+        (600000, 100),
     ]
-    
-    lattice_size = 70  # Size of the cubic lattice
-    num_sites = 205800 # Total number of sites to generate, N < lattice_size^3
-    
+
+    lattice_size = 30  # Size of the cubic lattice
+    num_sites = 16200  # Total number of sites to generate, N < lattice_size^3
+
     # for num_sites, lattice_size in lattices:
 
     networking_sites, bridge_sites = generate_sites(num_sites, lattice_size)
 
     n_sites = len(networking_sites) + len(bridge_sites)
-    lattice_string = f"Lattice=\"{lattice_size} 0.0 0.0 0.0 {lattice_size} 0.0 0.0 0.0 {lattice_size}\""
-    
+    lattice_string = f'Lattice="{lattice_size} 0.0 0.0 0.0 {lattice_size} 0.0 0.0 0.0 {lattice_size}"'
+
     with open(f"./benchmark-{num_sites}-{lattice_size}.xyz", "w") as f:
         f.write(f"{n_sites}\n")
         f.write(f"{lattice_string}\n")
@@ -87,4 +90,3 @@ if __name__ == "__main__":
             f.write(f"1 {site[0]} {site[1]} {site[2]}\n")
         for site in bridge_sites:
             f.write(f"2 {site[0]} {site[1]} {site[2]}\n")
-    

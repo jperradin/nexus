@@ -3,16 +3,16 @@ from nexus import SettingsBuilder, main
 import nexus.config.settings as c
 
 # Path to the trajectory file
-path = "examples/inputs/example-SiO2-27216at-low_pressure.xyz"
-# path = "./examples/inputs/example-SiO2-27216at.xyz"
+# path = "./examples/inputs/example-SiO2-1008at.xyz"
+path = "./examples/inputs/example-SiO2-1008at-high_pressure.xyz"
+# path = "./examples/inputs/example-SiO2-27216at-low_pressure.xyz"
+# path = "./examples/inputs/example-SiO2-27216at.xyz" # critical point for SiO5-SiO5
 # path = "./examples/inputs/example-SiO2-96000at.xyz"
 # path = "./examples/inputs/example-SiO2-1056000at.xyz"
-# path = "../../these/sio2-1008at-11frames--for_snapshots/pos15.xyz"
-# path = "../../these/96000-1b/pos72B.xyz"
 
 # General settings
 config_general = c.GeneralSettings(
-    project_name="test-SiO2",  # Project name
+    project_name="quicktest-SiO2",  # Project name
     export_directory="./examples/outputs",  # Export directory
     file_location=path,  # File location
     range_of_frames=(0, -1),  # Range of frames
@@ -35,9 +35,9 @@ config_clustering = c.ClusteringSettings(
     node_masses=[28.0855, 15.9994],
     connectivity=["Si", "O", "Si"],
     cutoffs=[
-        # c.Cutoff(type1="Si", type2="Si", distance=3.50),
+        c.Cutoff(type1="Si", type2="Si", distance=3.50),
         c.Cutoff(type1="Si", type2="O", distance=2.30),
-        # c.Cutoff(type1="O", type2="O", distance=3.05),
+        c.Cutoff(type1="O", type2="O", distance=3.05),
     ],
     with_coordination_number=True,
     coordination_mode="O",  # "all_types" or "same_type" or "different_type" or "<node_type>"
@@ -51,6 +51,7 @@ config_clustering = c.ClusteringSettings(
     print_mode="connectivity",  # "all", "connectivity", "individual", "none"
     # shared_mode="O",
     # shared_threshold=2,
+    # shared_threshold_mode='exact',
     # with_connectivity_name="Stishovite",  # Name of connectivity to identify (e.g.,
 )
 
@@ -80,7 +81,8 @@ config_clustering.with_alternating = False
 config_clustering.with_number_of_shared = True
 config_clustering.coordination_range = [6, 6]  # Looking for SiO6=SiO6 only
 config_clustering.shared_mode = "O"  # "all_types" or "same_type" or "different_type" or "<node_type>"
-config_clustering.shared_threshold = 2  # Minimum of shared neighbors
+config_clustering.shared_threshold = 2  # exactly 2 shared oxygens between Si 
+config_clustering.shared_threshold_mode = 'exact'
 config_clustering.with_connectivity_name = "Stishovite"
 config_analysis.overwrite = False  # Do not erase previous results
 

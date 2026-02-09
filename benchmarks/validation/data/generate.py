@@ -33,7 +33,7 @@ if __name__ == "__main__":
         - At theoretical pc = 0.3116 for sizes from 20 to 50 with step 5
         - From 0.2 to 0.4 with step 0.002 for sizes from 20 to 50 with step 5
     """
-    
+
     # Generate percolation sites at theoretical pc
     for j in tqdm(range(20, 55, 5)):
         probability = 0.3116

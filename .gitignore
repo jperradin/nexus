@@ -21,7 +21,7 @@ benchmarks/validation/output/30/p0.*
 benchmarks/validation/output/35/p0.*
 benchmarks/validation/output/40/p0.*
 benchmarks/validation/output/45/p0.*
-benchmarks/validation/output/40/p0.*
+benchmarks/validation/output/50/p0.*
 benchmarks/validation/output/extract_exponents.ipynb
 benchmarks/*.xyz
 CLAUDE.md

@@ -5,12 +5,32 @@ import os
 from typing import List, Dict, Tuple
 
 class MultipleFilesSummaryWriter(BaseWriter):
+    """
+    Aggregates per-file analysis results into summary files.
+
+    Walks the export directory tree, collects ``.dat`` result files grouped by
+    analysis type, and writes combined summary files. Supports ``"all"`` mode
+    (single summary per analysis type) and ``"connectivity"`` mode (one summary per
+    connectivity label).
+
+    Attributes:
+        _mode (str): Output mode (``"all"`` or ``"connectivity"``).
+    """
+
     def __init__(self, settings: Settings, mode: str = "all") -> None:
+        """
+        Initialize the summary writer.
+
+        Args:
+            settings (Settings): Configuration settings.
+            mode (str): Output mode controlling summary file layout.
+        """
         super().__init__(settings)
         self._settings: Settings = settings
         self._mode: str = mode
 
     def write(self) -> None:
+        """Collect result files and write combined summaries."""
         average_cluster_size_files = []
         correlation_length_files = []
         largest_cluster_size_files = []
@@ -63,6 +83,16 @@ class MultipleFilesSummaryWriter(BaseWriter):
 
 
     def _get_results(self, files: List[str]) -> Dict[str, Tuple[float, float, float]]:
+        """
+        Parse result files and aggregate values by connectivity type.
+
+        Args:
+            files (List[str]): Paths to ``.dat`` result files to parse.
+
+        Returns:
+            Dict[str, Tuple[float, float, float]]: Mapping of connectivity labels to
+                lists of (concentration, value, standard deviation) tuples.
+        """
         results = {}
         for file in files:
             with open(file, 'r') as f:
@@ -85,6 +115,16 @@ class MultipleFilesSummaryWriter(BaseWriter):
         return results
 
     def _write_summary(self, results: Dict[str, Tuple[float, float, float]], n_data: int, file_name: str, mode: str = "all") -> None:
+        """
+        Write a combined summary file from aggregated results.
+
+        Args:
+            results (Dict[str, Tuple[float, float, float]]): Aggregated results
+                keyed by connectivity type.
+            n_data (int): Number of data files that were aggregated.
+            file_name (str): Output file name.
+            mode (str): Output mode (``"all"`` or ``"connectivity"``).
+        """
         if mode == "all":
             path = os.path.join(self._settings.export_directory, file_name)
             with open(path, 'w') as f:

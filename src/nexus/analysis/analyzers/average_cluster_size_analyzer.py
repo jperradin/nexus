@@ -10,17 +10,30 @@ from datetime import datetime
 
 class AverageClusterSizeAnalyzer(BaseAnalyzer):
     """
-    Computes the weight-average cluster size <S>, a key metric in percolation theory.
+    Computes the weight-average cluster size ``<S>``.
 
-    This analyzer calculates <S> using the formula:
-        <S> = Σ(s² * n(s)) / Σ(s * n(s))
-    where s is the cluster size and n(s) is the number of clusters of size s.
+    Uses the formula ``<S> = sum(s^2 * n(s)) / sum(s * n(s))`` where *s* is
+    the cluster size and *n(s)* the number of clusters of size *s*. This
+    quantity diverges at the percolation threshold. Percolating clusters are
+    excluded to focus on the finite-cluster distribution.
 
-    This quantity diverges at the percolation threshold. The calculation excludes
-    percolating clusters to focus on the properties of the finite cluster distribution.
+    Attributes:
+        _raw_average_sizes (Dict[str, List[float]]): Per-frame ``<S>`` values
+            keyed by connectivity label.
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        average_sizes (Dict[str, float]): Ensemble-averaged ``<S>`` per connectivity.
+        std (Dict[str, float]): Standard deviation (ddof=1) of ``<S>``.
+        error (Dict[str, float]): Standard error of ``<S>``.
+        concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
+
     def __init__(self, settings: Settings) -> None:
-        """Initializes the analyzer."""
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Private attributes to store raw, per-frame data
         self._raw_average_sizes: Dict[str, List[float | np.float64]] = {}
@@ -37,8 +50,11 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes the current frame to compute the average cluster size for each
-        connectivity type and stores the raw data.
+        Compute the weight-average cluster size for each connectivity in *frame*.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
@@ -72,8 +88,10 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
-        Calculates the final mean, standard deviation, and standard error for all
-        processed frames.
+        Compute ensemble averages of ``<S>`` over all processed frames.
+
+        Returns:
+            Dict[str, Dict[str, float]]: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -104,7 +122,13 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
-        """Returns the finalized analysis results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict[str, float]]: Keys are ``"concentrations"``,
+                ``"average_cluster_size"``, ``"std"``, and ``"error"``.
+        """
         return {
             "concentrations": self.concentrations,
             "average_cluster_size": self.average_sizes,
@@ -113,7 +137,7 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to a data file."""
+        """Write ensemble-averaged results to ``average_cluster_size.dat``."""
         output = self.finalize()
         self._write_header()
         path = os.path.join(self._settings.export_directory, "average_cluster_size.dat")
@@ -129,7 +153,7 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
-        """Initializes the output file with a header."""
+        """Write the CSV header to the output file if needed."""
         path = os.path.join(self._settings.export_directory, "average_cluster_size.dat")
         number_of_frames = self.frame_processed_count
 
@@ -149,7 +173,9 @@ class AverageClusterSizeAnalyzer(BaseAnalyzer):
             )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

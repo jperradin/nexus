@@ -15,37 +15,51 @@ FrameIndex = namedtuple(
 
 class XYZReader(BaseReader):
     """
-    Reader for XYZ trajectory files.
+    Reader for XYZ-format trajectory files.
+
+    Supports files with an extended XYZ header containing a ``Lattice="..."`` string.
+    Each frame consists of a node count line, a header/comment line with lattice
+    information, and the node data lines.
     """
 
     def __init__(self, settings: Settings) -> None:
+        """
+        Initialize the XYZ reader.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
 
     def detect(self, filepath: str) -> bool:
         """
-        Detects if the file is supported by this reader.
+        Check whether the file has an ``.xyz`` extension.
+
+        Args:
+            filepath (str): Path to the file to test.
 
         Returns:
-            bool: True if the file is supported, False otherwise.
+            bool: True if the file ends with ``.xyz``.
         """
         return filepath.lower().endswith(".xyz")
 
     def scan(self) -> List[FrameIndex]:
         """
-        Scans the trajectory file efficiently to index frames.
+        Scan the XYZ file and build an index of frame byte offsets.
 
-        This method reads the file sequentially to locate the start of each
-        frame and parse its header. It uses a single buffered reader for
-        efficient I/O and stores the byte offset of each frame for fast
-        seeking later. The `mmaped_file` attribute is no longer needed for
-        this operation.
+        Reads the file sequentially, parsing each frame's header to extract the node
+        count and lattice matrix, and recording the byte offset for later seeking.
+
+        Returns:
+            List[FrameIndex]: Indexed frame metadata for every frame in the file.
+
+        Raises:
+            IOError: If a frame header is malformed or the file cannot be read.
         """
         self.frame_indices = []
         self.num_frames = 0
 
         try:
-            # Use a single `with` statement for robust file handling.
-            # Python's file object is already buffered and efficient.
             with open(self.filename, "r") as f:
                 while True:
                     # Record the starting position of the potential frame.
@@ -104,16 +118,22 @@ class XYZReader(BaseReader):
             print(message)
 
         self.is_indexed = True
-        # The `parse` method will use these FrameIndex objects to seek directly
+        # The `parse` method uses these FrameIndex objects to seek directly
         # to the correct position in the file to read a specific frame.
         return self.frame_indices
 
     def parse(self, frame_id: int) -> Generator[Frame, None, None]:
         """
-        Parses the trajectory file, get node data and yields frames.
+        Parse a specific frame by seeking to its indexed byte offset.
+
+        Reads the node symbols and Cartesian positions for the requested frame and
+        yields a ``Frame`` object containing the raw data.
+
+        Args:
+            frame_id (int): Zero-based index of the frame to parse.
 
         Yields:
-            Frame: A data structure representing a frame.
+            Frame: A frame with raw node data and lattice information.
         """
         if not self.is_indexed:
             self.scan()

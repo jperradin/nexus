@@ -14,15 +14,26 @@ from .search.neighbor_searcher import NeighborSearcher
 
 class BondingStrategy(BaseClusteringStrategy):
     """
-    A clustering strategy that connects two nodes via a 'bridge' node.
+    Clustering strategy that connects networking nodes via a bridging node.
 
-    This strategy identifies clusters based on a specified bonding pattern, typically
-    a three-node connectivity pattern. For example, a connectivity of ['Si', 'O', 'Si']
-    will connect silicon atoms that are sharing a common oxygen atom.
+    Uses a 3-element connectivity pattern (e.g., ``["Si", "O", "Si"]``) to
+    form clusters by linking networking nodes that share a common bridging
+    node of the specified type.
+
+    Attributes:
+        clusters (List[Cluster]): Clusters accumulated across calls.
+        _counter (int): Running count of clusters found.
+        _neighbor_searcher (NeighborSearcher): KD-tree based neighbor finder.
     """
 
     def __init__(self, frame: Frame, settings: Settings) -> None:
-        """Init class instance"""
+        """
+        Initialize the strategy.
+
+        Args:
+            frame (Frame): The simulation frame to operate on.
+            settings (Settings): Configuration settings.
+        """
         self.frame: Frame = frame
         self.clusters: List[Cluster] = []
         self._lattice: np.ndarray = self.frame.lattice
@@ -32,11 +43,19 @@ class BondingStrategy(BaseClusteringStrategy):
         self._neighbor_searcher = NeighborSearcher(self.frame, self._settings)
 
     def find_neighbors(self) -> None:
-        """Find nearest neighbors with NeighborSearcher"""
+        """Populate each node's neighbor list using the KD-tree searcher."""
         self._neighbor_searcher.execute()
 
     def get_connectivities(self) -> List[str]:
-        """Get connectivity name based on the provided settings"""
+        """
+        Build the connectivity label from the 3-element connectivity setting.
+
+        Returns:
+            List[str]: Single-element list with the connectivity label.
+
+        Raises:
+            ValueError: If connectivity is not a 3-element list.
+        """
         connectivity = self._settings.clustering.connectivity
         if isinstance(connectivity, list) and len(connectivity) == 3:
             connectivity = [f"{connectivity[0]}-{connectivity[1]}-{connectivity[2]}"]
@@ -47,7 +66,15 @@ class BondingStrategy(BaseClusteringStrategy):
             )
 
     def build_clusters(self) -> List[Cluster]:
-        """Build the clusters of networking nodes bridged by node of a specified type"""
+        """
+        Build clusters of networking nodes connected through bridging nodes.
+
+        Applies union-find over networking node pairs that share a common
+        bridging neighbor, then computes physical properties for each cluster.
+
+        Returns:
+            List[Cluster]: The clusters found.
+        """
         networking_nodes = [
             node
             for node in self._nodes

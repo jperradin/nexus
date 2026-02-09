@@ -9,28 +9,12 @@ __all__ = [
 ]
 
 
-"""
-Module: print_title
--------------------
-
-This module provides a function to print the title and version of the package.
-
-Functions:
-----------
-    - print_title: Prints the title and the version of the package.
-"""
-
 def print_title(__version__) -> None:
     """
-    Prints the title and the version of the package.
+    Print the ASCII art title and version to the terminal.
 
-    Parameters:
-    -----------
-        __version__ (str): The version of the package.
-
-    Returns:
-    --------
-        None
+    Args:
+        __version__ (str): The version string to display.
     """
     title = Fore.LIGHTBLUE_EX + r"""
                                                                 
@@ -50,15 +34,11 @@ def print_title(__version__) -> None:
 
 def print_title_to_file(__version__, path) -> None:
     """
-    Prints the title and the version of the package.
+    Write the ASCII art title and version to a file.
 
-    Parameters:
-    -----------
-        __version__ (str): The version of the package.
-
-    Returns:
-    --------
-        None
+    Args:
+        __version__ (str): The version string to write.
+        path (str): Path to the output file.
     """
     title = r"""
                                                                 
@@ -79,7 +59,17 @@ def print_title_to_file(__version__, path) -> None:
     return
 
 def generate_color_gradient(num_iterations):
-    """ Generate a gradient of colors to update at each tqdm iteration """
+    """
+    Generate an RGB color gradient for progress bar visualization.
+
+    Interpolates in HSV space from red to blue over the given number of steps.
+
+    Args:
+        num_iterations (int): Number of gradient steps to produce.
+
+    Returns:
+        list: List of (R, G, B) tuples with integer values in [0, 255].
+    """
 
     # Define the start and end colors in RGB
     start_color = (255, 0, 0)  # Red
@@ -115,16 +105,10 @@ def generate_color_gradient(num_iterations):
 
 def remove_duplicate_lines(filepath: str) -> None:
     """
-    Read a file, remove duplicate lines, and rewrite the file with unique lines.
-    
-    Parameters
-    ----------
-    filepath : str
-        The path to the file to be read and rewritten.
-        
-    Returns
-    -------
-    None
+    Remove duplicate lines from a file in place, preserving order.
+
+    Args:
+        filepath (str): Path to the file to deduplicate.
     """
     
     # Read the file and store unique lines in an OrderedDict

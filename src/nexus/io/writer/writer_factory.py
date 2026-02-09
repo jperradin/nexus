@@ -6,19 +6,26 @@ from .performance_writer import PerformanceWriter
 from .multiple_files_summary_writer import MultipleFilesSummaryWriter
 from ...config.settings import Settings
 
-# TODO: finish implementation of writers 
-#       - add support for trajectory writers
-#       - add support for system writers
-#       - add support for configuration writers
-#       - add support for summary writers
-#       - add support for statistics writers
-#       - add support for performance writers
-
 
 class WriterFactory:
-    """Factory for creating file writers based on file type."""
+    """
+    Factory for creating output writers by class name.
+
+    Registers all available writer classes on initialization. The ``get_writer()``
+    method instantiates the appropriate writer with the current settings.
+
+    Attributes:
+        _writers (dict): Mapping of class names to writer classes.
+        _settings (Settings): Configuration settings passed to writer constructors.
+    """
 
     def __init__(self, settings: Settings):
+        """
+        Initialize the factory and register all available writer classes.
+
+        Args:
+            settings (Settings): Configuration settings for writer construction.
+        """
         self._writers = {}
         self._settings: Settings = settings
         self.register_writer(ClustersWriter)
@@ -26,13 +33,27 @@ class WriterFactory:
         self.register_writer(PerformanceWriter)
         self.register_writer(MultipleFilesSummaryWriter)
 
-    
     def register_writer(self, writer: BaseWriter):
-        """Registers a new writer instance."""
+        """
+        Register a writer class in the factory.
+
+        Args:
+            writer (BaseWriter): The writer class to register.
+        """
         self._writers[writer.__class__.__name__] = writer
 
     def get_writer(self, name: str, mode: str = "all") -> Optional[BaseWriter]:
-        """Returns the appropriate writer for a given file."""
+        """
+        Instantiate and return a writer by class name.
+
+        Args:
+            name (str): Class name of the writer to create.
+            mode (str): Output mode passed to writers that support it.
+
+        Returns:
+            Optional[BaseWriter]: The instantiated writer, or None if the name is
+                not recognized.
+        """
         if name == "ClustersWriter":
             return ClustersWriter(self._settings)
         elif name == "LogsWriter":

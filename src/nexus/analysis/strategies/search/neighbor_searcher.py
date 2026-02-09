@@ -12,20 +12,27 @@ from ....utils.geometry import cartesian_to_fractional
 
 class NeighborSearcher:
     """
-    A component responsible for finding and filtering neighbors for all nodes
-    in a frame using a k-d tree algorithm.
+    KD-tree based neighbor finder for all nodes in a frame.
 
-    This class encapsulates the neighbor search logic, allowing different
-    clustering finders to reuse it without code duplication.
+    Builds a ``cKDTree`` over node positions (with optional PBC support),
+    queries it for candidates within the largest cutoff, then refines
+    results with exact per-pair distance checks.
+
+    Attributes:
+        frame (Frame): The frame containing the nodes to process.
+        settings (Settings): Configuration settings with cutoffs and PBC flag.
+        _nodes (List[Node]): Direct reference to the nodes in the frame.
+        _lattice (np.ndarray): Lattice matrix from the frame.
+        _max_cutoff (float): Largest cutoff distance across all pair types.
     """
 
     def __init__(self, frame: Frame, settings: Settings):
         """
-        Initializes the NeighborSearcher.
+        Initialize the neighbor searcher.
 
         Args:
             frame (Frame): The frame containing the nodes to process.
-            settings (Settings): The global settings object, used for cutoffs and PBC.
+            settings (Settings): Configuration settings.
         """
         self.frame: Frame = frame
         self.settings: Settings = settings
@@ -36,7 +43,7 @@ class NeighborSearcher:
         )
 
     def execute(self) -> None:
-        """Search for all nearest neighbors within the largest cutoff distance."""
+        """Build the KD-tree and assign neighbors to every node in the frame."""
         positions = self.frame.get_wrapped_positions()
 
         # Build the k-d tree, handling periodic boundary conditions
@@ -80,7 +87,12 @@ class NeighborSearcher:
         self, node: Node, candidate_indices: List[int]
     ) -> None:
         """
-        Filters candidate neighbors based on exact cutoffs and assigns them to the node.
+        Refine candidates with exact per-pair cutoff checks and assign results.
+
+        Args:
+            node (Node): The node whose neighbors are being assigned.
+            candidate_indices (List[int]): Indices from the broad-phase KD-tree
+                query.
         """
         new_neighbors = []
         new_distances = []

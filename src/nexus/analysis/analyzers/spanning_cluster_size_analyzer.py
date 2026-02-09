@@ -13,13 +13,26 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
     """
     Computes the size of the largest finite (non-percolating) cluster.
 
-    This is a crucial metric in percolation theory, often denoted as S_span
-    for the sub-critical regime. It helps characterize the size of the
-    largest clusters that do not span the entire system.
+    Tracks the maximum non-percolating cluster size per connectivity across
+    frames. 
+
+    Attributes:
+        _raw_spanning_sizes (Dict[str, List[float]]): Per-frame largest
+            non-percolating cluster sizes.
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        spanning_cluster_sizes (Dict[str, float]): Ensemble-averaged sizes.
+        std (Dict[str, float]): Standard deviation (ddof=1).
+        error (Dict[str, float]): Standard error.
+        concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
 
     def __init__(self, settings: Settings) -> None:
-        """Initializes the analyzer."""
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Private attributes to store raw, per-frame data
         self._raw_spanning_sizes: Dict[str, List[float]] = {}
@@ -36,8 +49,11 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes a single frame to find the largest non-percolating cluster
-        size for each connectivity type and stores the raw data.
+        Record the largest non-percolating cluster size per connectivity in *frame*.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
@@ -68,8 +84,10 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
-        Calculates the final mean, standard deviation, and fluctuation for the
-        spanning cluster size across all processed frames. This method is now idempotent.
+        Compute ensemble averages over all processed frames.
+
+        Returns:
+            Dict[str, Dict[str, float]]: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -100,7 +118,13 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
-        """Returns the finalized analysis results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict[str, float]]: Keys are ``"concentrations"``,
+                ``"spanning_cluster_size"``, ``"std"``, and ``"error"``.
+        """
         return {
             "concentrations": self.concentrations,
             "spanning_cluster_size": self.spanning_cluster_sizes,
@@ -109,7 +133,7 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to a data file."""
+        """Write ensemble-averaged results to ``spanning_cluster_size.dat``."""
         output = self.finalize()
         self._write_header()
         path = os.path.join(
@@ -127,7 +151,7 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
-        """Initializes the output file with a header."""
+        """Write the CSV header to the output file if needed."""
         path = os.path.join(
             self._settings.export_directory, "spanning_cluster_size.dat"
         )
@@ -149,7 +173,9 @@ class SpanningClusterSizeAnalyzer(BaseAnalyzer):
             )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

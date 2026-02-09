@@ -11,17 +11,31 @@ FrameIndex = namedtuple('FrameIndex', ['frame_id', 'num_nodes', 'lattice', 'byte
 
 class LAMMPSReader(BaseReader):
     """
-    Reader for LAMMPS trajectory files.
+    Reader for LAMMPS dump trajectory files.
+
+    Supports ``.lammpstrj``, ``.lammps``, and ``.data`` file extensions. Parses the
+    ``ITEM:`` headers to extract timestep, node count, box bounds (orthorhombic), and
+    column-mapped node properties.
     """
+
     def __init__(self, settings: Settings) -> None:
+        """
+        Initialize the LAMMPS reader.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
 
     def detect(self, filepath: str) -> bool:
         """
-        Detects if the file is supported by this reader.
+        Check whether the file has a LAMMPS-compatible extension.
+
+        Args:
+            filepath (str): Path to the file to test.
 
         Returns:
-            bool: True if the file is supported, False otherwise.
+            bool: True if the file ends with ``.lammpstrj``, ``.lammps``, or ``.data``.
         """
         if filepath.lower().endswith('.lammpstrj'):
             return True
@@ -33,11 +47,17 @@ class LAMMPSReader(BaseReader):
 
     def scan(self) -> List[FrameIndex]:
         """
-        Scans the LAMMPS trajectory file efficiently to index frames.
+        Scan the LAMMPS dump file and build an index of frame byte offsets.
 
-        This method reads the file sequentially to locate the start of each
-        frame and parse its header. It uses a single buffered reader for
-        efficient I/O and stores the byte offset for fast seeking later.
+        Reads the file sequentially, parsing each ``ITEM: TIMESTEP`` block to extract
+        the node count and orthorhombic box bounds, and recording the byte offset for
+        later seeking.
+
+        Returns:
+            List[FrameIndex]: Indexed frame metadata for every frame in the file.
+
+        Raises:
+            IOError: If a frame header is malformed or the file cannot be read.
         """
         self.frame_indices = []
         self.num_frames = 0
@@ -117,10 +137,16 @@ class LAMMPSReader(BaseReader):
 
     def parse(self, frame_id: int) -> Generator[Frame, None, None]:
         """
-        Parses the trajectory file, get node data and yields frames.
+        Parse a specific frame by seeking to its indexed byte offset.
+
+        Reads node properties using the column mapping discovered during scanning and
+        yields a ``Frame`` object containing the raw data.
+
+        Args:
+            frame_id (int): Zero-based index of the frame to parse.
 
         Yields:
-            Frame: A data structure representing a frame.
+            Frame: A frame with raw node data and lattice information.
         """
         
         if not self.is_indexed:

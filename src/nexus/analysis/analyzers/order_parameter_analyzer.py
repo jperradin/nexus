@@ -11,15 +11,27 @@ from datetime import datetime
 
 class OrderParameterAnalyzer(BaseAnalyzer):
     """
-    Computes the percolation order parameter (P∞) for each connectivity type.
+    Computes the percolation order parameter (P_inf) for each connectivity type.
 
-    The order parameter is the fraction of networking nodes that belong to a
-    percolating cluster. It is a key metric for identifying the percolation
-    threshold in a system.
+    The order parameter is the fraction of networking nodes that belong to the
+    percolating cluster. 
+
+    Attributes:
+        _raw_order_parameters (Dict[str, List[float]]): Per-frame P_inf values.
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        order_parameters (Dict[str, float]): Ensemble-averaged P_inf.
+        std (Dict[str, float]): Standard deviation (ddof=1).
+        error (Dict[str, float]): Standard error.
+        concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
 
     def __init__(self, settings: Settings) -> None:
-        """Initializes the analyzer."""
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Private attributes to store raw, per-frame data
         self._raw_order_parameters: Dict[str, List[float]] = {}
@@ -36,8 +48,11 @@ class OrderParameterAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes a single frame to get the order parameter for each connectivity
-        type and stores the raw data.
+        Extract the order parameter from the percolating cluster per connectivity.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
@@ -74,8 +89,10 @@ class OrderParameterAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
-        Calculates the final mean and standard deviation for the order parameter
-        across all processed frames. This method is now idempotent.
+        Compute ensemble averages of P_inf over all processed frames.
+
+        Returns:
+            Dict[str, Dict[str, float]]: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -106,7 +123,13 @@ class OrderParameterAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
-        """Returns the finalized analysis results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict[str, float]]: Keys are ``"concentrations"``,
+                ``"order_parameters"``, ``"std"``, and ``"error"``.
+        """
         return {
             "concentrations": self.concentrations,
             "order_parameters": self.order_parameters,
@@ -115,7 +138,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to a data file."""
+        """Write ensemble-averaged results to ``order_parameter.dat``."""
         output = self.finalize()
         self._write_header()
         path = os.path.join(self._settings.export_directory, "order_parameter.dat")
@@ -131,7 +154,7 @@ class OrderParameterAnalyzer(BaseAnalyzer):
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
-        """Initializes the output file with a header."""
+        """Write the CSV header to the output file if needed."""
         path = os.path.join(self._settings.export_directory, "order_parameter.dat")
         number_of_frames = self.frame_processed_count
 
@@ -151,7 +174,9 @@ class OrderParameterAnalyzer(BaseAnalyzer):
             )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

@@ -1,7 +1,8 @@
 """
-Input/Output components for the REVE package.
+Readers for molecular dynamics trajectory formats.
 
-This module contains readers for various molecular dynamics trajectory formats.
+Provides a factory-based system for detecting file formats and parsing frames from
+XYZ and LAMMPS trajectory files.
 """
 
 from .base_reader import BaseReader

@@ -11,16 +11,29 @@ from datetime import datetime
 
 class PercolationProbabilityAnalyzer(BaseAnalyzer):
     """
-    Computes the percolation probability (Π) for each connectivity type.
+    Computes the percolation probability (Pi) for each connectivity type.
 
-    This is the probability of finding at least one cluster that spans the
-    simulation box along a given dimension. It is calculated for each frame
-    and then averaged. A value of 1.0 indicates percolation occurs in every
-    frame, while 0.0 indicates it never occurs.
+    The percolation probability is the fraction of frames in which at least
+    one cluster spans the simulation box *in all three dimensions*. A value of
+    1.0 indicates percolation in every frame; 0.0 indicates it never occurs.
+
+    Attributes:
+        _raw_percolation_prob_x (Dict[str, List[float]]): Per-frame binary
+            indicators (0 or 1) for percolation.
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        percolation_probabilities (Dict[str, float]): Ensemble-averaged Pi.
+        std (Dict[str, float]): Standard deviation (ddof=1).
+        error (Dict[str, float]): Standard error.
+        concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
 
     def __init__(self, settings: Settings) -> None:
-        """Initializes the analyzer."""
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Private attributes to store raw, per-frame data
         # We store a boolean (0 or 1) for each frame indicating if percolation occurred
@@ -38,8 +51,11 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes a single frame to determine if percolation occurs for each
-        connectivity type and stores the result (1 for yes, 0 for no).
+        Check whether percolation occurs for each connectivity in *frame*.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
@@ -49,7 +65,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
             self._raw_percolation_prob_x.setdefault(connectivity, [])
             self._raw_concentrations.setdefault(connectivity, [])
 
-            # Check if any cluster for this connectivity percolates in the x-direction
+            # Check if any cluster for this connectivity percolates in the 3 directions
             found_percolating_cluster = any(
                 "xyz" in c.percolation_probability
                 for c in clusters
@@ -67,8 +83,10 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
-        Calculates the final mean and standard deviation for the percolation
-        probability across all processed frames. This method is now idempotent.
+        Compute ensemble-averaged percolation probability over all frames.
+
+        Returns:
+            Dict[str, Dict[str, float]]: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -98,7 +116,13 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
-        """Returns the finalized analysis results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict[str, float]]: Keys are ``"concentrations"``,
+                ``"percolation_probabilities"``, ``"std"``, and ``"error"``.
+        """
         return {
             "concentrations": self.concentrations,
             "percolation_probabilities": self.percolation_probabilities,
@@ -107,7 +131,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to a data file."""
+        """Write ensemble-averaged results to ``percolation_probability.dat``."""
         output = self.finalize()
         self._write_header()
         path = os.path.join(
@@ -127,7 +151,7 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
-        """Initializes the output file with a header."""
+        """Write the CSV header to the output file if needed."""
         path = os.path.join(
             self._settings.export_directory, "percolation_probability.dat"
         )
@@ -149,7 +173,9 @@ class PercolationProbabilityAnalyzer(BaseAnalyzer):
             )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

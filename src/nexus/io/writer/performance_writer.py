@@ -8,11 +8,30 @@ from ...utils.performance import Performance
 from ...io.writer.base_writer import BaseWriter
 
 class PerformanceWriter(BaseWriter):
+    """
+    Serializes performance metrics to a JSON file.
+
+    Converts a ``Performance`` dataclass to a dictionary, handles ``datetime``
+    serialization, and writes the result to the export directory.
+    """
+
     def __init__(self, settings: Settings) -> None:
+        """
+        Initialize the performance writer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         self._settings: Settings = settings
 
     def write(self, performance: Performance) -> None:
+        """
+        Serialize a performance record to JSON.
+
+        Args:
+            performance (Performance): The performance record to write.
+        """
         # Convert datetime objects to strings for JSON serialization
         def serialize_datetime(obj):
             if isinstance(obj, datetime):

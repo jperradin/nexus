@@ -2,7 +2,31 @@ from typing import List, Dict
 import os
 
 class Parser:
+    """
+    Discovers and indexes trajectory files in a directory for batch processing.
+
+    Scans a directory for files matching a given format extension and reads an
+    accompanying ``info.csv`` file to associate metadata (e.g., concentration,
+    temperature) with each trajectory file.
+
+    Attributes:
+        file_location (str): Path to the directory or a file within it.
+        format (str): File extension to match (e.g., ``"xyz"``).
+        files (List[str]): Sorted list of discovered trajectory file paths.
+        infos (Dict[str, List[float]]): Column-keyed metadata from ``info.csv``.
+    """
+
     def __init__(self, file_location: str, format: str):
+        """
+        Initialize the parser, discover files, and load metadata.
+
+        Args:
+            file_location (str): Path to a directory or a file within one.
+            format (str): File extension to filter by (without the leading dot).
+
+        Raises:
+            ValueError: If ``file_location`` does not exist.
+        """
         self.file_location: str = file_location
         self.format: str = format
         self.files: List[str] = []
@@ -14,7 +38,15 @@ class Parser:
             raise ValueError(f"File location {self.file_location} does not exist")
 
     def parse(self) -> List[str]:
-        # checktype of file_location
+        """
+        Discover trajectory files matching the configured format in the directory.
+
+        If ``file_location`` is a file, its parent directory is scanned. If it is a
+        directory, it is scanned directly. Results are stored in ``self.files``.
+
+        Returns:
+            List[str]: Sorted list of matching file paths.
+        """
         if os.path.isfile(self.file_location):
             # take parent directory instead
             parent_directory = os.path.dirname(self.file_location)
@@ -33,13 +65,16 @@ class Parser:
             self.files = files
 
     def parse_infos(self) -> None:
-        # fetch a info.csv file containing the data associated with trajectory files
-        # info.csv should contain any information that can be used to plot the results
-        # ie probability, density, temperature, pressure, etc.
-        # info.csv should have the same number of lines as trajectory files
-        # info.csv should have the name of the columns at the first line separated by commas
-        # info.csv should have the values of the columns separated by commas
-        # info.csv should have a column named "project_name" with the name of the project for each trajectory file
+        """
+        Load metadata from an ``info.csv`` file alongside the trajectory files.
+
+        The CSV file must have a header row of column names and one data row per
+        trajectory file. A ``project_name`` column is kept as strings; all other
+        columns are parsed as floats.
+
+        Raises:
+            ValueError: If the file is missing, empty, or has a row count mismatch.
+        """
         info_file = os.path.join(self.file_location, "info.csv")
         if os.path.exists(info_file):
             with open(info_file, "r") as f:
@@ -63,11 +98,23 @@ class Parser:
             raise ValueError(f"info.csv not found in the directory : {self.file_location}")
 
     def get_files(self) -> List[str]:
+        """
+        Return the list of discovered trajectory files, scanning if needed.
+
+        Returns:
+            List[str]: Sorted list of trajectory file paths.
+        """
         if not self.files:
             self.parse()
         return self.files
 
     def get_infos(self) -> Dict[str, List[float]]:
+        """
+        Return the metadata dictionary, loading from CSV if needed.
+
+        Returns:
+            Dict[str, List[float]]: Column-keyed metadata values.
+        """
         if not self.infos:
             self.parse_infos()
         return self.infos

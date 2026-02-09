@@ -10,16 +10,28 @@ from datetime import datetime
 
 class CorrelationLengthAnalyzer(BaseAnalyzer):
     """
-    Computes the correlation length (ξ) of the cluster size distribution.
+    Computes the correlation length (xi) of the cluster size distribution.
 
-    The correlation length is a measure of the characteristic size of clusters
-    and is calculated using the second moment of the gyration radius distribution,
-    weighted by cluster size: ξ² = Σ(2 * R_s² * s² * n_s) / Σ(s² * n_s),
-    where R_s is the gyration radius of clusters of size s.
+    Defined as ``xi^2 = sum(2 * R_s^2 * s^2 * n_s) / sum(s^2 * n_s)`` where
+    *R_s* is the gyration radius and *s* the cluster size. Only non-percolating
+    clusters contribute.
+
+    Attributes:
+        _raw_correlation_lengths (Dict[str, List[float]]): Per-frame xi values.
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        correlation_length (Dict[str, float]): Ensemble-averaged xi.
+        std (Dict[str, float]): Standard deviation (ddof=1).
+        error (Dict[str, float]): Standard error.
+        concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
 
     def __init__(self, settings: Settings) -> None:
-        """Initializes the analyzer."""
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Private attributes to store raw, per-frame data
         self._raw_correlation_lengths: Dict[str, List[float]] = {}
@@ -36,8 +48,11 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes a single frame to compute the correlation length for each
-        connectivity type and stores the raw data.
+        Compute the correlation length for each connectivity in *frame*.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
@@ -79,8 +94,10 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict[str, Dict[str, float]]:
         """
-        Calculates the final mean, standard deviation, and fluctuation for the
-        correlation length across all processed frames. This method is now idempotent.
+        Compute ensemble averages of xi over all processed frames.
+
+        Returns:
+            Dict[str, Dict[str, float]]: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -111,7 +128,13 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict[str, float]]:
-        """Returns the finalized analysis results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict[str, float]]: Keys are ``"concentrations"``,
+                ``"correlation_length"``, ``"std"``, and ``"error"``.
+        """
         return {
             "concentrations": self.concentrations,
             "correlation_length": self.correlation_length,
@@ -120,7 +143,7 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to a data file."""
+        """Write ensemble-averaged results to ``correlation_length.dat``."""
         output = self.finalize()
         self._write_header()
         path = os.path.join(self._settings.export_directory, "correlation_length.dat")
@@ -136,7 +159,7 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
-        """Initializes the output file with a header."""
+        """Write the CSV header to the output file if needed."""
         path = os.path.join(self._settings.export_directory, "correlation_length.dat")
         number_of_frames = self.frame_processed_count
 
@@ -156,7 +179,9 @@ class CorrelationLengthAnalyzer(BaseAnalyzer):
             )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

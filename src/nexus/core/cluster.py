@@ -10,6 +10,38 @@ from ..utils.geometry import calculate_gyration_radius, wrap_position
 
 
 class Cluster:
+    """
+    Represents a group of connected nodes forming a single cluster.
+
+    A cluster is produced by a clustering strategy and consumed by analyzers. It holds
+    the set of member nodes and provides methods to compute physical properties such as
+    unwrapped positions, center of mass, gyration radius, percolation probability, and
+    order parameter.
+
+    Attributes:
+        nodes (List[Node]): Member nodes belonging to this cluster.
+        connectivity (str): Connectivity label identifying the cluster type (e.g., "Si-Si").
+        root_id (int): Identifier of the root node used as the cluster ID.
+        size (int): Number of member nodes in the cluster.
+        settings (Settings): Configuration settings used during analysis.
+        lattice (np.ndarray): 3x3 lattice matrix of the simulation cell.
+        center_of_mass (np.ndarray): Wrapped center-of-mass position.
+        symbols (list): Chemical symbols of member nodes in insertion order.
+        indices (list): Node IDs of member nodes in insertion order.
+        unwrapped_positions (np.ndarray): Cartesian positions unwrapped across periodic
+            boundaries, shape (N, 3).
+        percolation_probability (str): String of percolating directions (e.g., "xyz", "xz").
+        gyration_radius (float): Radius of gyration computed from unwrapped positions.
+        order_parameter (list): Per-dimension order parameter [P_x, P_y, P_z].
+        total_nodes (int): Total number of nodes in the frame, set externally by analyzers.
+        concentration (float): Fraction of total nodes belonging to this cluster.
+        is_percolating (bool): True if the cluster percolates in all three dimensions.
+        is_spanning (bool): True if the cluster spans the simulation cell.
+        linkages (List[Tuple[int, int]]): Sorted list of unique node-pair bonds in the cluster.
+        decoration_atoms (Dict[int, Dict]): Bridging nodes not part of the cluster but
+            connected to member nodes, keyed by node ID.
+    """
+
     def __init__(
         self,
         connectivity: str,
@@ -18,6 +50,16 @@ class Cluster:
         settings: Settings,
         lattice: np.ndarray,
     ) -> None:
+        """
+        Initialize a cluster with its connectivity label, root node, size, and lattice.
+
+        Args:
+            connectivity (str): Connectivity label identifying the cluster type.
+            root_id (int): Identifier of the root node, also used as the cluster ID.
+            size (int): Number of member nodes in the cluster.
+            settings (Settings): Configuration settings for the analysis.
+            lattice (np.ndarray): 3x3 lattice matrix of the simulation cell.
+        """
         self.nodes: List[Node] = []
         self.connectivity: str = connectivity
         self.root_id: int = root_id
@@ -46,23 +88,64 @@ class Cluster:
         self.decoration_atoms: Dict[int, Dict] = {}
 
     def add_node(self, node: Node) -> None:
+        """
+        Add a node to this cluster and assign it the cluster ID.
+
+        Args:
+            node (Node): The node to add. Its ``cluster_id`` is set to this cluster's
+                ``root_id``.
+        """
         node.cluster_id = self.root_id
         self.nodes.append(node)
 
     def set_lattice(self, lattice: np.ndarray) -> None:
+        """
+        Update the lattice matrix and recompute its inverse.
+
+        Args:
+            lattice (np.ndarray): New 3x3 lattice matrix of the simulation cell.
+        """
         self.lattice = lattice
         self._inv_lattice = np.linalg.inv(lattice)
 
     def get_nodes(self) -> List[Node]:
+        """
+        Return the list of member nodes.
+
+        Returns:
+            List[Node]: Nodes belonging to this cluster.
+        """
         return self.nodes
 
     def get_connectivity(self) -> str:
+        """
+        Return the connectivity label of this cluster.
+
+        Returns:
+            str: Connectivity label (e.g., "Si-Si" or "Si-O-Si").
+        """
         return self.connectivity
 
     def get_size(self) -> int:
+        """
+        Return the number of member nodes in this cluster.
+
+        Returns:
+            int: Cluster size.
+        """
         return self.size
 
     def set_indices_and_positions(self, positions_dict) -> None:
+        """
+        Populate symbols, indices, and unwrapped positions from a positions dictionary.
+
+        Iterates over member nodes and matches them against the provided dictionary to
+        build the ``symbols``, ``indices``, and ``unwrapped_positions`` arrays.
+
+        Args:
+            positions_dict (dict): Mapping of node IDs to their unwrapped Cartesian
+                positions.
+        """
         unwrapped_pos_list = []
         for node in self.nodes:
             for node_id, position in positions_dict.items():
@@ -74,6 +157,13 @@ class Cluster:
         self.unwrapped_positions = np.array(unwrapped_pos_list)
 
     def calculate_center_of_mass(self) -> None:
+        """
+        Compute the wrapped center of mass and translate unwrapped positions accordingly.
+
+        Calculates the mean of the unwrapped positions, wraps it back into the simulation
+        cell, and shifts all unwrapped positions (including decoration nodes) by the
+        resulting translation vector so they are centered around the wrapped center of mass.
+        """
         if self.unwrapped_positions.size > 0:
             unwrapped_com = np.mean(self.unwrapped_positions, axis=0)
             wrapped_com = wrap_position(unwrapped_com, self.lattice)
@@ -87,6 +177,12 @@ class Cluster:
             self.center_of_mass = np.zeros(3)
 
     def calculate_gyration_radius(self) -> None:
+        """
+        Compute the radius of gyration from unwrapped positions.
+
+        Delegates the heavy computation to the Numba-accelerated utility function.
+        Computes the center of mass first if it has not been calculated yet.
+        """
         if self.size <= 1 or self.unwrapped_positions.size == 0:
             self.gyration_radius = 0.0
             return
@@ -117,12 +213,17 @@ class Cluster:
 
     def calculate_percolation_probability(self) -> None:
         """
-        Robust percolation detection using period vector algorithm.
-        Detects true percolation by checking if cluster connects to itself
-        across periodic boundaries through actual bond connectivity.
+        Detect percolation using the period vector algorithm.
 
-        Method suggested by Livraghi et al. (2021) https://pubs.acs.org/action/showCitFormats?doi=10.1021/acs.jctc.1c00423&ref=pdf
+        Determines whether the cluster connects to itself across periodic boundaries
+        through actual bond connectivity, rather than relying on spatial extent alone.
+        The algorithm proceeds in three steps: (1) detect period vectors via BFS traversal,
+        (2) compute the percolation dimensionality from linearly independent period vectors,
+        and (3) map period vectors to Cartesian directions.
 
+        Reference:
+            Livraghi et al. (2021)
+            https://pubs.acs.org/action/showCitFormats?doi=10.1021/acs.jctc.1c00423&ref=pdf
         """
         if self.size <= 1:
             self.is_percolating = False
@@ -143,8 +244,15 @@ class Cluster:
 
     def _detect_period_vectors(self) -> List[np.ndarray]:
         """
-        Detect period vectors by traversing the cluster and finding when
-        we encounter the same node through different periodic paths.
+        Detect period vectors by BFS traversal of the cluster graph.
+
+        Traverses the cluster starting from the root node, tracking unwrapped positions.
+        When a previously visited node is reached again via a different periodic path, the
+        displacement between the two unwrapped positions is recorded as a period vector.
+
+        Returns:
+            List[np.ndarray]: Period vectors found during traversal. Each vector represents
+                a lattice translation through which the cluster connects to itself.
         """
         if not self.nodes:
             return []
@@ -152,11 +260,11 @@ class Cluster:
         root_node = self.nodes[0].parent
         queue = [root_node]
 
-        # Track unwrapped positions during traversal
         visited_positions = {root_node.node_id: root_node.position.copy()}
         visited_set = {root_node.node_id}
         period_vectors = []
 
+        # Distance criterion: direct neighbor-to-neighbor traversal
         if self.settings.clustering.criterion == "distance":
             while queue:
                 current_node = queue.pop(0)
@@ -187,6 +295,7 @@ class Cluster:
                         visited_positions[neighbor.node_id] = neighbor_unwrapped
                         visited_set.add(neighbor.node_id)
                         queue.append(neighbor)
+        # Bond criterion: traverse through bridging nodes (e.g., Si -> O -> Si)
         elif self.settings.clustering.criterion == "bond":
             bridge_symbol = self.settings.clustering.connectivity[1]
             while queue:
@@ -196,28 +305,23 @@ class Cluster:
                 for neighbor in current_node.neighbors:
                     if neighbor.symbol == bridge_symbol:
                         for neighbor2 in neighbor.neighbors:
-                            # Only consider neighbors in this cluster
                             if neighbor2.cluster_id != self.root_id:
                                 continue
 
-                            # Calculate unwrapped position of neighbor
                             relative_vec = self._unwrap_vector(
                                 neighbor2.position - current_node.position
                             )
                             neighbor_unwrapped = current_unwrapped + relative_vec
 
                             if neighbor2.node_id in visited_set:
-                                # Already visited - check for period vector
                                 period = (
                                     neighbor_unwrapped
                                     - visited_positions[neighbor2.node_id]
                                 )
 
-                                # If period is non-zero, we found a periodic connection
                                 if np.linalg.norm(period) > 1e-6:
                                     period_vectors.append(period)
                             else:
-                                # First time visiting this neighbor
                                 visited_positions[neighbor2.node_id] = (
                                     neighbor_unwrapped
                                 )
@@ -228,8 +332,17 @@ class Cluster:
 
     def _calculate_period_dimension(self, period_vectors: List[np.ndarray]) -> int:
         """
-        Calculate algebraic dimension of period vector set using SVD.
-        Returns 0, 1, 2, or 3 indicating percolation dimensionality.
+        Calculate the algebraic dimension of a set of period vectors using SVD.
+
+        Stacks the period vectors into a matrix and computes its numerical rank via
+        singular value decomposition. The rank equals the number of linearly independent
+        periodic directions, capped at 3.
+
+        Args:
+            period_vectors (List[np.ndarray]): Period vectors detected during BFS traversal.
+
+        Returns:
+            int: Percolation dimensionality (0, 1, 2, or 3).
         """
         if not period_vectors:
             return 0
@@ -248,8 +361,17 @@ class Cluster:
 
     def _get_percolation_directions(self, period_vectors: List[np.ndarray]) -> str:
         """
-        Determine which Cartesian directions (x, y, z) the cluster percolates in
-        based on linearly independent period vectors.
+        Determine which Cartesian directions the cluster percolates in.
+
+        Extracts linearly independent period vectors, converts them to fractional
+        coordinates, and checks whether each direction has a significant component
+        (greater than half a lattice vector).
+
+        Args:
+            period_vectors (List[np.ndarray]): Period vectors detected during BFS traversal.
+
+        Returns:
+            str: Concatenation of percolating direction labels (e.g., "x", "xy", "xyz").
         """
         if not period_vectors:
             return ""
@@ -289,7 +411,16 @@ class Cluster:
         self, period_vectors: List[np.ndarray]
     ) -> List[np.ndarray]:
         """
-        Extract linearly independent period vectors using Gram-Schmidt-like process.
+        Extract linearly independent period vectors using an incremental rank test.
+
+        Iterates over period vectors and retains those that increase the rank of the
+        accumulated matrix, up to a maximum of 3 independent vectors.
+
+        Args:
+            period_vectors (List[np.ndarray]): Candidate period vectors to filter.
+
+        Returns:
+            List[np.ndarray]: Subset of linearly independent period vectors (at most 3).
         """
         if not period_vectors:
             return []
@@ -320,6 +451,12 @@ class Cluster:
         return independent
 
     def calculate_order_parameter(self) -> None:
+        """
+        Compute the per-dimension order parameter.
+
+        Calculates P_inf as the ratio of cluster size to total nodes and assigns it to
+        each percolating dimension. Non-percolating dimensions receive a value of zero.
+        """
         if self.size <= 1 or self.total_nodes == 0:
             return
         p_inf = self.size / self.total_nodes
@@ -331,15 +468,41 @@ class Cluster:
             self.order_parameter = [p_inf, p_inf, p_inf]
 
     def calculate_concentration(self) -> None:
+        """
+        Compute the concentration of this cluster as the ratio of its size to total nodes.
+        """
         if self.total_nodes > 0:
             self.concentration = self.size / self.total_nodes
 
     def _unwrap_vector(self, vector: np.ndarray) -> np.ndarray:
+        """
+        Apply minimum-image convention to a displacement vector.
+
+        Converts the vector to fractional coordinates, rounds to the nearest image,
+        and converts back to Cartesian coordinates.
+
+        Args:
+            vector (np.ndarray): Cartesian displacement vector.
+
+        Returns:
+            np.ndarray: Minimum-image displacement vector in Cartesian coordinates.
+        """
         fractional_vector = np.dot(vector, self._inv_lattice)
         fractional_vector -= np.round(fractional_vector)
         return np.dot(fractional_vector, self.lattice)
 
     def calculate_unwrapped_positions(self) -> None:
+        """
+        Unwrap node positions across periodic boundaries using BFS traversal.
+
+        Starting from the root node, traverses the cluster graph and reconstructs
+        continuous (unwrapped) positions by applying the minimum-image convention to each
+        neighbor displacement. Tracks unique node-pair linkages during traversal. For the
+        bond criterion, also unwraps decoration nodes (bridging nodes) connected to member
+        nodes.
+
+        """
+        # TODO : find a way to concatenate this method with _detect_period_vectors to optimize the code.
         if self.size <= 1:
             return
 
@@ -437,10 +600,12 @@ class Cluster:
                         }
 
     def __str__(self) -> str:
+        """Return a human-readable summary of the cluster."""
         list_id = [str(i.node_id) for i in self.nodes]
         if len(list_id) > 20:
             list_id = list_id[:20] + ["..."]
         return f"{self.root_id} {self.connectivity} {self.size} {self.is_percolating} {', '.join(list_id)}"
 
     def __repr__(self) -> str:
+        """Return the string representation of the cluster."""
         return self.__str__()

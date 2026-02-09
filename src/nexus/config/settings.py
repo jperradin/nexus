@@ -7,9 +7,18 @@ from typing import Tuple, Optional, List
 @dataclass
 class GeneralSettings:
     """
-    General settings that contains all the general settings.
+    General configuration parameters for the analysis pipeline.
 
     Attributes:
+        project_name (str): Name of the project, used for output directory naming.
+        export_directory (str): Root directory for exported results.
+        file_location (str): Path to the trajectory file.
+        range_of_frames (Tuple[int, int]): Start and end frame indices to process.
+            Use -1 as end to process all remaining frames.
+        apply_pbc (bool): Whether to apply periodic boundary conditions.
+        verbose (bool): Whether to print settings, progress bars, and other information.
+        save_logs (bool): Whether to save log files.
+        save_performance (bool): Whether to save performance metrics.
     """
 
     project_name: str = "Project"  # Name of the project
@@ -30,30 +39,71 @@ class GeneralSettings:
 @dataclass
 class Cutoff:
     """
-    Cutoff that contains all the cutoffs.
+    Distance cutoff between two node types for neighbor searching.
 
     Attributes:
+        type1 (str): Symbol of the first node type.
+        type2 (str): Symbol of the second node type.
+        distance (float): Maximum distance for this pair to be considered neighbors.
     """
 
     type1: str
     type2: str
     distance: float
 
+    def get_distance(self) -> float:
+        """
+        Return the cutoff distance.
+
+        Returns:
+            float: The cutoff distance for this type pair.
+        """
+        return self.distance
+
     def __str__(self) -> str:
+        """Return a formatted string showing the type pair and its cutoff distance."""
         max_len = 5
         diff = max_len - len(self.type1) - 1 - len(self.type2)
         return f"{self.type1}-{self.type2}{' ' * diff} : distance = {self.distance}"
 
-    def get_distance(self) -> float:
-        return self.distance
-
-
 @dataclass
 class ClusteringSettings:
     """
-    Clustering settings that contains all the clustering settings.
+    Configuration parameters for the clustering algorithm.
+
+    Controls which clustering strategy is selected, the neighbor search method,
+    node filtering, cutoff distances, and optional coordination or shared-neighbor
+    analysis modes.
 
     Attributes:
+        criterion (str): Clustering criterion, either ``"distance"`` (2-element
+            connectivity) or ``"bond"`` (3-element connectivity through a bridging node).
+        neighbor_searcher (str): Spatial search algorithm (currently ``"kd_tree"``).
+        node_types (List[str]): Node symbols to include in the analysis.
+        node_masses (List[float]): Masses for each node type in reduced units.
+        connectivity (List[str]): Connectivity pattern (e.g., ``["Si", "Si"]`` or
+            ``["Si", "O", "Si"]``).
+        cutoffs (List[Cutoff]): Distance cutoffs for each type pair.
+        with_printed_unwrapped_clusters (bool): Whether to write unwrapped cluster
+            coordinates to file.
+        print_mode (str): Output mode for unwrapped clusters (``"all"``,
+            ``"connectivity"``, ``"individual"``, or ``"none"``).
+        with_coordination_number (bool): Whether to enable coordination-number-based
+            clustering.
+        coordination_mode (str): Which node types to count as coordination neighbors
+            (``"all_types"``, ``"same_type"``, ``"different_type"``, or a specific
+            node symbol).
+        coordination_range (List[int]): Minimum and maximum coordination numbers to
+            accept as a two-element list.
+        with_pairwise (bool): Whether to compute pairwise coordination clusters.
+        with_mixing (bool): Whether to compute mixing coordination clusters.
+        with_alternating (bool): Whether to compute alternating coordination clusters.
+        with_connectivity_name (str): Connectivity name for the default coordination mode.
+        with_number_of_shared (bool): Whether to enable shared-neighbor analysis.
+        shared_mode (str): Which node types to count for shared neighbors.
+        shared_threshold (int): Minimum number of shared neighbors required.
+        shared_threshold_mode (str): Threshold comparison mode (``"exact"`` or
+            ``"at_least"``).
     """
 
     criterion: str = "distance"  # "distance" or "bond"
@@ -106,6 +156,12 @@ class ClusteringSettings:
     shared_threshold_mode: str = "exact"  # "exact", "minimum"
 
     def get_max_cutoff(self) -> float:
+        """
+        Return the largest cutoff distance across all type pairs.
+
+        Returns:
+            float: Maximum cutoff distance, or 0.0 if no cutoffs are defined.
+        """
         max_cutoff = 0.0
         for cutoff in self.cutoffs:
             if cutoff.distance > max_cutoff:
@@ -113,6 +169,19 @@ class ClusteringSettings:
         return max_cutoff
 
     def get_cutoff(self, type1: str, type2: str) -> float:
+        """
+        Look up the cutoff distance for a given type pair.
+
+        The lookup is symmetric: ``get_cutoff("Si", "O")`` and ``get_cutoff("O", "Si")``
+        return the same value.
+
+        Args:
+            type1 (str): Symbol of the first node type.
+            type2 (str): Symbol of the second node type.
+
+        Returns:
+            float: The cutoff distance, or None if no matching pair is found.
+        """
         for cutoff in self.cutoffs:
             if cutoff.type1 == type1 and cutoff.type2 == type2:
                 return cutoff.distance
@@ -121,6 +190,7 @@ class ClusteringSettings:
         return None
 
     def __str__(self) -> str:
+        """Return a formatted summary of active clustering settings."""
         lines = []
         for key, value in self.__dict__.items():
             if value is not None:
@@ -161,9 +231,25 @@ class ClusteringSettings:
 @dataclass
 class AnalysisSettings:
     """
-    Analysis settings that contains all the analyzer settings.
+    Configuration parameters controlling which analyzers are enabled.
+
+    Each ``with_*`` flag enables the corresponding analyzer in the pipeline. Setting
+    ``with_all`` enables every available analyzer at once.
 
     Attributes:
+        overwrite (bool): Whether to overwrite existing output files. If False, results
+            are appended.
+        with_all (bool): Whether to enable all analyzers.
+        with_average_cluster_size (bool): Whether to compute average cluster size.
+        with_largest_cluster_size (bool): Whether to compute largest cluster size.
+        with_concentration (bool): Whether to compute concentration.
+        with_spanning_cluster_size (bool): Whether to compute spanning cluster size.
+        with_gyration_radius (bool): Whether to compute gyration radius.
+        with_correlation_length (bool): Whether to compute correlation length.
+        with_percolation_probability (bool): Whether to compute percolation probability.
+        with_order_parameter (bool): Whether to compute order parameter.
+        with_cluster_size_distribution (bool): Whether to compute cluster size
+            distribution.
     """
 
     overwrite: bool = True  # Whether to overwrite the existing file, if False, appends results to the file
@@ -189,6 +275,13 @@ class AnalysisSettings:
     )
 
     def get_analyzers(self) -> List[str]:
+        """
+        Return the list of enabled analyzer class names based on current flags.
+
+        Returns:
+            List[str]: Class names of enabled analyzers to be instantiated by the
+                analyzer factory.
+        """
         analyzers = []
         if self.with_average_cluster_size:
             analyzers.append("AverageClusterSizeAnalyzer")
@@ -221,6 +314,7 @@ class AnalysisSettings:
         return analyzers
 
     def __str__(self) -> str:
+        """Return a formatted summary of active analysis settings."""
         lines = []
         for key, value in self.__dict__.items():
             if value is not None:
@@ -274,18 +368,20 @@ class AnalysisSettings:
 @dataclass
 class LatticeSettings:
     """
-    Lattice settings.
+    Configuration parameters for the simulation cell lattice.
 
-    TODO implement lattice fetcher from file
-         implement the handling of lattice settings in the system
+    Controls whether a custom lattice is applied, the lattice matrix values, and
+    whether the lattice is read from an external file.
 
     Attributes:
-        lattice_in_trajectory_file (bool): Whether the lattice is present in the trajectory file.
-        lattice (np.ndarray): The lattice matrix.
-        get_lattice_from_file (bool): Whether to get the lattice from a file.
-        lattice_file_location (str): Location of the lattice file.
-        apply_lattice_to_all_frames (bool): Whether to apply the lattice to all frames.
-        apply_pbc (bool): Whether to apply periodic boundary conditions.
+        apply_custom_lattice (bool): Whether to override the lattice read from the
+            trajectory with a user-supplied matrix.
+        custom_lattice (np.ndarray): User-supplied 3x3 lattice matrix.
+        lattice (np.ndarray): Active 3x3 lattice matrix used during analysis.
+        get_lattice_from_file (bool): Whether to read the lattice from a separate file.
+        lattice_file_location (str): Path to the external lattice file.
+        apply_lattice_to_all_frames (bool): Whether to apply the same lattice matrix
+            to every frame in the trajectory.
     """
 
     apply_custom_lattice: bool = False
@@ -304,6 +400,7 @@ class LatticeSettings:
     apply_lattice_to_all_frames: bool = True
 
     def __str__(self) -> str:
+        """Return a formatted summary of lattice settings."""
         lines = []
         for key, value in self.__dict__.items():
             if value is not None:
@@ -343,7 +440,27 @@ class LatticeSettings:
 
 @dataclass
 class Settings:
-    """Settings for the Reve package and it is constructed using the SettingsBuilder."""
+    """
+    Composite configuration object for the entire analysis pipeline.
+
+    Aggregates general, lattice, clustering, and analysis sub-settings into a single
+    object. Constructed via ``SettingsBuilder`` which validates constraints between
+    fields.
+
+    Attributes:
+        project_name (str): Name of the project, used for output directory naming.
+        export_directory (str): Root directory for exported results.
+        file_location (str): Path to the trajectory file.
+        range_of_frames (Tuple[int, int]): Start and end frame indices to process.
+        apply_pbc (bool): Whether to apply periodic boundary conditions.
+        verbose (bool): Whether to print progress information.
+        save_logs (bool): Whether to save log files.
+        save_performance (bool): Whether to save performance metrics.
+        general (GeneralSettings): General configuration sub-settings.
+        lattice (LatticeSettings): Lattice configuration sub-settings.
+        clustering (ClusteringSettings): Clustering configuration sub-settings.
+        analysis (AnalysisSettings): Analysis configuration sub-settings.
+    """
 
     project_name: str = "default"
     export_directory: str = "export"
@@ -360,9 +477,21 @@ class Settings:
 
     @property
     def output_directory(self) -> str:
+        """Return the full output path as ``export_directory/project_name``."""
         return os.path.join(self.export_directory, self.project_name)
 
     def set_range_of_frames(self, start: int, end: Optional[int] = None):
+        """
+        Set the range of frames to process.
+
+        Args:
+            start (int): First frame index (must be non-negative).
+            end (Optional[int]): Last frame index, or None/-1 to process all remaining
+                frames.
+
+        Raises:
+            ValueError: If ``start`` is negative or greater than ``end``.
+        """
         if end is None:
             end = -1
         if start < 0:
@@ -372,6 +501,7 @@ class Settings:
         self.range_of_frames = (start, end)
 
     def __str__(self) -> str:
+        """Return a formatted summary of all settings."""
         lines = []
         for key, value in self.__dict__.items():
             if value is not None:
@@ -394,16 +524,54 @@ class Settings:
 
 
 class SettingsBuilder:
+    """
+    Builder for constructing and validating a ``Settings`` object.
+
+    Provides a fluent interface for setting sub-configurations. Each ``with_*`` method
+    validates its input and returns ``self`` for chaining. Call ``build()`` to obtain
+    the final ``Settings`` instance.
+
+    Attributes:
+        _settings (Settings): The settings object being constructed.
+    """
+
     def __init__(self):
+        """Initialize the builder with default settings."""
         self._settings = Settings()  # Start with default settings
 
     def with_lattice(self, lattice: LatticeSettings):
+        """
+        Set lattice configuration.
+
+        Args:
+            lattice (LatticeSettings): Lattice sub-settings to apply.
+
+        Returns:
+            SettingsBuilder: Self for method chaining.
+
+        Raises:
+            ValueError: If ``lattice`` is not a ``LatticeSettings`` instance.
+        """
         if not isinstance(lattice, LatticeSettings):
             raise ValueError(f"Invalid lattice settings: {lattice}")
         self._settings.lattice = lattice
         return self
 
     def with_general(self, general: GeneralSettings):
+        """
+        Set general configuration and propagate top-level fields.
+
+        Validates required fields and copies them to the top-level ``Settings`` attributes.
+
+        Args:
+            general (GeneralSettings): General sub-settings to apply.
+
+        Returns:
+            SettingsBuilder: Self for method chaining.
+
+        Raises:
+            ValueError: If any required field is missing or invalid.
+        """
         if not isinstance(general, GeneralSettings):
             raise ValueError(f"Invalid general settings: {general}")
         if not general.project_name:
@@ -431,12 +599,39 @@ class SettingsBuilder:
         return self
 
     def with_analysis(self, analysis: AnalysisSettings):
+        """
+        Set analysis configuration.
+
+        Args:
+            analysis (AnalysisSettings): Analysis sub-settings to apply.
+
+        Returns:
+            SettingsBuilder: Self for method chaining.
+
+        Raises:
+            ValueError: If ``analysis`` is not an ``AnalysisSettings`` instance.
+        """
         if not isinstance(analysis, AnalysisSettings):
             raise ValueError(f"Invalid analysis settings: {analysis}")
         self._settings.analysis = analysis
         return self
 
     def with_clustering(self, clustering: ClusteringSettings):
+        """
+        Set clustering configuration with full constraint validation.
+
+        Validates criterion/connectivity compatibility, coordination number constraints,
+        pairwise/alternating/mixing prerequisites, and shared-neighbor settings.
+
+        Args:
+            clustering (ClusteringSettings): Clustering sub-settings to apply.
+
+        Returns:
+            SettingsBuilder: Self for method chaining.
+
+        Raises:
+            ValueError: If any constraint is violated (see source for full list).
+        """
         if not isinstance(clustering, ClusteringSettings):
             raise ValueError(f"Invalid clustering settings: {clustering}")
 
@@ -553,6 +748,12 @@ class SettingsBuilder:
         return self
 
     def build(self) -> Settings:
+        """
+        Return the constructed settings object.
+
+        Returns:
+            Settings: The fully configured settings instance.
+        """
         return self._settings
 
 

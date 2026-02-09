@@ -11,15 +11,26 @@ from datetime import datetime
 
 class ConcentrationAnalyzer(BaseAnalyzer):
     """
-    Computes the concentration of clusters for each connectivity type.
+    Computes the node concentration for each connectivity type.
 
-    This analyzer tracks the concentration of clusters for each connectivity type
-    across all processed frames. The concentration is defined as the ratio of the
-    number of nodes in clusters of a given connectivity type to the total number of nodes.
+    The concentration is defined as the ratio of the number of nodes
+    participating in clusters of a given connectivity to the total number of
+    networking nodes.
+
+    Attributes:
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        concentrations (Dict[str, float]): Ensemble-averaged concentration.
+        std (Dict[str, float]): Standard deviation (ddof=1).
+        error (Dict[str, float]): Standard error.
     """
 
     def __init__(self, settings: Settings) -> None:
-        """Initializes the analyzer."""
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Private attribute to store raw, per-frame data
         self._raw_concentrations: Dict[str, List[float]] = {}
@@ -34,8 +45,11 @@ class ConcentrationAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes a single frame to get the concentration for each connectivity
-        type and stores the raw data.
+        Record the concentration for each connectivity in *frame*.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         concentrations = frame.get_concentration()
         for connectivity in connectivities:
@@ -51,8 +65,10 @@ class ConcentrationAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
-        Calculates the final mean, standard deviation, and standard error for the
-        concentrations across all processed frames.
+        Compute ensemble averages of concentration over all processed frames.
+
+        Returns:
+            Dict[str, Dict[str, float]]: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -80,7 +96,13 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
-        """Returns the finalized analysis results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict[str, float]]: Keys are ``"concentrations"``,
+                ``"std"``, and ``"error"``.
+        """
         return {
             "concentrations": self.concentrations,
             "std": self.std,
@@ -88,7 +110,7 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to a data file."""
+        """Write ensemble-averaged results to ``concentrations.dat``."""
         output = self.finalize()
         self._write_header()
         path = os.path.join(self._settings.export_directory, "concentrations.dat")
@@ -101,7 +123,7 @@ class ConcentrationAnalyzer(BaseAnalyzer):
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
-        """Initializes the output file with a header."""
+        """Write the CSV header to the output file if needed."""
         path = os.path.join(self._settings.export_directory, "concentrations.dat")
         number_of_frames = self.frame_processed_count
 
@@ -121,7 +143,9 @@ class ConcentrationAnalyzer(BaseAnalyzer):
             )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

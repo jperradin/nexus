@@ -3,15 +3,15 @@ from numba import jit
 
 @jit(nopython=True, cache=True, fastmath=True)
 def wrap_position(position: np.ndarray, lattice: np.ndarray) -> np.ndarray:
-    """ Wrap position in a periodic lattice
-    (ref: https://en.wikipedia.org/wiki/Fractional_coordinates#Relationship_between_fractional_and_Cartesian_coordinates)
-    
+    """
+    Wrap a single position into the simulation cell using fractional coordinates.
+
     Args:
-        position (np.ndarray): The position to wrap
-        lattice (np.ndarray): The lattice of the system
-    
+        position (np.ndarray): Cartesian position vector of length 3.
+        lattice (np.ndarray): 3x3 lattice matrix defining the simulation cell.
+
     Returns:
-        np.ndarray: The wrapped position
+        np.ndarray: Wrapped Cartesian position inside the cell.
     """
     position = np.ascontiguousarray(position)
     lattice = np.ascontiguousarray(lattice)
@@ -32,15 +32,15 @@ def wrap_position(position: np.ndarray, lattice: np.ndarray) -> np.ndarray:
 
 @jit(nopython=True, cache=True, fastmath=True)
 def wrap_positions(positions: np.ndarray, lattice: np.ndarray) -> np.ndarray:
-    """ Wrap positions in a periodic lattice
-    (ref: https://en.wikipedia.org/wiki/Fractional_coordinates#Relationship_between_fractional_and_Cartesian_coordinates)
-    
+    """
+    Wrap an array of positions into the simulation cell using fractional coordinates.
+
     Args:
-        positions (np.ndarray): The positions to wrap
-        lattice (np.ndarray): The lattice of the system
-    
+        positions (np.ndarray): Cartesian positions of shape (N, 3).
+        lattice (np.ndarray): 3x3 lattice matrix defining the simulation cell.
+
     Returns:
-        np.ndarray: The wrapped positions
+        np.ndarray: Wrapped Cartesian positions of shape (N, 3).
     """
     wrapped_positions = np.zeros_like(positions)
     for i in range(positions.shape[0]):
@@ -65,21 +65,34 @@ def wrap_positions(positions: np.ndarray, lattice: np.ndarray) -> np.ndarray:
 
 @jit(nopython=True, cache=True, fastmath=True)
 def calculate_direct_distance(position1: np.ndarray, position2: np.ndarray) -> float:
-    """ Return the distance for a given pair of positions in a direct space."""
+    """
+    Compute the Euclidean distance between two positions in direct space.
+
+    Args:
+        position1 (np.ndarray): First Cartesian position vector.
+        position2 (np.ndarray): Second Cartesian position vector.
+
+    Returns:
+        float: Euclidean distance between the two positions.
+    """
     return np.linalg.norm(position1 - position2)
 
 @jit(nopython=True, cache=True, fastmath=True)
 def calculate_pbc_distance(position1: np.ndarray, position2: np.ndarray, lattice: np.ndarray) -> float:
-    """ Return the minimum distance between two positions, taking into account periodic boundary conditions set by the lattice.
-        (ref: https://en.wikipedia.org/wiki/Fractional_coordinates#Relationship_between_fractional_and_Cartesian_coordinates)
-    
+    """
+    Compute the minimum-image distance between two positions under periodic boundary
+    conditions.
+
+    Converts the displacement to fractional coordinates, applies the minimum-image
+    convention via rounding, and converts back to Cartesian space.
+
     Args:
-        position1 (np.ndarray): The first position
-        position2 (np.ndarray): The second position
-        lattice (np.ndarray): The lattice of the system
-    
+        position1 (np.ndarray): First Cartesian position vector.
+        position2 (np.ndarray): Second Cartesian position vector.
+        lattice (np.ndarray): 3x3 lattice matrix defining the simulation cell.
+
     Returns:
-        float: The minimum distance between the two positions
+        float: Minimum-image distance between the two positions.
     """
     # Calculate the direct displacement vector
     direct_disp = position1 - position2
@@ -97,24 +110,41 @@ def calculate_pbc_distance(position1: np.ndarray, position2: np.ndarray, lattice
 
 @jit(nopython=True, cache=True, fastmath=True)
 def calculate_direct_angle(position1: np.ndarray, position2: np.ndarray, position3: np.ndarray) -> float:
-    """ Return the angle between three positions in a direct space."""
+    """
+    Compute the angle formed by three positions in direct space.
+
+    The angle is measured at ``position2`` between the vectors to ``position1`` and
+    ``position3``.
+
+    Args:
+        position1 (np.ndarray): First endpoint Cartesian position.
+        position2 (np.ndarray): Vertex Cartesian position.
+        position3 (np.ndarray): Second endpoint Cartesian position.
+
+    Returns:
+        float: Angle in degrees.
+    """
     angle_rad = np.arccos(np.dot((position1 - position2), (position3 - position2)) / (np.linalg.norm(position1 - position2) * np.linalg.norm(position3 - position2)))
     angle_deg = np.degrees(angle_rad)
     return angle_deg
 
 @jit(nopython=True, cache=True, fastmath=True)
 def calculate_pbc_angle(position1: np.ndarray, position2: np.ndarray, position3: np.ndarray, lattice: np.ndarray) -> float:
-    """ Return the angle formed by two vectors (three positions) in a periodic space.
-        (ref: https://en.wikipedia.org/wiki/Fractional_coordinates#Relationship_between_fractional_and_Cartesian_coordinates)
+    """
+    Compute the angle formed by three positions under periodic boundary conditions.
 
-        Args:
-            position1 (np.ndarray): The first position
-            position2 (np.ndarray): The second position
-            position3 (np.ndarray): The third position
-            lattice (np.ndarray): The lattice of the system
-        
-        Returns:
-            float: The angle formed by the two vectors in degrees
+    The angle is measured at ``position2``. Displacement vectors are converted to
+    fractional coordinates and wrapped via the minimum-image convention before computing
+    the angle.
+
+    Args:
+        position1 (np.ndarray): First endpoint Cartesian position.
+        position2 (np.ndarray): Vertex Cartesian position.
+        position3 (np.ndarray): Second endpoint Cartesian position.
+        lattice (np.ndarray): 3x3 lattice matrix defining the simulation cell.
+
+    Returns:
+        float: Angle in degrees.
     """
     # Calculate the direct displacement vectors assuming position2 is the center
     direct_disp1 = position1 - position2
@@ -147,42 +177,44 @@ def calculate_pbc_angle(position1: np.ndarray, position2: np.ndarray, position3:
     return angle_deg
 
 def cartesian_to_fractional(position: np.ndarray, lattice: np.ndarray) -> np.ndarray:
-    """ Convert a Cartesian position to fractional coordinates in a periodic space.
-        (ref: https://en.wikipedia.org/wiki/Fractional_coordinates#Relationship_between_fractional_and_Cartesian_coordinates)
-        
-        Args:
-            position (np.ndarray): The Cartesian position
-            lattice (np.ndarray): The lattice of the system
-        
-        Returns:
-            np.ndarray: The fractional coordinates
+    """
+    Convert Cartesian coordinates to fractional coordinates.
+
+    Args:
+        position (np.ndarray): Cartesian position(s) to convert.
+        lattice (np.ndarray): 3x3 lattice matrix defining the simulation cell.
+
+    Returns:
+        np.ndarray: Fractional coordinates in the lattice basis.
     """
     return np.linalg.solve(lattice.T, position.T).T
 
 def fractional_to_cartesian(position: np.ndarray, lattice: np.ndarray) -> np.ndarray:
-    """ Convert a fractional position to Cartesian coordinates in a periodic space.
-        (ref: https://en.wikipedia.org/wiki/Fractional_coordinates#Relationship_between_fractional_and_Cartesian_coordinates)
-        
-        Args:
-            position (np.ndarray): The fractional position
-            lattice (np.ndarray): The lattice of the system
-        
-        Returns:
-            np.ndarray: The Cartesian coordinates
+    """
+    Convert fractional coordinates to Cartesian coordinates.
+
+    Args:
+        position (np.ndarray): Fractional position(s) to convert.
+        lattice (np.ndarray): 3x3 lattice matrix defining the simulation cell.
+
+    Returns:
+        np.ndarray: Cartesian coordinates.
     """
     return np.dot(position, lattice)
 
 @jit(nopython=True, cache=True, fastmath=True)
 def calculate_gyration_radius(positions: np.ndarray, center_of_mass: np.ndarray) -> float:
     """
-    Calculates the gyration radius for a set of positions.
+    Compute the radius of gyration for a set of positions around a center of mass.
+
+    Calculates the root-mean-square distance of all positions from the center of mass.
 
     Args:
-        positions (np.ndarray): The positions of the cluster
-        center_of_mass (np.ndarray): The center of mass of the cluster
-    
+        positions (np.ndarray): Cartesian positions of shape (N, 3).
+        center_of_mass (np.ndarray): Center-of-mass position vector of length 3.
+
     Returns:
-        float: The gyration radius of the cluster
+        float: Radius of gyration, or 0.0 if positions is empty.
     """
     if positions.shape[0] == 0:
         return 0.0

@@ -14,21 +14,31 @@ from .search.neighbor_searcher import NeighborSearcher
 
 class CoordinationStrategy(BaseClusteringStrategy):
     """
-    A clustering strategy that groups nodes based on their coordination number.
+    Clustering strategy that groups nodes by coordination number.
 
-    This strategy extends the basic bonding pattern by adding constraints on the
-    coordination number of the networking nodes. A cluster is formed only if the
-    connected nodes meet the specified coordination number in the settings.
+    Extends the bonding pattern by constraining the coordination number of
+    networking nodes. Supports several pairing modes:
 
-    It supports various modes, including :
-    - 'pairwise' : pairs with identical coordination number.
-    - 'mixing' : pairs with different coordination number.
-    - 'alternating' : pairs with alternating coordination number.
-    - 'default' : pairs with any coordination number in specified range.
+    - ``"pairwise"``: pairs with identical coordination number.
+    - ``"mixing"``: pairs with different coordination numbers.
+    - ``"alternating"``: pairs with alternating coordination numbers.
+    - ``"default"``: pairs with any coordination number in the specified range.
+
+    Attributes:
+        clusters (List[Cluster]): Clusters accumulated across calls.
+        _counter (int): Running count of clusters found.
+        _search_mode (str): Active pairing mode.
+        _neighbor_searcher (NeighborSearcher): KD-tree based neighbor finder.
     """
 
     def __init__(self, frame: Frame, settings: Settings) -> None:
-        """Init the class instance"""
+        """
+        Initialize the strategy.
+
+        Args:
+            frame (Frame): The simulation frame to operate on.
+            settings (Settings): Configuration settings.
+        """
         self.frame: Frame = frame
         self.clusters: List[Cluster] = []
         self._lattice: np.ndarray = self.frame.lattice
@@ -39,7 +49,7 @@ class CoordinationStrategy(BaseClusteringStrategy):
         self._neighbor_searcher = NeighborSearcher(self.frame, self._settings)
 
     def find_neighbors(self) -> None:
-        """Find nearest neighbors with NeighborSearcher"""
+        """Populate neighbor lists and compute coordination numbers for all nodes."""
         self._neighbor_searcher.execute()
 
         # Calculate the coordination number
@@ -48,9 +58,14 @@ class CoordinationStrategy(BaseClusteringStrategy):
 
     def calculate_coordination(self, idx: int) -> None:
         """
-        Calculate the coordination number of the networking nodes with the specified nodes
-        depending on the selected mode (i.e., "all_types", "same_type", "different_type",
-        "<node_type>").
+        Calculate the coordination number for the node at *idx*.
+
+        The counting mode is determined by ``coordination_mode`` in settings:
+        ``"all_types"``, ``"same_type"``, ``"different_type"``, or a specific
+        node symbol.
+
+        Args:
+            idx (int): Index of the node in ``_nodes``.
         """
         node = self._nodes[idx]
 
@@ -86,7 +101,12 @@ class CoordinationStrategy(BaseClusteringStrategy):
     #         root_2.parent = root_1
 
     def get_connectivities(self) -> List[str]:
-        """Get connectivity name based on the provided settings"""
+        """
+        Build connectivity labels from coordination range and pairing mode.
+
+        Returns:
+            List[str]: Connectivity labels, one per coordination pair.
+        """
         if self._settings.clustering.criterion == "bond":
             type1 = self._settings.clustering.connectivity[0]
             type2 = self._settings.clustering.connectivity[1]
@@ -164,8 +184,14 @@ class CoordinationStrategy(BaseClusteringStrategy):
 
     def build_clusters(self) -> List[Cluster]:
         """
-        Build the clusters of networking nodes having a specified coordination
-        and bridged by node of a specified type.
+        Build clusters of networking nodes filtered by coordination number.
+
+        Selects networking nodes, generates connectivity labels from the
+        coordination range, then delegates to ``_find_cluster()`` for each
+        connectivity.
+
+        Returns:
+            List[Cluster]: The clusters found.
         """
         # Select the networking nodes based on clustering settings
         # 1 - check node types
@@ -204,6 +230,20 @@ class CoordinationStrategy(BaseClusteringStrategy):
     def _find_cluster(
         self, networking_nodes: List[Node], connectivity: str, z1: int, z2: int
     ) -> List[Cluster]:
+        """
+        Run union-find for a single connectivity label and coordination pair.
+
+        Args:
+            networking_nodes (List[Node]): Nodes eligible for clustering.
+            connectivity (str): The connectivity label for this run.
+            z1 (int): Required coordination number for the first node type
+                (0 in default mode).
+            z2 (int): Required coordination number for the second node type
+                (0 in default mode).
+
+        Returns:
+            List[Cluster]: Updated cumulative cluster list.
+        """
         number_of_nodes = 0
 
         lbound = self._settings.clustering.coordination_range[0]

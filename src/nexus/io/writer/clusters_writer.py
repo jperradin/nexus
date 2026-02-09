@@ -7,22 +7,38 @@ import numpy as np
 
 class ClustersWriter(BaseWriter):
     """
-    Writes cluster data to files, including atomic positions and connectivity.
+    Writes unwrapped cluster coordinates and bond connectivity to files.
 
-    For each cluster, this writer generates an XYZ file with the unwrapped atomic
-    coordinates of both the primary networking nodes and any associated 'decorating'
-    nodes (e.g., bridging oxygens). If linkages are defined, it also generates a
-    corresponding '.bonds' file.
+    For each cluster, generates an XYZ file with unwrapped positions of both the
+    primary networking nodes and any decoration nodes (e.g., bridging nodes). When
+    linkages are defined, a corresponding ``.bonds`` file is also written. Output
+    layout depends on the configured ``print_mode``.
+
+    Attributes:
+        _clusters (List[Cluster]): Clusters to write, sorted by size descending.
     """
+
     def __init__(self, settings: Settings) -> None:
+        """
+        Initialize the clusters writer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         self._settings: Settings = settings
 
     def set_clusters(self, clusters: List[Cluster]) -> None:
+        """
+        Set the clusters to write, sorting them by size in descending order.
+
+        Args:
+            clusters (List[Cluster]): Clusters to write.
+        """
         self._clusters: List[Cluster] = sorted(clusters, key=lambda cluster: cluster.size, reverse=True)
-        
-    
+
     def write(self) -> None:
+        """Write cluster data according to the configured ``print_mode``."""
         if self._settings.clustering.print_mode == "none":
             return
         elif self._settings.clustering.print_mode == "all":
@@ -33,6 +49,7 @@ class ClustersWriter(BaseWriter):
             self._write_individual()
 
     def _write_all(self) -> None:
+        """Write all clusters into a single XYZ and bonds file per frame."""
         path = os.path.join(self._settings.export_directory, "unwrapped_clusters")
         if not os.path.exists(path): os.makedirs(path)
         if not self._clusters: return
@@ -76,6 +93,7 @@ class ClustersWriter(BaseWriter):
                 self._write_cluster_bonds(bonds_file, cluster, cluster_map)
 
     def _write_connectivity(self) -> None:
+        """Write clusters grouped by connectivity, one file pair per connectivity."""
         clusters_per_connectivity: Dict[str, List[Cluster]] = {}
         for cluster in self._clusters:
             clusters_per_connectivity.setdefault(cluster.connectivity, []).append(cluster)
@@ -112,6 +130,7 @@ class ClustersWriter(BaseWriter):
         hold = 1
             
     def _write_individual(self) -> None:
+        """Write each cluster to its own XYZ and bonds file."""
         path = os.path.join(self._settings.export_directory, "unwrapped_clusters")
         if not os.path.exists(path): os.makedirs(path)
         if not self._clusters: return
@@ -135,7 +154,13 @@ class ClustersWriter(BaseWriter):
                 self._write_cluster_bonds(bonds_file, cluster, node_id_to_local_index)
 
     def _write_header_comment(self, f: TextIO, cluster: Cluster) -> None:
-        """Writes only the comment/properties line of the XYZ header."""
+        """
+        Write the XYZ comment/properties line with lattice and column descriptors.
+
+        Args:
+            f (TextIO): Open file handle to write to.
+            cluster (Cluster): Cluster providing the lattice matrix.
+        """
         lxx, lxy, lxz = cluster.lattice[0]
         lyx, lyy, lyz = cluster.lattice[1]
         lzx, lzy, lzz = cluster.lattice[2]
@@ -144,8 +169,17 @@ class ClustersWriter(BaseWriter):
 
     def _write_cluster_atoms(self, f: TextIO, cluster: Cluster, start_index: int, unique_ids: List|None = None) -> Dict[int, int]:
         """
-        Writes all nodes (networking and decorating) to an already open file.
-        Returns a map of global node ID to the local index within the file.
+        Write all nodes (networking and decoration) for a cluster to an open file.
+
+        Args:
+            f (TextIO): Open file handle to write to.
+            cluster (Cluster): The cluster whose nodes are written.
+            start_index (int): Starting local index for node numbering.
+            unique_ids (List | None): Set of already-written node IDs to avoid
+                duplicates, or None to track internally.
+
+        Returns:
+            Dict[int, int]: Mapping of global node IDs to local file indices.
         """
         node_id_to_local_index = {}
         local_index = start_index
@@ -185,7 +219,14 @@ class ClustersWriter(BaseWriter):
         return node_id_to_local_index, unique_ids
             
     def _write_cluster_bonds(self, f: TextIO, cluster: Cluster, id_map: Dict[int, int]) -> None:
-        """Writes bond data, translating global node IDs to local file indices."""
+        """
+        Write bond connectivity data, translating global node IDs to local indices.
+
+        Args:
+            f (TextIO): Open file handle to write to.
+            cluster (Cluster): The cluster whose bonds are written.
+            id_map (Dict[int, int]): Mapping of global node IDs to local file indices.
+        """
         if self._settings.clustering.criterion == "distance":
             return
         

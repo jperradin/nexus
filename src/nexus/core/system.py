@@ -8,21 +8,31 @@ from ..config.settings import Settings  # Import the Settings class
 
 class System:
     """
-    Manages the atomic system, trajectory data, and interaction with file readers.
+    Manages trajectory data and provides frame-level access through a file reader.
+
+    Wraps a reader with lazy frame iteration. On initialization it configures the
+    reader's filename from settings and triggers a file scan to index frame offsets.
+    Frames can then be accessed individually or iterated over as a generator.
 
     Attributes:
-        reader (BaseReader): The file reader used to load data.
-        settings (Settings): The settings object containing configuration parameters.
-        current_frame (Optional[Frame]): The currently loaded frame.  None if no frame is loaded.
+        reader (BaseReader): The file reader used to parse trajectory data.
+        settings (Settings): Configuration parameters controlling frame range and file
+            location.
+        current_frame (Optional[Frame]): The most recently loaded frame, or None if no
+            frame has been loaded yet.
     """
 
     def __init__(self, reader: BaseReader, settings: Settings):
         """
-        Initializes the System object.
+        Initialize the system with a reader and settings, then scan the trajectory file.
+
+        Assigns the file location from settings to the reader and triggers the reader's
+        ``scan()`` method to index frame byte offsets.
 
         Args:
-            reader (BaseReader): The file reader instance to use.
-            settings (Settings): The settings object.
+            reader (BaseReader): The file reader instance to use for parsing frames.
+            settings (Settings): Configuration settings containing file location and
+                frame range.
         """
         self.reader: BaseReader = reader
         self.settings: Settings = settings
@@ -39,13 +49,19 @@ class System:
 
     def load_frame(self, frame_index: int) -> bool:
         """
-        Loads a specific frame from the trajectory file.
+        Load a specific frame from the trajectory file into ``current_frame``.
+
+        Validates the frame index against the range defined in settings, then delegates
+        to the reader's ``parse()`` method.
 
         Args:
-            frame_index (int): The index of the frame to load (0-based).
+            frame_index (int): Zero-based index of the frame to load.
 
         Returns:
             bool: True if the frame was successfully loaded, False otherwise.
+
+        Raises:
+            ValueError: If ``frame_index`` is negative.
         """
 
         if frame_index < 0:
@@ -75,13 +91,14 @@ class System:
 
 
     def get_frame(self, frame_index: int) -> Optional[Frame]:
-        """Retrieves a specific frame, loading it if necessary.
+        """
+        Retrieve a specific frame, loading it if necessary.
 
         Args:
-            frame_index: The index of the frame to retrieve.
+            frame_index (int): Zero-based index of the frame to retrieve.
 
         Returns:
-            The Frame object, or None if the frame could not be loaded.
+            Optional[Frame]: The loaded frame, or None if loading failed.
         """
         if self.load_frame(frame_index):
             return self.current_frame
@@ -89,11 +106,13 @@ class System:
 
     def get_num_frames(self) -> int:
         """
-        Gets the total number of frames in the trajectory.
-        If the value is already calculated, it's directly returned.
+        Return the total number of frames in the trajectory.
+
+        Uses the reader's ``num_frames`` attribute if available, otherwise counts frames
+        by iterating through the trajectory. The result is cached for subsequent calls.
 
         Returns:
-           int: The total number of frames, 0 if an error occurs
+            int: Total number of frames, or 0 if an error occurs.
         """
         # First, check if we already calculated the number of frames
         if self._num_frames is not None:
@@ -113,12 +132,14 @@ class System:
 
     def iter_frames(self) -> Generator[Frame, None, None]:
         """
-        Iterates through the frames of the trajectory, yielding one Frame at a time.
-        This is a generator, avoiding loading the entire trajectory into memory.
-        It respects the range of frames defined in settings.
+        Yield frames one at a time over the configured range.
+
+        Generator-based iteration that avoids loading the entire trajectory into memory.
+        Uses the reader's indexed frame offsets when available, falling back to sequential
+        ``load_frame()`` calls otherwise. Respects the frame range defined in settings.
 
         Yields:
-            Frame: The next Frame object in the trajectory.
+            Frame: The next frame in the trajectory.
         """
         start_frame, end_frame = self.settings.range_of_frames
         
@@ -142,18 +163,13 @@ class System:
 
 
     def __iter__(self) -> 'System':
-        """
-        Make the System object itself iterable.
-        """
-        # Reset the frame index for iteration.
+        """Reset the frame index and return self as an iterator."""
         self._current_frame_index = self.settings.range_of_frames[0]
         return self
 
 
     def __next__(self) -> Frame:
-        """
-        Returns the next frame during iteration.
-        """
+        """Return the next frame in the iteration sequence."""
 
         if self._current_frame_index is None:  # First call to next
              self._current_frame_index = self.settings.range_of_frames[0] # Initialize if needed.

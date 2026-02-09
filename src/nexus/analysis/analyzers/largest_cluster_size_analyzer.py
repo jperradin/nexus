@@ -11,11 +11,27 @@ from datetime import datetime
 
 class LargestClusterSizeAnalyzer(BaseAnalyzer):
     """
-    Analyzes the size of the largest cluster for each connectivity type,
-    providing insights into the dominant structures in the system.
+    Computes the size of the largest cluster for each connectivity type.
+
+    Tracks the maximum cluster size per connectivity across frames and
+    provides ensemble-averaged results with standard deviation and error.
+
+    Attributes:
+        _raw_sizes (Dict[str, List[float]]): Per-frame largest sizes.
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        largest_cluster_sizes (Dict[str, float]): Ensemble-averaged largest size.
+        std (Dict[str, float]): Standard deviation (ddof=1).
+        error (Dict[str, float]): Standard error.
+        concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
 
     def __init__(self, settings: Settings) -> None:
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Use private attributes to store raw, per-frame data
         self._raw_sizes: Dict[str, List[float]] = {}
@@ -32,8 +48,11 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes a single frame to find the largest cluster size for each
-        connectivity type and stores the raw data.
+        Record the largest cluster size for each connectivity in *frame*.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
@@ -61,9 +80,10 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict[str, Dict[str, float | np.float64]]:
         """
-        Calculates the final mean, standard deviation, and fluctuation for all
-        processed frames. This method is now idempotent and will only compute
-        the results once.
+        Compute ensemble averages over all processed frames.
+
+        Returns:
+            Dict[str, Dict[str, float]]: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -96,7 +116,13 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict[str, float | np.float64]]:
-        """Returns the finalized analysis results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict[str, float]]: Keys are ``"concentrations"``,
+                ``"largest_cluster_size"``, ``"std"``, and ``"error"``.
+        """
         return {
             "concentrations": self.concentrations,
             "largest_cluster_size": self.largest_cluster_sizes,
@@ -105,7 +131,7 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to a data file."""
+        """Write ensemble-averaged results to ``largest_cluster_size.dat``."""
         # Ensure results are calculated before printing
         output = self.finalize()
 
@@ -123,7 +149,7 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
         remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
-        """Initializes the output file with a header."""
+        """Write the CSV header to the output file if needed."""
         path = os.path.join(self._settings.export_directory, "largest_cluster_size.dat")
         number_of_frames = self.frame_processed_count
         file_exists = os.path.exists(path)
@@ -147,7 +173,9 @@ class LargestClusterSizeAnalyzer(BaseAnalyzer):
             )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

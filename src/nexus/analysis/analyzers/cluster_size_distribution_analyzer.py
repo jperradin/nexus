@@ -10,15 +10,29 @@ from datetime import datetime
 
 class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
     """
-    Computes the distribution of cluster sizes, n(s), for each connectivity type.
+    Computes the cluster size distribution ``n(s)`` for each connectivity type.
 
-    This analyzer tracks how many clusters of each size exist for each connectivity
-    type across all processed frames.
-    It excludes percolating clusters from the analysis to focus on the finite clusters.
+    Counts how many clusters of each size *s* exist per connectivity across all
+    frames. Percolating clusters are excluded from the distribution. Results
+    are written to one file per connectivity.
+
+    Attributes:
+        _raw_size_distribution (Dict[str, Dict[int, List[int]]]): Per-frame
+            counts keyed by connectivity then cluster size.
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        size_distribution (Dict[str, Dict[int, float]]): Aggregated total count
+            per cluster size per connectivity.
+        std (Dict[str, Dict[int, float]]): Standard deviation (ddof=1) per size.
+        concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
 
     def __init__(self, settings: Settings) -> None:
-        """Initializes the analyzer."""
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Private attributes to store raw, per-frame data
         self._raw_size_distribution: Dict[str, Dict[int, List[int]]] = {}
@@ -34,8 +48,11 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Analyzes a single frame to compute the cluster size distribution for each
-        connectivity type and stores the raw data.
+        Count clusters by size for each connectivity in *frame*.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
@@ -67,8 +84,10 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict:
         """
-        Calculates the total count and standard deviation for the cluster size
-        distribution across all processed frames. This method is now idempotent.
+        Aggregate size counts and compute standard deviations over all frames.
+
+        Returns:
+            Dict: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -100,7 +119,13 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict]:
-        """Returns the finalized analysis results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict]: Keys are ``"concentrations"``,
+                ``"size_distribution"``, and ``"std"``.
+        """
         return {
             "concentrations": self.concentrations,
             "size_distribution": self.size_distribution,
@@ -108,7 +133,7 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to data files, one per connectivity."""
+        """Write results to one ``cluster_size_distribution-<conn>.dat`` per connectivity."""
         output = self.finalize()
 
         for connectivity in self.size_distribution:
@@ -135,7 +160,12 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
             remove_duplicate_lines(path)
 
     def _write_header(self, connectivity: str) -> None:
-        """Initializes the output file with a header for a given connectivity."""
+        """
+        Write the CSV header to the output file for a given connectivity.
+
+        Args:
+            connectivity (str): Connectivity label for the output file.
+        """
         path = os.path.join(
             self._settings.export_directory,
             f"cluster_size_distribution-{connectivity}.dat",
@@ -159,7 +189,9 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
             )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

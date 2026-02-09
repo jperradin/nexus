@@ -10,14 +10,29 @@ from datetime import datetime
 
 class GyrationRadiusAnalyzer(BaseAnalyzer):
     """
-    Computes the distribution of gyration radii by cluster size for each connectivity type.
+    Computes the mean gyration radius binned by cluster size for each connectivity.
 
-    This analyzer collects the gyration radius of all non-percolating clusters,
-    binned by cluster size, and averages them over all processed frames.
+    Collects the gyration radius of all non-percolating clusters, groups them
+    by cluster size, and averages over all processed frames. Results are
+    written to one file per connectivity.
+
+    Attributes:
+        _raw_gyration_radii (Dict[str, Dict[int, List[float]]]): Per-cluster
+            gyration radii keyed by connectivity then cluster size.
+        _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
+        gyration_radii (Dict[str, Dict[int, float]]): Mean gyration radius per
+            cluster size per connectivity.
+        std (Dict[str, Dict[int, float]]): Standard deviation (ddof=1) per size.
+        concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
 
     def __init__(self, settings: Settings) -> None:
-        """Initializes the analyzer."""
+        """
+        Initialize the analyzer.
+
+        Args:
+            settings (Settings): Configuration settings.
+        """
         super().__init__(settings)
         # Raw per-frame storage
         self._raw_gyration_radii: Dict[str, Dict[int, List[float]]] = {}
@@ -32,8 +47,11 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
 
     def analyze(self, frame: Frame, connectivities: List[str]) -> None:
         """
-        Collects gyration radii of non-percolating clusters for each connectivity type,
-        grouped by cluster size.
+        Collect gyration radii of non-percolating clusters, grouped by size.
+
+        Args:
+            frame (Frame): The frame to analyze.
+            connectivities (List[str]): Connectivity labels to analyze.
         """
         clusters = frame.get_clusters()
         concentrations = frame.get_concentration()
@@ -59,7 +77,10 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
 
     def finalize(self) -> Dict[str, Dict]:
         """
-        Computes average gyration radius (and std) per cluster size for each connectivity.
+        Compute mean gyration radius and standard deviation per cluster size.
+
+        Returns:
+            Dict[str, Dict]: The finalized results dictionary.
         """
         if self._finalized:
             return self.get_result()
@@ -82,7 +103,13 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
         return self.get_result()
 
     def get_result(self) -> Dict[str, Dict]:
-        """Returns the finalized results."""
+        """
+        Return the current results dictionary.
+
+        Returns:
+            Dict[str, Dict]: Keys are ``"concentrations"``,
+                ``"gyration_radii"``, and ``"std"``.
+        """
         return {
             "concentrations": self.concentrations,
             "gyration_radii": self.gyration_radii,
@@ -90,7 +117,7 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
         }
 
     def print_to_file(self) -> None:
-        """Writes the finalized results to per-connectivity data files."""
+        """Write results to one ``gyration_radius_distribution-<conn>.dat`` per connectivity."""
         output = self.finalize()
         self._write_header()
 
@@ -111,7 +138,7 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
             remove_duplicate_lines(path)
 
     def _write_header(self) -> None:
-        """Initializes each output file with a header."""
+        """Write the CSV header to each per-connectivity output file if needed."""
         number_of_frames = self.frame_processed_count
         for connectivity in self._raw_gyration_radii:
             path = os.path.join(
@@ -135,7 +162,9 @@ class GyrationRadiusAnalyzer(BaseAnalyzer):
                 )
 
     def __str__(self) -> str:
+        """Return the class name."""
         return f"{self.__class__.__name__}"
 
     def __repr__(self) -> str:
+        """Return a reproducible string representation."""
         return f"{self.__class__.__name__}()"

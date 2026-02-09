@@ -1,7 +1,8 @@
 """
-Utility components for the REVE package.
+Utility components for the nexus package.
 
-This module contains utility functions and constants used throughout the package.
+Provides geometry functions (Numba-accelerated distance, angle, and wrapping
+calculations), display helpers, and performance tracking utilities.
 """
 
 from .geometry import *

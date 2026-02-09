@@ -14,16 +14,26 @@ from .search.neighbor_searcher import NeighborSearcher
 
 class DistanceStrategy(BaseClusteringStrategy):
     """
-    A clustering strategy that connects nodes based on a direct distance criterion.
+    Clustering strategy based on a direct distance criterion.
 
-    This strategy forms clusters by connecting any two nodes of specified types
-    that are within a given cutoff distance of each other.
-    For example, a connectivity of ['Si', 'Si'] with a cutoff of 3.5 Å
-    will connect silicon atoms that are within 3.5 Å of each other.
+    Connects any two nodes of specified types that are within a cutoff
+    distance of each other. Requires a 2-element connectivity specification
+    (e.g., ``["Si", "Si"]``).
+
+    Attributes:
+        clusters (List[Cluster]): Clusters accumulated across calls.
+        _counter (int): Running count of clusters found.
+        _neighbor_searcher (NeighborSearcher): KD-tree based neighbor finder.
     """
 
     def __init__(self, frame: Frame, settings: Settings) -> None:
-        """Init the class instance"""
+        """
+        Initialize the strategy.
+
+        Args:
+            frame (Frame): The simulation frame to operate on.
+            settings (Settings): Configuration settings.
+        """
         self.frame: Frame = frame
         self.clusters: List[Cluster] = []
         self._lattice: np.ndarray = self.frame.lattice
@@ -33,11 +43,19 @@ class DistanceStrategy(BaseClusteringStrategy):
         self._neighbor_searcher = NeighborSearcher(self.frame, self._settings)
 
     def find_neighbors(self) -> None:
-        """Find nearest neighbors with NeighborSearcher"""
+        """Populate each node's neighbor list using the KD-tree searcher."""
         self._neighbor_searcher.execute()
 
     def get_connectivities(self) -> List[str]:
-        """Get connectivity name based on the provided settings"""
+        """
+        Build the connectivity label from the 2-element connectivity setting.
+
+        Returns:
+            List[str]: Single-element list with the connectivity label.
+
+        Raises:
+            ValueError: If connectivity is not a 2-element list.
+        """
         connectivity = self._settings.clustering.connectivity
         if isinstance(connectivity, list) and len(connectivity) == 2:
             return [f"{connectivity[0]}-{connectivity[1]}"]
@@ -47,7 +65,15 @@ class DistanceStrategy(BaseClusteringStrategy):
             )
 
     def build_clusters(self) -> List[Cluster]:
-        """Build the clusters of networking nodes directly connected"""
+        """
+        Build clusters of directly connected networking nodes.
+
+        Applies union-find over all networking node pairs within the cutoff
+        distance, then computes cluster properties for each cluster.
+
+        Returns:
+            List[Cluster]: The clusters found.
+        """
         networking_nodes = [
             node
             for node in self._nodes

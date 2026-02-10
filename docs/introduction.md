@@ -1,17 +1,13 @@
-Introduction
-============
+# Introduction
 
-Welcome to the Nexus-CAT Python package documentation. Nexus-CAT is a **Cluster Analysis Toolkit** designed for analyzing clusters of several types of systems. It provides tools to calculate percolation properties, cluster sizes, gyration radii, and more.
+Welcome to the Nexus-CAT Python package documentation. Nexus-CAT is a **Cluster Analysis Toolkit** designed for analyzing clusters in atomistic simulation data, with a strong focus on percolation theory.
 
-### Key Features
-
-- **Cluster Analysis**: Analyze clusters based on connectivity and percolation theory.
-- **Percolation Properties**: Calculate properties like average cluster size, spanning cluster size, and correlation length.
-- **Extensibility**: Easily add new strategies for different systems and cluster connectivities.
-- **Visualization**: Generate detailed outputs for further analysis and visualization.
+It is particularly well-suited for researchers working with molecular dynamics (MD) or Monte Carlo (MC) simulations who need to characterize clusters, aggregates, and networks in disordered materials such as glasses and amorphous solids.
 
 ### Project Goals
 
-The goal of Nexus-CAT is to provide a user-friendly, efficient, and flexible toolkit for researchers working with trajectories of various systems. It supports various cluster finders for analyzing different systems and cluster connectivities.
+The goal of Nexus-CAT is to provide a user-friendly, efficient, and flexible toolkit for researchers working with trajectories of various systems. It supports multiple clustering strategies for analyzing different systems and cluster connectivities, and provides a comprehensive set of percolation and structural analysis metrics.
+
+For a detailed overview of available clustering strategies and analysis tools, see the [Features](features.md) page.
 
 For more details, visit the [GitHub repository](https://github.com/jperradin/nexus).

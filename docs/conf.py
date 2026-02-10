@@ -3,7 +3,7 @@
 # -- Project information -----------------------------------------------------
 project = "Nexus-cat"
 author = "Julien Perradin"
-release = "1.0.1"
+release = "2.0.5"
 
 # -- General configuration ---------------------------------------------------
 extensions = [

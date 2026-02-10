@@ -1,5 +1,4 @@
-Features
-========
+# Features
 
 Nexus-CAT provides a wide range of features for cluster analysis in atomistic simulations. Below is an overview of the key features:
 

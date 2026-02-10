@@ -1,5 +1,4 @@
-API Reference
-=============
+# API Reference
 
 This section provides a detailed reference for the Nexus-CAT API. For a complete list of classes and methods, refer to the source code.
 

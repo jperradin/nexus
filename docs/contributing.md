@@ -1,5 +1,4 @@
-Contributing
-============
+# Contributing
 
 Contributions to Nexus-CAT are welcome! Here's how you can contribute:
 

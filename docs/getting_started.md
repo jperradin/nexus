@@ -1,7 +1,4 @@
-.. _getting_started:
-
-Getting Started
-===============
+# Getting Started
 
 ### Quick Start Example
 
@@ -25,7 +22,7 @@ cd examples/outputs/quickstart-SiO2
 
 This section will guide you through the initial setup and usage of Nexus-CAT with the example file: `examples/inputs/example-SiO2-1008at.xyz`.
 
-![Nexus Workflow Diagram](https://github.com/jperradin/nexus/blob/main/docs/_image/workflow-Nexus.jpg)
+![Nexus Workflow Diagram](_image/workflow-Nexus.jpg)
 
 Nexus follows a modular, configuration-driven workflow that separates user input from the core analysis pipeline. The framework processes trajectory files through distinct stages: configuration, data reading, frame analysis, clustering, and output generation.
 
@@ -37,9 +34,7 @@ Import `main`, `SettingsBuilder`, `settings` from Nexus-CAT before starting.
 
 ```python
 from nexus import SettingsBuilder, main
-import nexus.config.settings as c 
-```
-```
+import nexus.config.settings as c
 ```
 
 #### 1. Configuration Setup and Execution
@@ -244,5 +239,4 @@ Nexus generates multiple output files in the export directory depending on the a
 
 This workflow design prioritizes **flexibility** (multiple clustering criteria and analysis metrics), **performance** (JIT-compiled geometry functions, efficient file indexing), and **scalability** (memory-efficient frame processing).
 
-[1](https://github.com/jperradin/nexus/blob/main/assets/workflow-Nexus.jpg../assets/workflow-Nexus.jpg)
 

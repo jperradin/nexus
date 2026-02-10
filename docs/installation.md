@@ -1,12 +1,11 @@
-Installation
-============
+# Installation
 
 To install Nexus-CAT, follow these steps:
 
 ### Prerequisites
 
 - Python 3.9 or higher
-- Required dependencies: `numpy`, `tqdm`, `colorama`, `numba`, and `psutil`
+- Required dependencies: `numpy`, `scipy`, `tqdm`, `colorama`, `numba`, and `psutil`
 
 ### Installation Steps
 
@@ -39,4 +38,4 @@ cd nexus
 pip install -e . # will use the setup.py file to install the package
 ```
 
-You have successfully installed Nexus-CAT on your system. For more details, refer to the [Getting Started](getting_started.rst) guide.
+You have successfully installed Nexus-CAT on your system. For more details, refer to the [Getting Started](getting_started.md) guide.

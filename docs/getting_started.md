@@ -25,7 +25,7 @@ cd examples/outputs/quickstart-SiO2
 
 This section will guide you through the initial setup and usage of Nexus-CAT with the example file: `examples/inputs/example-SiO2-1008at.xyz`.
 
-![Nexus Workflow Diagram](_images/workflow-Nexus.jpg)
+![Nexus Workflow Diagram](https://github.com/jperradin/nexus/blob/main/docs/_image/workflow-Nexus.jpg)
 
 Nexus follows a modular, configuration-driven workflow that separates user input from the core analysis pipeline. The framework processes trajectory files through distinct stages: configuration, data reading, frame analysis, clustering, and output generation.
 

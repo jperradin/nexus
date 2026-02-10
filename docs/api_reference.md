@@ -332,30 +332,6 @@ Dataclass representing a node in the simulation frame. A Node is the fundamental
 - `__repr__() -> str`
   - Same as `__str__` for convenience.
 
-### Usage Example
-
-In the typical workflow of Necus-CAT, the node are created automatically by the `Frame` class during the frame parsing.
-The following lines are not recommended and are only for illustration purposes if needed.
-
-```python
-import numpy as np
-from nexus.core.node import Node
-
-position = np.array([1.0, 2.0, 3.0])
-node = Node(symbol="A", node_id=None, position=position)
-
-print(node)  # e.g., Node 0 (A) | coordination: 0 | neighbors: 0 | position: [1. 2. 3.]
-
-# Add neighbor
-neighbor_node = Node(symbol="B", node_id=None, position=np.array([4.0, 5.0, 6.0]))
-node.add_neighbor(neighbor_node)
-
-# Set coordination
-node.set_coordination(1)
-
-print(node)
-```
-
 Here's the API reference for the `Cluster` class in the core module:
 
 ### Cluster
@@ -550,70 +526,6 @@ Creates a cluster with a connectivity label, root node ID, size, settings, and l
 
 ***
 
-### Usage Example
-
-In the typical workflow of Nexus, clusters are created automatically by clustering strategies during the analysis process. The following example is for illustration purposes only:
-
-```python
-import numpy as np
-from nexus.core.cluster import Cluster, Node
-from nexus.config.settings import Settings, ClusteringSettings
-
-# Define settings
-clustering_settings = ClusteringSettings(
-    criterion="distance",
-    node_types=["A", "B"],
-    connectivity=["A", "B"]
-)
-
-settings = Settings(
-    clustering=clustering_settings,
-    verbose=True
-)
-
-# Create cluster
-lattice = np.array([[10.0, 0.0, 0.0],
-                    [0.0, 10.0, 0.0],
-                    [0.0, 0.0, 10.0]])
-
-cluster = Cluster(
-    connectivity="A-B",
-    root_id=0,
-    size=5,
-    settings=settings,
-    lattice=lattice
-)
-
-# Add nodes
-node1 = Node(symbol="A", node_id=0, position=np.array([0.0, 0.0, 0.0]))
-node2 = Node(symbol="B", node_id=1, position=np.array([1.5, 0.0, 0.0]))
-cluster.add_node(node1)
-cluster.add_node(node2)
-
-# Calculate properties
-cluster.calculate_unwrapped_positions()
-cluster.calculate_center_of_mass()
-cluster.calculate_gyration_radius()
-cluster.calculate_percolation_probability()
-
-# Display results
-print(cluster)
-print(f"Percolates in: {cluster.percolation_probability}")
-print(f"Gyration radius: {cluster.gyration_radius:.3f}")
-```
-
-***
-
-### Key Improvements
-
-**Robust Percolation Detection**: The new period vector algorithm accurately distinguishes true percolating clusters from large finite clusters by verifying that the cluster connects to itself through periodic boundaries via actual bond connectivity, not just spatial extent.
-
-**Decoration Atoms**: Automatic identification and unwrapping of bridging/decorating atoms (e.g., oxygen in Si-O-Si networks) for complete structural representation.
-
-**Performance**: BFS-based unwrapping with progress bars for user feedback on large clusters.
-
-**Theoretical Foundation**: Implementation based on rigorous algebraic topology methods from computational chemistry literature, ensuring physically meaningful percolation identification.
-
 ### Frame
 
 Represents a single snapshot of a trajectory. A frame holds the raw node data, the simulation cell lattice, and the clusters produced by a clustering strategy. It is created by a reader, populated during the analysis pipeline, and consumed by analyzers.
@@ -699,29 +611,6 @@ Represents a single snapshot of a trajectory. A frame holds the raw node data, t
 - `__del__() -> None`
   - Cleans up references to nodes, clusters, lattice, data, and connectivities.
 
-### Usage Example
-
-Similarly to the `Node` and `Cluster` classes, the `Frame` objects are created automatically by the `System` object, and the following lines are not recommended and are only for illustration purposes if needed.
-
-```python
-import numpy as np
-from nexus.core.frame import Frame
-
-# Example data
-frame_data = {
-    "symbol": np.array(["A", "B", "A"]),
-    "position": np.array([[0,0,0],[1,1,1],[2,2,2]])
-}
-
-settings = ...  # Assume a Settings object is initialized appropriately
-frame = Frame(frame_id=0, nodes=[], lattice=np.eye(3), _data=frame_data, _settings=settings)
-
-# Initialize nodes filtering by clustering node types from settings
-frame.initialize_nodes()
-
-print(frame)  # e.g., Frame 0 (num_nodes=..., num_clusters=None)
-```
-
 ### System
 
 Manages trajectory data and provides frame-level access through a file reader. Wraps a reader with lazy frame iteration. On initialization it configures the reader's filename from settings and triggers a file scan to index frame offsets. Frames can then be accessed individually or iterated over as a generator.
@@ -781,27 +670,6 @@ Constructs a `System` instance with a file reader and configuration settings.
   - Returns next frame in iteration sequence respecting frame range.
   - Raises `StopIteration` when range or data is exhausted.
   - Loads each frame on-demand using `load_frame()`.
-
-
-### Usage Example
-
-```python
-from io_module import SomeReader
-from core_module import System
-from config_module import Settings
-
-settings = Settings(file_location="trajectory.dat", range_of_frames=(0, 100))
-reader = SomeReader()
-system = System(reader, settings)
-
-# Iterate through frames using generator
-for frame in system.iter_frames():
-    print(frame)
-
-# Use as iterator
-for frame in system:
-    print(frame)
-```
 
 ## `analysis` Module
 
@@ -1372,7 +1240,21 @@ Creates a shared-neighbor-based clustering strategy for the given frame.
 ### Usage Example
 
 ```python
-...
+from nexus import SettingsBuilder, main
+import nexus.config.settings as c
+
+general_settings = c.GeneralSettings(
+  ...
+)
+
+lattice_settings = c.LatticeSettings(
+  ...
+)
+
+analysis_settings = c.AnalysisSettings(
+  ...
+)
+
 clustering_settings = c.ClusteringSettings(
     criterion="bond",
     node_types=["Si", "O"],
@@ -1393,7 +1275,17 @@ clustering_settings = c.ClusteringSettings(
     with_alternating=False,
     with_connectivity_name="Stishovite"
 )
-...
+
+settings = (
+    SettingsBuilder()
+    .with_general(general_settings)
+    .with_lattice(lattice_settings)
+    .with_clustering(clustering_settings)
+    .with_analysis(analysis_settings)
+    .build()
+)
+
+main(settings)
 ```
 
 ### AnalyzerFactory
@@ -2853,7 +2745,7 @@ Si 7.890 8.901 9.012
 from nexus import SettingsBuilder, main
 import nexus.config.settings as c
 
-# Path to the trajectory file
+# Path to the trajectory file which ends with the extension `xyz`
 path = "./examples/inputs/example-SiO2-27216at.xyz"
 
 # General settings
@@ -3022,6 +2914,7 @@ ITEM: ATOMS id type x y z
 from io.reader import LAMMPSReader
 from config.settings import Settings
 
+# Path to the trajectory file which ends with the extension `.lammpstrj`
 settings = Settings(
     file_location="trajectory.lammpstrj",
     range_of_frames=(0, 100),

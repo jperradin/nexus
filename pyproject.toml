@@ -7,13 +7,14 @@ where = ["src"]
 
 [project]
 name = "nexus-cat"
-version = "2.0.4"
+version = "2.0.5"
 description = "Nexus is a Cluster Analysing Toolkit package."
 readme = "README.md"
 requires-python = ">=3.9"
-license = { text = "MIT" }
+license = "MIT"
+license-files = ["LICENSE"]
 authors = [
-  { name = "jperradin", email = "julien.perradin@protonmail.fr" },
+  { name = "jperradin", email = "jperradin@pm.me" },
 ]
 dependencies = [
     "numpy>=1.20.0",
@@ -21,6 +22,7 @@ dependencies = [
     "colorama>=0.4.4",
     "numba>=0.53.0",
     "psutil>=5.8.0",
+    "scipy>=1.12.0"
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",

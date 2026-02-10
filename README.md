@@ -96,7 +96,7 @@ pip install nexus-cat --upgrade
 If you want to install the package from the source code to implement your extensions for example, you can clone the repository:
 
 ```bash
-git clone git@github.com:jperradin/nexus.git
+git clone https://github.com/jperradin/nexus.git
 ```
 
 Then install the package in development mode:

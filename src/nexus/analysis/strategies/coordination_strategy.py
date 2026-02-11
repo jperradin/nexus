@@ -85,21 +85,6 @@ class CoordinationStrategy(BaseClusteringStrategy):
         else:
             node.set_coordination(len([n for n in node.neighbors if n.symbol == mode]))
 
-    # These do not need to be implemented twice, already in BaseClusteringStrategy
-    # TODO: check if this work.
-    #
-    # def find(self, node: Node) -> Node:
-    #     if node.parent != node:
-    #         node.parent = self.find(node.parent)
-    #     return node.parent
-    #
-    # def union(self, node_1: Node, node_2: Node) -> None:
-    #     root_1 = self.find(node_1)
-    #     root_2 = self.find(node_2)
-    #
-    #     if root_1 != root_2:
-    #         root_2.parent = root_1
-
     def get_connectivities(self) -> List[str]:
         """
         Build connectivity labels from coordination range and pairing mode.

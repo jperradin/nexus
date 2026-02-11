@@ -7,7 +7,7 @@ where = ["src"]
 
 [project]
 name = "nexus-cat"
-version = "2.0.5"
+version = "1.0.0"
 description = "Nexus is a Cluster Analysing Toolkit package."
 readme = "README.md"
 requires-python = ">=3.9"

@@ -38,6 +38,7 @@ class Cluster:
         is_percolating (bool): True if the cluster percolates in all three dimensions.
         is_spanning (bool): True if the cluster spans the simulation cell.
         linkages (List[Tuple[int, int]]): Sorted list of unique node-pair bonds in the cluster.
+        period_vectors (List[np.ndarray]) : List of periodic vectors of the cluster, empty if non-periodic.
         decoration_atoms (Dict[int, Dict]): Bridging nodes not part of the cluster but
             connected to member nodes, keyed by node ID.
     """
@@ -83,6 +84,7 @@ class Cluster:
 
         self.linkages: List[Tuple[int, int]] = []
         self._linkage_set: Set[Tuple[int, int]] = set()
+        self.period_vectors: List[np.ndarray] = []
 
         # New attribute to store decorating nodes (e.g., bridging oxygens)
         self.decoration_atoms: Dict[int, Dict] = {}
@@ -231,106 +233,19 @@ class Cluster:
             return
 
         # Detect period vectors during BFS traversal
-        period_vectors = self._detect_period_vectors()
+        # period_vectors = self._detect_period_vectors()
 
         # Calculate percolation dimension from period vectors
-        percolation_dim = self._calculate_period_dimension(period_vectors)
+        # percolation_dim = self._calculate_period_dimension(period_vectors)
+        percolation_dim = self._calculate_period_dimension()
 
         # Determine which directions percolate
-        self.percolation_probability = self._get_percolation_directions(period_vectors)
+        self.percolation_probability = self._get_percolation_directions()
 
         # True 3D percolation requires spanning all three dimensions
         self.is_percolating = percolation_dim == 3
 
-    def _detect_period_vectors(self) -> List[np.ndarray]:
-        """
-        Detect period vectors by BFS traversal of the cluster graph.
-
-        Traverses the cluster starting from the root node, tracking unwrapped positions.
-        When a previously visited node is reached again via a different periodic path, the
-        displacement between the two unwrapped positions is recorded as a period vector.
-
-        Returns:
-            List[np.ndarray]: Period vectors found during traversal. Each vector represents
-                a lattice translation through which the cluster connects to itself.
-        """
-        if not self.nodes:
-            return []
-
-        root_node = self.nodes[0].parent
-        queue = [root_node]
-
-        visited_positions = {root_node.node_id: root_node.position.copy()}
-        visited_set = {root_node.node_id}
-        period_vectors = []
-
-        # Distance criterion: direct neighbor-to-neighbor traversal
-        if self.settings.clustering.criterion == "distance":
-            while queue:
-                current_node = queue.pop(0)
-                current_unwrapped = visited_positions[current_node.node_id]
-
-                for neighbor in current_node.neighbors:
-                    # Only consider neighbors in this cluster
-                    if neighbor.cluster_id != self.root_id:
-                        continue
-
-                    # Calculate unwrapped position of neighbor
-                    relative_vec = self._unwrap_vector(
-                        neighbor.position - current_node.position
-                    )
-                    neighbor_unwrapped = current_unwrapped + relative_vec
-
-                    if neighbor.node_id in visited_set:
-                        # Already visited - check for period vector
-                        period = (
-                            neighbor_unwrapped - visited_positions[neighbor.node_id]
-                        )
-
-                        # If period is non-zero, we found a periodic connection
-                        if np.linalg.norm(period) > 1e-6:
-                            period_vectors.append(period)
-                    else:
-                        # First time visiting this neighbor
-                        visited_positions[neighbor.node_id] = neighbor_unwrapped
-                        visited_set.add(neighbor.node_id)
-                        queue.append(neighbor)
-        # Bond criterion: traverse through bridging nodes (e.g., Si -> O -> Si)
-        elif self.settings.clustering.criterion == "bond":
-            bridge_symbol = self.settings.clustering.connectivity[1]
-            while queue:
-                current_node = queue.pop(0)
-                current_unwrapped = visited_positions[current_node.node_id]
-
-                for neighbor in current_node.neighbors:
-                    if neighbor.symbol == bridge_symbol:
-                        for neighbor2 in neighbor.neighbors:
-                            if neighbor2.cluster_id != self.root_id:
-                                continue
-
-                            relative_vec = self._unwrap_vector(
-                                neighbor2.position - current_node.position
-                            )
-                            neighbor_unwrapped = current_unwrapped + relative_vec
-
-                            if neighbor2.node_id in visited_set:
-                                period = (
-                                    neighbor_unwrapped
-                                    - visited_positions[neighbor2.node_id]
-                                )
-
-                                if np.linalg.norm(period) > 1e-6:
-                                    period_vectors.append(period)
-                            else:
-                                visited_positions[neighbor2.node_id] = (
-                                    neighbor_unwrapped
-                                )
-                                visited_set.add(neighbor2.node_id)
-                                queue.append(neighbor2)
-
-        return period_vectors
-
-    def _calculate_period_dimension(self, period_vectors: List[np.ndarray]) -> int:
+    def _calculate_period_dimension(self) -> int:
         """
         Calculate the algebraic dimension of a set of period vectors using SVD.
 
@@ -344,11 +259,11 @@ class Cluster:
         Returns:
             int: Percolation dimensionality (0, 1, 2, or 3).
         """
-        if not period_vectors:
+        if not self.period_vectors:
             return 0
 
         # Stack period vectors into matrix
-        period_matrix = np.array(period_vectors)
+        period_matrix = np.array(self.period_vectors)
 
         # Use SVD to find rank (number of linearly independent vectors)
         _, singular_values, _ = np.linalg.svd(period_matrix)
@@ -359,7 +274,7 @@ class Cluster:
 
         return min(rank, 3)  # Cap at 3 for 3D systems
 
-    def _get_percolation_directions(self, period_vectors: List[np.ndarray]) -> str:
+    def _get_percolation_directions(self) -> str:
         """
         Determine which Cartesian directions the cluster percolates in.
 
@@ -373,11 +288,11 @@ class Cluster:
         Returns:
             str: Concatenation of percolating direction labels (e.g., "x", "xy", "xyz").
         """
-        if not period_vectors:
+        if not self.period_vectors:
             return ""
 
         # Find linearly independent period vectors
-        independent_periods = self._get_independent_periods(period_vectors)
+        independent_periods = self._get_independent_periods(self.period_vectors)
         if not independent_periods:
             return ""
 
@@ -502,14 +417,17 @@ class Cluster:
         nodes.
 
         """
-        # TODO : find a way to concatenate this method with _detect_period_vectors to optimize the code.
+        # TODO : stores period_vectors on the fly for percolation probability calculation
         if self.size <= 1:
             return
 
         root_node = self.nodes[0].parent
         queue = [root_node]
-        dict_positions = {root_node.node_id: root_node.position}
+        visited_positions = {root_node.node_id: root_node.position}
         visited_nodes = {root_node.node_id}
+
+        # periodic vector for percolation probability calculation
+        period_vectors = []
 
         progress_bar_kwargs = {
             "disable": not self.settings.verbose,
@@ -521,54 +439,84 @@ class Cluster:
         pbar = tqdm(total=self.size, desc=pbar_desc, **progress_bar_kwargs)
         pbar.update(1)
 
+        # Distance criterion: direct neighbor-to-neighbor traversal
         if self.settings.clustering.criterion == "distance":
             while queue:
                 current_node = queue.pop(0)
+                current_unwrapped = visited_positions[current_node.node_id]
+
                 for neighbor in current_node.neighbors:
-                    if (
-                        neighbor.cluster_id == self.root_id
-                        and neighbor.node_id not in visited_nodes
-                    ):
-                        relative_position = self._unwrap_vector(
-                            neighbor.position - current_node.position
+                    # Only consider neighbors in this cluster
+                    if neighbor.cluster_id != self.root_id:
+                        continue
+
+                    # Calculate unwrapped position of neighbor
+                    relative_vec = self._unwrap_vector(
+                        neighbor.position - current_node.position
+                    )
+
+                    neighbor_unwrapped = current_unwrapped + relative_vec
+
+                    # Store period vector if already visited
+                    if neighbor.node_id in visited_nodes:
+                        period = (
+                            neighbor_unwrapped - visited_positions[neighbor.node_id]
                         )
-                        dict_positions[neighbor.node_id] = (
-                            dict_positions[current_node.node_id] + relative_position
-                        )
+
+                        # If period is non-zero -> found a periodic connection
+                        if np.linalg.norm(period) > 1e-6:
+                            period_vectors.append(period)
+                    else:
+                        # First time visiting this neighbor
+                        visited_positions[neighbor.node_id] = neighbor_unwrapped
                         link = tuple(sorted((current_node.node_id, neighbor.node_id)))
                         self._linkage_set.add(link)
                         visited_nodes.add(neighbor.node_id)
                         queue.append(neighbor)
                         pbar.update(1)
+            
+        # Bond criterion: traverse through bridging nodes (e.g., Si -> O -> Si)
         elif self.settings.clustering.criterion == "bond":
             bridge_symbol = self.settings.clustering.connectivity[1]
             while queue:
                 current_node = queue.pop(0)
+                current_unwrapped = visited_positions[current_node.node_id]
+
                 for neighbor in current_node.neighbors:
                     if neighbor.symbol == bridge_symbol:
                         for neighbor2 in neighbor.neighbors:
-                            if (
-                                neighbor2.cluster_id == self.root_id
-                                and neighbor2.node_id not in visited_nodes
-                            ):
-                                relative_position = self._unwrap_vector(
-                                    neighbor2.position - current_node.position
+                            # Only consider neighbors in this cluster
+                            if neighbor2.cluster_id != self.root_id:
+                                continue
+
+                            # Calculate unwrapped position of neighbor
+                            relative_vec = self._unwrap_vector(
+                                neighbor2.position - current_node.position
+                            )
+                            neighbor_unwrapped = current_unwrapped + relative_vec
+
+                            if neighbor2.node_id in visited_nodes:
+                                # Already visited - check for period vector
+                                period = (
+                                    neighbor_unwrapped - visited_positions[neighbor2.node_id]
                                 )
-                                dict_positions[neighbor2.node_id] = (
-                                    dict_positions[current_node.node_id]
-                                    + relative_position
-                                )
-                                link = tuple(
-                                    sorted((current_node.node_id, neighbor2.node_id))
-                                )
+
+                                # If period is non-zero -> found a periodic connection
+                                if np.linalg.norm(period) > 1e-6:
+                                    period_vectors.append(period)
+                            else:
+                                # First time visiting this neighbor
+                                visited_positions[neighbor2.node_id] = neighbor_unwrapped
+                                link = tuple(sorted((current_node.node_id, neighbor2.node_id)))
                                 self._linkage_set.add(link)
                                 visited_nodes.add(neighbor2.node_id)
                                 queue.append(neighbor2)
                                 pbar.update(1)
 
         pbar.close()
-        self.set_indices_and_positions(dict_positions)
+        self.set_indices_and_positions(visited_positions)
         self.linkages = sorted(list(self._linkage_set))
+        self.period_vectors = period_vectors
 
         # --- Find and unwrap decorating nodes ---
         if (
@@ -579,7 +527,7 @@ class Cluster:
             # Create a map of node ID to original Node object for quick lookup
             cluster_nodes_map = {node.node_id: node for node in self.nodes}
 
-            for node_id, unwrapped_pos in dict_positions.items():
+            for node_id, unwrapped_pos in visited_positions.items():
                 original_node = cluster_nodes_map.get(node_id)
                 if not original_node:
                     continue

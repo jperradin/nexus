@@ -1,5 +1,4 @@
 from tqdm import tqdm
-import numpy as np
 import os
 from datetime import datetime
 import psutil
@@ -49,8 +48,12 @@ def main(settings: Settings):
     settings.export_directory = os.path.join(
         settings.export_directory, settings.project_name
     )
-    if not os.path.exists(settings.export_directory):
-        os.makedirs(settings.export_directory)
+    try:
+        os.makedirs(settings.export_directory, exist_ok=True)
+    except OSError as e:
+        raise RuntimeError(
+            f"Cannot create export directory '{settings.export_directory}': {e}"
+        ) from e
 
     # Save logs
     if settings.save_logs:
@@ -59,27 +62,23 @@ def main(settings: Settings):
 
     # Initialize reader and system
     scan_start = time.time()
-    reader = ReaderFactory(settings).get_reader()
-    reader.set_verbose(settings.verbose)
-    system = System(reader, settings)
+    try:
+        reader = ReaderFactory(settings).get_reader()
+        reader.set_verbose(settings.verbose)
+        system = System(reader, settings)
+    except (FileNotFoundError, ValueError, OSError) as e:
+        raise RuntimeError(
+            f"Failed to initialize reader for '{settings.file_location}': {e}"
+        ) from e
     scan_end = time.time()
 
     # Track reader initialization performance
     perf.add_metric("scan_trajectory_time_ms", (scan_end - scan_start) * 1000)
     perf.record_history()
 
-    # Get total number of frames
-    if settings.range_of_frames[1] == -1:
-        total = system.get_num_frames()
-    elif settings.range_of_frames[0] == -1:
-        settings.range_of_frames[0] = 1
-    elif settings.range_of_frames[0] == settings.range_of_frames[1]:
-        total = 1
-    else:
-        if settings.range_of_frames[1] == -1:
-            total = system.get_num_frames() - settings.range_of_frames[0]
-        else:
-            total = settings.range_of_frames[1] - settings.range_of_frames[0]
+    # Resolve frame range (replace -1 sentinels with concrete indices)
+    start_frame, end_frame = settings.resolve_frame_range(system.get_num_frames())
+    total = end_frame - start_frame + 1
 
     # Initialize analyzers
     analyzers = []
@@ -96,9 +95,9 @@ def main(settings: Settings):
 
     progress_bar = tqdm(
         enumerate(system.iter_frames()),
-        desc=f"Processing frames {settings.range_of_frames}...",
+        desc=f"Processing frames ({start_frame}, {end_frame})...",
         unit="frame",
-        initial=settings.range_of_frames[0],
+        initial=start_frame,
         total=total,
         **progress_bar_kwargs,
     )
@@ -152,8 +151,6 @@ def main(settings: Settings):
         frame_times.append((frame_end - frame_start) * 1000)
 
         number_nodes.append(len(frame))
-
-        del frame
 
         # Record per-frame performance
         if i % 10 == 0 or i == total - 1:  # Record every 10 frames or the last frame

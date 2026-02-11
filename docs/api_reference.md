@@ -386,6 +386,7 @@ Creates a cluster with a connectivity label, root node ID, size, settings, and l
 
 - `linkages` (List[Tuple[int, int]]): List of node ID pairs representing bonds between networking nodes.
 - `_linkage_set` (Set[Tuple[int, int]]): Internal set for efficient linkage tracking during unwrapping.
+- `period_vectors` (List[np.ndarray]): Period vectors detected during BFS unwrapping, representing displacements across periodic boundaries. Empty for non-periodic clusters.
 - `decoration_atoms` (Dict[int, Dict]): Dictionary of decorating nodes (e.g., bridging atoms in bond-based clustering). Keys are node IDs, values contain `symbol`, `position`, and `coordination`.
 
 **Statistical Properties:**
@@ -444,46 +445,31 @@ Creates a cluster with a connectivity label, root node ID, size, settings, and l
   - **Behavior**: Returns 0.0 for clusters with size ≤ 1.
 
 - `calculate_percolation_probability() -> None`
-  - Determines percolation using robust period vector algorithm.
+  - Determines percolation using the period vector algorithm.
   - **Returns**: None
   - **Method**: Period vector detection following Livraghi et al. (2021) [J. Chem. Theory Comput.](https://pubs.acs.org/doi/10.1021/acs.jctc.1c00423)
   - **Behavior**:
-    - Traverses cluster using breadth-first search.
-    - Tracks unwrapped positions during traversal.
-    - Detects period vectors when a node is reached via multiple periodic paths.
+    - Uses pre-computed `period_vectors` collected during `calculate_unwrapped_positions()`, avoiding a redundant BFS traversal.
     - Calculates percolation dimension from linear independence of period vectors.
     - Updates `percolation_probability` (e.g., `"xyz"`) and `is_percolating` flag.
   - **Percolation Theory Significance**: True percolation requires the cluster to connect to itself across periodic boundaries through actual bond connectivity, not just spatial extent. This method distinguishes genuine percolating clusters from large finite clusters.
 
-- `_detect_period_vectors() -> List[np.ndarray]`
-  - Internal method to detect period vectors during cluster traversal.
-  - **Returns**: List of period vectors (displacement vectors across periodic boundaries).
-  - **Behavior**:
-    - Performs BFS traversal starting from root node.
-    - Maintains unwrapped positions for visited nodes.
-    - When encountering a previously visited node through a different path, records the displacement as a period vector.
-    - Handles both `"distance"` and `"bond"` clustering criteria.
-
-- `_calculate_period_dimension(period_vectors: List[np.ndarray]) -> int`
+- `_calculate_period_dimension() -> int`
   - Calculates the algebraic dimension of the period vector set using singular value decomposition.
-  - **Parameters**:
-    - `period_vectors` (List[np.ndarray]): List of detected period vectors.
   - **Returns**: Integer (0, 1, 2, or 3) indicating percolation dimensionality.
-  - **Method**: Computes rank of period vector matrix via SVD with numerical tolerance.
+  - **Method**: Reads from `self.period_vectors`. Computes rank of period vector matrix via SVD with numerical tolerance.
 
-- `_get_percolation_directions(period_vectors: List[np.ndarray]) -> str`
+- `_get_percolation_directions() -> str`
   - Determines which Cartesian directions (x, y, z) the cluster percolates in.
-  - **Parameters**:
-    - `period_vectors` (List[np.ndarray]): List of detected period vectors.
   - **Returns**: String containing percolating directions (e.g., `"xy"` for percolation in x and y).
-  - **Behavior**: Checks which directions have significant fractional components (> 0.5 lattice units) in linearly independent period vectors.
+  - **Behavior**: Reads from `self.period_vectors`. Checks which directions have significant fractional components (> 0.5 lattice units) in linearly independent period vectors.
 
 - `_get_independent_periods(period_vectors: List[np.ndarray]) -> List[np.ndarray]`
   - Extracts linearly independent period vectors.
   - **Parameters**:
     - `period_vectors` (List[np.ndarray]): All detected period vectors.
   - **Returns**: List of up to 3 linearly independent period vectors.
-  - **Method**: Uses matrix rank calculation to select independent vectors.
+  - **Method**: Uses incremental matrix rank calculation to select independent vectors.
 
 - `calculate_order_parameter() -> None`
   - Calculates order parameters for each dimension based on percolation status.
@@ -505,16 +491,17 @@ Creates a cluster with a connectivity label, root node ID, size, settings, and l
   - **Method**: Converts to fractional coordinates, subtracts nearest integer, converts back to Cartesian.
 
 - `calculate_unwrapped_positions() -> None`
-  - Unwraps all cluster node positions relative to the root node using breadth-first traversal.
+  - Unwraps all cluster node positions relative to the root node using breadth-first traversal, and simultaneously detects period vectors for percolation analysis.
   - **Returns**: None
   - **Behavior**:
-    - Performs BFS starting from root node.
+    - Performs a single BFS starting from root node.
     - For each neighbor, calculates unwrapped position by adding minimum image displacement to current position.
+    - When encountering a previously visited node through a different path, records the displacement as a period vector.
     - Records linkages between nodes.
-    - For bond-based clustering, identifies and unwraps decorating atoms (e.g., bridging oxygens).
+    - For bond-based clustering, identifies and unwraps decorating atoms (e.g., bridging nodes).
     - Displays progress bar if verbose mode enabled.
     - Handles both `"distance"` and `"bond"` clustering criteria.
-  - **Output**: Populates `unwrapped_positions`, `linkages`, and `decoration_atoms` attributes.
+  - **Output**: Populates `unwrapped_positions`, `linkages`, `period_vectors`, and `decoration_atoms` attributes.
 
 - `__str__() -> str`
   - Returns a concise string representation of the cluster.

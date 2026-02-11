@@ -500,6 +500,26 @@ class Settings:
             raise ValueError("Start frame cannot be greater than end frame")
         self.range_of_frames = (start, end)
 
+    def resolve_frame_range(self, num_frames: int) -> Tuple[int, int]:
+        """
+        Resolve the frame range into concrete start and end indices.
+
+        Replaces sentinel values (-1) with actual bounds derived from the
+        total number of frames. Both start and end are inclusive.
+
+        Args:
+            num_frames (int): Total number of frames in the trajectory.
+
+        Returns:
+            Tuple[int, int]: Concrete (start, end) indices with no sentinel values.
+        """
+        start, end = self.range_of_frames
+        if start < 0:
+            start = 0
+        if end < 0:
+            end = num_frames - 1
+        return (start, end)
+
     def __str__(self) -> str:
         """Return a formatted summary of all settings."""
         lines = []

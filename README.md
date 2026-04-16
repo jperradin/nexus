@@ -160,9 +160,9 @@ import nexus.config.settings as c
 
 # General settings
 config_general = c.GeneralSettings(
-    project_name="quickstart-SiO2",
-    export_directory="./exports",
-    file_location="./trajectory.xyz",
+    project_name="quickstart-SiO2-1008at",
+    export_directory="./examples/outputs/",
+    file_location="./examples/inputs/example-SiO2-1008at.xyz",
     range_of_frames=(0, -1),          # (0, -1) processes all frames
     apply_pbc=True,
     verbose=True,
@@ -227,6 +227,7 @@ config_analysis = c.AnalysisSettings(
 )
 ```
 
+The results will be printed out to files in the directory: `./examples/outputs/quickstart-SiO2-1008at/`
 
 ## Workflow
 

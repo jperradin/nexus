@@ -3,14 +3,14 @@ from nexus import SettingsBuilder, main
 import nexus.config.settings as c
 
 # Path to the trajectory file
-path = "./examples/inputs/example-a_H2O-N8192-0.01kbar.xyz"
-# path = "./examples/inputs/example-a_H2O-N8192-0.5kbar.xyz"
-# path = "./examples/inputs/example-a_H2O-N8192-1kbar.xyz"
+path = "./example-a_H2O-8192mol-0.01kbar.xyz"
+# path = "./example-a_H2O-8192mol-0.5kbar.xyz"
+# path = "./example-a_H2O-8192mol-1kbar.xyz"
 
 # General settings
 config_general = c.GeneralSettings(
-    project_name="quickstart-a_H2O",         # Project name
-    export_directory="./examples/outputs",  # Export directory
+    project_name=path.replace('.xyz',''),         # Project name
+    export_directory="../outputs",  # Export directory
     file_location=path,                     # File location
     range_of_frames=(0, -1),                # Range of frames : (0, -1) analyze all the frames.
     apply_pbc=True,                         # Apply periodic boundary conditions

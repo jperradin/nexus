@@ -20,39 +20,51 @@ example-<system>-<N>at[-<condition>].xyz
 
 ## Datasets
 
-### SiO2 — Silicon dioxide
+### a-SiO2 — Amorphous silica
 
 | File | Atoms | Condition | Source / Notes |
 |------|------:|-----------|----------------|
-| `example-SiO2-1008at.xyz` | 1008 | <!-- e.g. ambient pressure, T = 300 K --> | <!-- origin / reference --> |
-| `example-SiO2-1008at-high_pressure.xyz` | 1008 | <!-- P = ? GPa --> | |
-| `example-SiO2-27216at-low_pressure.xyz` | 27216 | <!-- P = ? GPa --> | |
-| `example-SiO2-27216at-11GPa.xyz` | 27216 | P = 11 GPa | |
-| `example-SiO2-96000at.xyz` | 96000 | <!-- condition --> | |
+| `example-a_SiO2-8064at-0GPa.xyz` | 8064 | T = 300K, P = 0GPa | Perradin et al. PhD thesis 2025 |
+| `example-a_SiO2-8064at-5GPa.xyz` | 8064 | T = 300K, P = 5GPa | |
+| `example-a_SiO2-8064at-10GPa.xyz` | 8064 | T = 300K, P = 10GPa | |
+| `example-a_SiO2-8064at-15GPa.xyz` | 8064 | T = 300K, P = 15GPa | |
+| `example-a_SiO2-8064at-20GPa.xyz` | 8064 | T = 300K, P = 20GPa | |
+| `example-a_SiO2-8064at-25GPa.xyz` | 8064 | T = 300K, P = 25GPa | |
+| `example-a_SiO2-8064at-30GPa.xyz` | 8064 | T = 300K, P = 30GPa | |
+| `example-a_SiO2-8064at-35GPa.xyz` | 8064 | T = 300K, P = 35GPa | |
 
-**Connectivity:** `Si–O–Si` bond criterion (`"bond"` strategy)  
+**Connectivity:** `Si–O–Si` (`"CoordinationStrategy"` + `"SharedStrategy`)  
 **Cutoffs:** Si–Si 3.50 Å · Si–O 2.30 Å · O–O 3.05 Å  
-**Coordination range:** Si coordination number Z ∈ [4, 6]  
+**Coordination range:** Si coordination number Z ∈ [4, 6]
 **Quickstart script:** `quickstart-a_SiO2.py`
 
-<!-- Add any additional notes about the SiO2 dataset here. -->
+  1) First run :
+    - SiO4-SiO4
+    - SiO4-SiO5
+    - SiO5-SiO5
+    - SiO5-SiO6
+    - SiO6-SiO6
+  2) Second run :
+    - Stishovite (SiO6*-SiO6)
 
 ---
 
-### a-H₂O — Amorphous / high-density water
+### a-H₂O — Amorphous ice
 
 | File | Molecules | Pressure | Source / Notes |
 |------|----------:|----------|----------------|
-| `example-a_H2O-N8192-0.01kbar.xyz` | 8192 | 0.01 kbar | <!-- LD phase --> |
-| `example-a_H2O-N8192-0.5kbar.xyz`  | 8192 | 0.5 kbar  | <!-- HD phase --> |
-| `example-a_H2O-N8192-1kbar.xyz`    | 8192 | 1 kbar    | <!-- VHD phase --> |
+| `example-a_H2O-8192mol-0.01kbar.xyz` | 8192 | T = 124K, P = 0.01 kbar | Hasmy et al. 2025 |
+| `example-a_H2O-8192mol-0.5kbar.xyz`  | 8192 | T = 124K, P = 0.5 kbar  | - |
+| `example-a_H2O-8192mol-1kbar.xyz`    | 8192 | T = 124K, P = 1 kbar    | - |
 
 **Connectivity:** `O–O` distance criterion (`"distance"` strategy)  
 **Cutoff:** O–O 3.5 Å  
 **Coordination ranges:** LD: Z = 4 · HD: Z ∈ [5, 7] · VHD: Z ≥ 8  
 **Quickstart script:** `quickstart-a_H2O.py`
 
-<!-- Add any additional notes about the a-H2O dataset here. -->
+  1) First run : LD
+  2) Second run : HD
+  3) Third run : VHD
 
 ---
 
@@ -60,14 +72,17 @@ example-<system>-<N>at[-<condition>].xyz
 
 | File | Atoms | Condition | Source / Notes |
 |------|------:|-----------|----------------|
-| `example-a_Si-100000at-0GPa.xyz`  | 100000 | 0 GPa  | <!-- origin / reference --> |
+| `example-a_Si-100000at-0GPa.xyz`  | 100000 | 0 GPa  | Deringer et al. 2021 |
 | `example-a_Si-100000at-12GPa.xyz` | 100000 | 12 GPa | |
 
-**Connectivity:** <!-- e.g. Si–Si distance criterion -->  
-**Cutoff:** <!-- e.g. Si–Si ? Å -->  
-**Quickstart script:** <!-- e.g. `quickstart-a_Si.py` (to be added) -->
+**Connectivity:** `Si–Si` distance criterion (`"distance"` strategy)  
+**Cutoff:** Si–Si 3.0 Å  
+**Coordination ranges:** LD: Z = 4 · HD: Z ∈ [5, 7] · VHD: Z ≥ 8  
+**Quickstart script:** `quickstart-a_Si.py`
 
-<!-- Add any additional notes about the a-Si dataset here. -->
+  1) First run : LD
+  2) Second run : HD
+  3) Third run : VHD
 
 ---
 
@@ -77,12 +92,15 @@ example-<system>-<N>at[-<condition>].xyz
 |--------|---------|-------------|
 | `quickstart-a_SiO2.py` | SiO2 | Runs pairwise coordination analysis on SiO4/SiO5/SiO6 clusters |
 | `quickstart-a_H2O.py`  | a-H2O | Runs LD / HD / VHD connectivity analysis on amorphous water |
+| `quickstart-a_Si.py`  | a-Si | Runs LD / HD / VHD connectivity analysis on amorphous silicon |
 
-Run from the repository root:
+Run from the examples inputs directory:
 
 ```bash
-python examples/inputs/quickstart-a_SiO2.py
-python examples/inputs/quickstart-a_H2O.py
+cd examples/inputs
+python quickstart-a_SiO2.py # or
+python quickstart-a_H2O.py # or
+python quickstart-a_Si.py
 ```
 
 Output is written to `examples/outputs/`.
@@ -95,9 +113,11 @@ All trajectory files follow the extended XYZ format:
 
 ```
 <N>
-Lattice="ax 0.0 0.0 0.0 ay 0.0 0.0 0.0 az" [Properties=...] [key=value ...]
-<type>  <x>  <y>  <z>  [extra columns]
+Lattice="lx 0.0 0.0 0.0 ly 0.0 0.0 0.0 lz" 
+<type>  <x>  <y>  <z>  
 ...
 ```
 
-The `Lattice` key encodes the simulation box vectors (Å). Periodic boundary conditions are applied by default (`apply_pbc=True`).
+The `Lattice` key encodes the simulation box vectors (Å). 
+Periodic boundary conditions are applied by default (`apply_pbc=True`).
+

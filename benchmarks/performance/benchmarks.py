@@ -36,7 +36,7 @@ def run_distance_strategy_benchmark(task):
         # Path to the trajectory file
         config_general = c.GeneralSettings(
             project_name=name,
-            export_directory=f"benchmarks/output/distance_strategy/",
+            export_directory=f"./output/distance_strategy/",
             file_location=path,
             range_of_frames=(0, -1),
             apply_pbc=True,
@@ -90,7 +90,7 @@ def run_bond_strategy_benchmark(task):
         # Path to the trajectory file
         config_general = c.GeneralSettings(
             project_name=name,
-            export_directory=f"benchmarks/output/bond_strategy/",
+            export_directory=f"./output/bond_strategy/",
             file_location=path,
             range_of_frames=(0, -1),
             apply_pbc=True,
@@ -149,7 +149,7 @@ def run_coordination_strategy_benchmark(task):
         # Path to the trajectory file
         config_general = c.GeneralSettings(
             project_name=name,
-            export_directory=f"benchmarks/output/coordination_strategy/",
+            export_directory=f"./output/coordination_strategy/",
             file_location=path,
             range_of_frames=(0, -1),
             apply_pbc=True,
@@ -212,7 +212,7 @@ def run_shared_strategy_benchmark(task):
         # Path to the trajectory file
         config_general = c.GeneralSettings(
             project_name=name,
-            export_directory=f"benchmarks/output/shared_strategy/",
+            export_directory=f"./output/shared_strategy/",
             file_location=path,
             range_of_frames=(0, -1),
             apply_pbc=True,
@@ -239,18 +239,18 @@ def run_shared_strategy_benchmark(task):
 # --- Main Execution Block ---
 if __name__ == "__main__":
     benchmarks = [
-        # ('benchmarks/data/universal_benchmark-50000-50.xyz', 'universal_benchmark-50000-50'),
-        # ('benchmarks/data/universal_benchmark-75000-50.xyz', 'universal_benchmark-75000-50'),
-        # ('benchmarks/data/universal_benchmark-86400-60.xyz', 'universal_benchmark-86400-60'),
-        # ('benchmarks/data/universal_benchmark-129600-60.xyz', 'universal_benchmark-129600-60'),
-        ('benchmarks/data/universal_benchmark-137200-70.xyz', 'universal_benchmark-137200-70'),
-        ('benchmarks/data/universal_benchmark-205800-70.xyz', 'universal_benchmark-205800-70'),
-        # ('benchmarks/data/universal_benchmark-204800-80.xyz', 'universal_benchmark-204800-80'),
-        # ('benchmarks/data/universal_benchmark-307200-80.xyz', 'universal_benchmark-307200-80'),
-        ('benchmarks/data/universal_benchmark-291600-90.xyz', 'universal_benchmark-291600-90'),
-        ('benchmarks/data/universal_benchmark-437400-90.xyz', 'universal_benchmark-437400-90'),
-        # ('benchmarks/data/universal_benchmark-400000-100.xyz', 'universal_benchmark-400000-100'),
-        # ('benchmarks/data/universal_benchmark-600000-100.xyz', 'universal_benchmark-600000-100'),
+        # ('./data/universal_benchmark-50000-50.xyz', 'universal_benchmark-50000-50'),
+        # ('./data/universal_benchmark-75000-50.xyz', 'universal_benchmark-75000-50'),
+        # ('./data/universal_benchmark-86400-60.xyz', 'universal_benchmark-86400-60'),
+        # ('./data/universal_benchmark-129600-60.xyz', 'universal_benchmark-129600-60'),
+        ('./data/universal_benchmark-137200-70.xyz', 'universal_benchmark-137200-70'),
+        ('./data/universal_benchmark-205800-70.xyz', 'universal_benchmark-205800-70'),
+        # ('./data/universal_benchmark-204800-80.xyz', 'universal_benchmark-204800-80'),
+        # ('./data/universal_benchmark-307200-80.xyz', 'universal_benchmark-307200-80'),
+        ('./data/universal_benchmark-291600-90.xyz', 'universal_benchmark-291600-90'),
+        ('./data/universal_benchmark-437400-90.xyz', 'universal_benchmark-437400-90'),
+        # ('./data/universal_benchmark-400000-100.xyz', 'universal_benchmark-400000-100'),
+        # ('./data/universal_benchmark-600000-100.xyz', 'universal_benchmark-600000-100'),
     ]
 
     for benchmark in benchmarks:

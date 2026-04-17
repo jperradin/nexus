@@ -2,7 +2,7 @@
 ## Code Verification Guide for Editors
 
 **Package name:** nexus-cat  
-**Version:** 0.1.0  
+**Version:** 0.1.1  
 **License:** MIT  
 **Python compatibility:** 3.9, 3.10, 3.11, 3.12  
 **Documentation:** https://nexus-cat.readthedocs.io/en/latest/  
@@ -65,16 +65,10 @@ All dependencies are automatically installed by pip (see Section 3).
 
 ## 3. Installation
 
-### Option A — Install from PyPI (version 0.1.0)
+### Option A — Install from PyPI (version 0.1.1)
 
 ```
-pip install nexus-cat
-```
-
-To upgrade to the reviewed version:
-
-```
-pip install nexus-cat==0.1.0
+pip install nexus-cat==0.1.1
 ```
 
 ### Option B — Install from source (recommended for editors)
@@ -124,7 +118,7 @@ nexus/
 │   │   ├── example-a_H2O-8192mol-{0.01,0.5,1}kbar.xyz     # 8192 molecules, 10 frames
 │   │   └── example-a_Si-100000at-{0,12}GPa.xyz            # 100000 atoms, 1 frame
 │   └── outputs/                                    # Created at runtime
-│       └── verification-JPerradin-20260416.tar.gz  # Contain validated results for verification
+│       └── verification-JPerradin-20260417.tar.gz  # Contain validated results for verification
 │
 ├── benchmarks/
 │   ├── performance/
@@ -204,7 +198,7 @@ python quickstart-a_H2O.py    # amorphous water   (LD / HD / VHD)
 python quickstart-a_Si.py     # amorphous silicon (LD / HD / VHD)
 ```
 
-Outputs are written to `examples/outputs/<trajectory-name>/`. Reference results for comparison are provided in the archive `verification-JPerradin-20260416.tar.gz`
+Outputs are written to `examples/outputs/<trajectory-name>/`. Reference results for comparison are packaged in `examples/outputs/verification-JPerradin-20260417.tar.gz`. Extract in place with `tar -xzvf examples/outputs/verification-JPerradin-20260417.tar.gz -C examples/outputs/` and diff against your own `examples/outputs/<trajectory-name>/`.
 ---
 
 ## Further documentation

@@ -37,7 +37,7 @@ def run_single_analysis(task):
         # Path to the trajectory file
         config_general = c.GeneralSettings(
             project_name=name,
-            export_directory=f"benchmarks/validation/output/{j}",
+            export_directory=f"./output/{j}",
             file_location=path,
             range_of_frames=(0, -1),
             apply_pbc=True,
@@ -67,7 +67,7 @@ if __name__ == "__main__":
     # Load file paths and output names from the input files
     try:
         files, outputs, j = np.loadtxt(
-            "benchmarks/validation/nexus_inputs_critical_point",
+            "./nexus_inputs_critical_point",
             dtype="<U100",
             unpack=True,
             comments="#",

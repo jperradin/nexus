@@ -44,27 +44,25 @@ The performance suite measures the cost of each clustering strategy (`distance`,
 
 ### 1.1 Generate the benchmark datasets
 
-From the repository root:
-
 ```bash
 cd benchmarks/performance/data
 python generate_simple_cubic_lattice.py             # writes universal_benchmark-<N>-<L>.xyz
 python generate_intricated_simple_cubic_lattice.py  # writes an interpenetrated variant
 ```
 
-Each script emits extended-XYZ files named `universal_benchmark-<N>-<L>.xyz` where `<N>` is the atom count and `<L>` is the cubic side (reduced units). Move or symlink the generated files to `benchmarks/data/` so that the hard-coded paths inside `benchmarks.py` resolve.
+Each script emits extended-XYZ files named `universal_benchmark-<N>-<L>.xyz` (where `<N>` is the atom count and `<L>` is the cubic side in reduced units) into the current directory. `benchmarks.py` reads them from `./data/` relative to its own location, so no further move is needed.
 
 ### 1.2 Run the benchmarks
 
 ```bash
-# From the repository root
-python benchmarks/performance/benchmarks.py
+cd benchmarks/performance
+python benchmarks.py
 ```
 
 For each dataset listed in the `benchmarks` list at the bottom of `benchmarks.py`, the script runs the four clustering strategies sequentially with `save_performance=True`. Per-frame wall-time, RSS memory, and CPU usage are written as JSON files to:
 
 ```
-benchmarks/output/<strategy>/universal_benchmark-<N>-<L>/performance*.json
+benchmarks/performance/output/<strategy>/universal_benchmark-<N>-<L>/performance*.json
 ```
 
 To enable or disable a dataset, comment/un-comment the corresponding tuple in the `benchmarks` list.
@@ -87,23 +85,23 @@ python generate.py                  # all probabilities p ∈ [0.20, 0.40], size
 python generate_single_frame.py     # single-frame variant, useful for quick checks
 ```
 
-`generate.py` writes:
+`generate.py` writes, directly into `benchmarks/validation/data/`:
 
 - `./<L>/percolation_sites_0.3116.xyz` — 100 independent frames at p = p_c for each L.
 - `./<L>/percolation_sites_<p>.xyz` — sweep over p for finite-size scaling (step 0.002).
-
-Move the generated `<L>/` directories to `benchmarks/validation/data/` so that the paths in `nexus_inputs_*` resolve.
 
 ### 2.2 Run the analysis
 
 Two input lists are provided:
 
 - `nexus_inputs_critical_point` — only p = p_c, for computing percolation probability and order parameter at the transition.
-- `nexus_inputs_all` — full sweep, required for finite-size scaling and critical-exponent fits. **Note:** by default these paths point to `benchmarks/validation_percolation/data/...`; edit the list to match `benchmarks/validation/data/...` before running.
+- `nexus_inputs_all` — full sweep, required for finite-size scaling and critical-exponent fits.
+
+Both lists use paths relative to `benchmarks/validation/` (e.g. `./data/<L>/...`). To switch between them, edit the filename passed to `np.loadtxt` in `validation-perco.py` (default: `nexus_inputs_critical_point`).
 
 ```bash
-# From the repository root
-python benchmarks/validation/validation-perco.py
+cd benchmarks/validation
+python validation-perco.py
 ```
 
 The script parallelises over 4 workers (`multiprocessing.Pool`); adjust `num_workers` inside the file if needed. Each trajectory is analysed with the Distance strategy (single type, cutoff = 1.1) and all analyzers enabled. Results are written to `benchmarks/validation/output/<L>/<label>/`.
@@ -128,5 +126,5 @@ Data collapse of the rescaled quantities vs. (p − p_c) L^(1/ν) for L ∈ {20,
 ## Notes
 
 - All generation scripts use `numba` JIT compilation; the first run incurs a one-time compilation overhead.
-- Hard-coded relative paths inside `benchmarks.py` and `validation-perco.py` assume execution from the repository root, not from within the `benchmarks/` subdirectory.
+- Every script uses paths relative to its own directory — always `cd` into the subfolder shown in each command block before running.
 - Memory footprint for the largest performance dataset (`universal_benchmark-600000-100`) stays below 4 GB thanks to the generator-based frame iterator.

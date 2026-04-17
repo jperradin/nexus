@@ -3,10 +3,10 @@ from nexus import SettingsBuilder, main
 import nexus.config.settings as c
 
 # Path to the trajectory file
-path = "./example-a_SiO2-8064at-0GPa.xyz"
+# path = "./example-a_SiO2-8064at-0GPa.xyz"
 # path = "./example-a_SiO2-8064at-5GPa.xyz"
 # path = "./example-a_SiO2-8064at-10GPa.xyz"
-# path = "./example-a_SiO2-8064at-15GPa.xyz"
+path = "./example-a_SiO2-8064at-15GPa.xyz"
 # path = "./example-a_SiO2-8064at-20GPa.xyz"
 # path = "./example-a_SiO2-8064at-25GPa.xyz"
 # path = "./example-a_SiO2-8064at-30GPa.xyz"
@@ -85,7 +85,7 @@ main(settings)
 
 
 #### Reconfigure and calculate Stishovite-like clusters
-
+config_analysis.overwrite = False  # Do not overwrite previous results
 
 # Clustering settings calling the CoordinationStrategy
 config_clustering = c.ClusteringSettings(

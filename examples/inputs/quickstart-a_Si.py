@@ -4,7 +4,7 @@ import nexus.config.settings as c
 
 # Path to the trajectory file
 path = "./example-a_Si-100000at-0GPa.xyz"
-# path = "./example-a_Si-100000at-12GPa.xyz"
+path = "./example-a_Si-100000at-12GPa.xyz"
 
 # General settings
 config_general = c.GeneralSettings(

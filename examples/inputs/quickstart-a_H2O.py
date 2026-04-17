@@ -3,8 +3,8 @@ from nexus import SettingsBuilder, main
 import nexus.config.settings as c
 
 # Path to the trajectory file
-path = "./example-a_H2O-8192mol-0.01kbar.xyz"
-# path = "./example-a_H2O-8192mol-0.5kbar.xyz"
+# path = "./example-a_H2O-8192mol-0.01kbar.xyz"
+path = "./example-a_H2O-8192mol-0.5kbar.xyz"
 # path = "./example-a_H2O-8192mol-1kbar.xyz"
 
 # General settings

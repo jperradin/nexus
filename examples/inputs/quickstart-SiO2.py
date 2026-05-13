@@ -3,17 +3,17 @@ from nexus import SettingsBuilder, main
 import nexus.config.settings as c
 
 # Path to the trajectory file
-path = "./examples/inputs/example-SiO2-1008at.xyz"
+# path = "./examples/inputs/example-SiO2-1008at.xyz"
 # path = "./examples/inputs/example-SiO2-1008at-high_pressure.xyz"
 # path = "./examples/inputs/example-SiO2-27216at-low_pressure.xyz"
-# path = "./examples/inputs/example-SiO2-27216at.xyz" # critical point for SiO5-SiO5
+path = "../nexus-dev/examples/inputs/example-SiO2-27216at-11GPa.xyz" # critical point for SiO5-SiO5
 # path = "./examples/inputs/example-SiO2-96000at.xyz"
 # path = "./examples/inputs/example-SiO2-1056000at.xyz"
 
 # General settings
 config_general = c.GeneralSettings(
-    project_name="quickstart-SiO2",         # Project name
-    export_directory="./examples/outputs",  # Export directory
+    project_name="reference",         # Project name
+    export_directory="../nexus-dev/tests/",  # Export directory
     file_location=path,                     # File location
     range_of_frames=(0, -1),                # Range of frames : (0, -1) analyze all the frames.
     apply_pbc=True,                         # Apply periodic boundary conditions

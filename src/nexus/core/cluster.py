@@ -243,7 +243,10 @@ class Cluster:
         self.percolation_probability = self._get_percolation_directions()
 
         # True 3D percolation requires spanning all three dimensions
-        self.is_percolating = percolation_dim == 3
+        # self.is_percolating = percolation_dim == 3
+ 
+        # Percolation requires spanning at least in one dimension
+        self.is_percolating = percolation_dim >= 1
 
     def _calculate_period_dimension(self) -> int:
         """

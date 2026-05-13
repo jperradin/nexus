@@ -22,7 +22,6 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
         _raw_concentrations (Dict[str, List[float]]): Per-frame concentrations.
         size_distribution (Dict[str, Dict[int, float]]): Aggregated total count
             per cluster size per connectivity.
-        std (Dict[str, Dict[int, float]]): Standard deviation (ddof=1) per size.
         concentrations (Dict[str, float]): Mean concentration per connectivity.
     """
 
@@ -40,7 +39,6 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
 
         # Public attributes to hold the final, aggregated results
         self.size_distribution: Dict[str, Dict[int, float | np.float64]] = {}
-        self.std: Dict[str, Dict[int, float | np.float64]] = {}
         self.concentrations: Dict[str, float | np.float64] = {}
 
         # A flag to ensure final calculations are only performed once
@@ -94,22 +92,8 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
 
         for connectivity, size_data in self._raw_size_distribution.items():
             self.size_distribution.setdefault(connectivity, {})
-            self.std.setdefault(connectivity, {})
             for size, counts in size_data.items():
-                # The final value is the total count
-                total_count = np.sum(counts)
-                num_frames = self.frame_processed_count
-                self.size_distribution[connectivity][size] = (
-                    total_count  # / num_frames if num_frames > 0 else 0.0
-                )
-
-                # To calculate std dev, we need to account for frames where a size didn't appear
-                all_counts_for_size = counts + [0] * (num_frames - len(counts))
-                if len(all_counts_for_size) > 1:
-                    self.std[connectivity][size] = np.std(
-                        all_counts_for_size, ddof=1)
-                else:
-                    self.std[connectivity][size] = 0.0
+                self.size_distribution[connectivity][size] = np.sum(counts)
 
         for connectivity, concs in self._raw_concentrations.items():
             self.concentrations[connectivity] = np.mean(
@@ -123,13 +107,12 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
         Return the current results dictionary.
 
         Returns:
-            Dict[str, Dict]: Keys are ``"concentrations"``,
-                ``"size_distribution"``, and ``"std"``.
+            Dict[str, Dict]: Keys are ``"concentrations"`` and
+                ``"size_distribution"``.
         """
         return {
             "concentrations": self.concentrations,
             "size_distribution": self.size_distribution,
-            "std": self.std,
         }
 
     def print_to_file(self) -> None:
@@ -154,9 +137,8 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
                         connectivity, 0.0)
                     n_s = output["size_distribution"][connectivity].get(
                         size, 0.0)
-                    std_dev = output["std"][connectivity].get(size, 0.0)
                     f.write(
-                        f"{connectivity},{concentration},{size},{n_s},{std_dev}\n")
+                        f"{connectivity},{concentration},{size},{n_s}\n")
             remove_duplicate_lines(path)
 
     def _write_header(self, connectivity: str) -> None:
@@ -185,7 +167,7 @@ class ClusterSizeDistributionAnalyzer(BaseAnalyzer):
             output.write(f"# Date: {datetime.now()}\n")
             output.write(f"# Frames averaged: {number_of_frames}\n")
             output.write(
-                "# Connectivity_type,Concentration,Cluster_size,N_clusters,Standard_deviation_ddof=1\n"
+                "# Connectivity_type,Concentration,Cluster_size,N_clusters\n"
             )
 
     def __str__(self) -> str:

@@ -232,6 +232,93 @@ def calculate_gyration_radius(positions: np.ndarray, center_of_mass: np.ndarray)
     # Return the root of the mean squared distance
     return np.sqrt(rg_squared / n_nodes)    
 
+@jit(nopython=True, cache=True, fastmath=True)
+def filter_neighbors_pbc_batch(
+    target: np.ndarray,
+    cands: np.ndarray,
+    lattice: np.ndarray,
+    inv_lattice: np.ndarray,
+    rcut2: np.ndarray,
+):
+    """
+    Vectorized PBC-distance filter for one node against many candidates.
+
+    Args:
+        target (np.ndarray): (3,) cartesian position of the central node.
+        cands  (np.ndarray): (M, 3) cartesian positions of candidates.
+        lattice (np.ndarray): (3, 3) lattice matrix.
+        inv_lattice (np.ndarray): (3, 3) precomputed inverse lattice.
+        rcut2 (np.ndarray): (M,) per-pair squared cutoff. Negative entries flag
+            invalid pairs and are skipped.
+
+    Returns:
+        keep (np.ndarray): (M,) bool mask of accepted candidates.
+        dists (np.ndarray): (M,) float64, distance for kept entries (0 elsewhere).
+    """
+    M = cands.shape[0]
+    keep = np.zeros(M, dtype=np.bool_)
+    dists = np.zeros(M, dtype=np.float64)
+    tx = target[0]; ty = target[1]; tz = target[2]
+    for i in range(M):
+        rc2 = rcut2[i]
+        if rc2 < 0.0:
+            continue
+        dx = cands[i, 0] - tx
+        dy = cands[i, 1] - ty
+        dz = cands[i, 2] - tz
+        # Row convention: frac = d @ inv_lattice, cart = frac @ lattice
+        fx = inv_lattice[0, 0] * dx + inv_lattice[1, 0] * dy + inv_lattice[2, 0] * dz
+        fy = inv_lattice[0, 1] * dx + inv_lattice[1, 1] * dy + inv_lattice[2, 1] * dz
+        fz = inv_lattice[0, 2] * dx + inv_lattice[1, 2] * dy + inv_lattice[2, 2] * dz
+        fx -= np.round(fx); fy -= np.round(fy); fz -= np.round(fz)
+        mx = lattice[0, 0] * fx + lattice[1, 0] * fy + lattice[2, 0] * fz
+        my = lattice[0, 1] * fx + lattice[1, 1] * fy + lattice[2, 1] * fz
+        mz = lattice[0, 2] * fx + lattice[1, 2] * fy + lattice[2, 2] * fz
+        d2 = mx * mx + my * my + mz * mz
+        if d2 <= rc2:
+            keep[i] = True
+            dists[i] = np.sqrt(d2)
+    return keep, dists
+
+
+@jit(nopython=True, cache=True, fastmath=True)
+def filter_neighbors_direct_batch(
+    target: np.ndarray,
+    cands: np.ndarray,
+    rcut2: np.ndarray,
+):
+    """
+    Vectorized direct-distance (no PBC) filter, otherwise same contract as
+    ``filter_neighbors_pbc_batch``.
+
+    Args:
+        target (np.ndarray): (3,) cartesian position of the central node.
+        cands  (np.ndarray): (M, 3) cartesian positions of candidates.
+        rcut2 (np.ndarray): (M,) per-pair squared cutoff. Negative entries flag
+            invalid pairs and are skipped.
+
+    Returns:
+        keep (np.ndarray): (M,) bool mask of accepted candidates.
+        dists (np.ndarray): (M,) float64, distance for kept entries (0 elsewhere).
+    """
+    M = cands.shape[0]
+    keep = np.zeros(M, dtype=np.bool_)
+    dists = np.zeros(M, dtype=np.float64)
+    tx = target[0]; ty = target[1]; tz = target[2]
+    for i in range(M):
+        rc2 = rcut2[i]
+        if rc2 < 0.0:
+            continue
+        dx = cands[i, 0] - tx
+        dy = cands[i, 1] - ty
+        dz = cands[i, 2] - tz
+        d2 = dx * dx + dy * dy + dz * dz
+        if d2 <= rc2:
+            keep[i] = True
+            dists[i] = np.sqrt(d2)
+    return keep, dists
+
+
 __all__ = [
     'wrap_position',
     'wrap_positions',
@@ -239,5 +326,7 @@ __all__ = [
     'calculate_pbc_distance',
     'calculate_direct_angle',
     'calculate_pbc_angle',
-    'calculate_gyration_radius'
+    'calculate_gyration_radius',
+    'filter_neighbors_pbc_batch',
+    'filter_neighbors_direct_batch',
 ]

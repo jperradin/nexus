@@ -159,6 +159,11 @@ class LAMMPSReader(BaseReader):
         
             num_nodes = frame_index.num_nodes
             lattice = frame_index.lattice
+            # update lattice in settings (mirror XYZReader behavior)
+            if not self._settings.lattice.apply_custom_lattice:
+                self._settings.lattice.lattice = lattice
+            else:
+                lattice = self._settings.lattice.custom_lattice
 
             # Skip 9 header lines
             for _ in range(9):
@@ -190,7 +195,13 @@ class LAMMPSReader(BaseReader):
                 'position': positions
             }
             
-            yield Frame(frame_id=frame_id, _data=data, lattice=lattice, nodes=[])
+            yield Frame(
+                frame_id=frame_id,
+                _data=data,
+                lattice=lattice,
+                nodes=[],
+                _settings=self._settings,
+            )
                 
                 
 

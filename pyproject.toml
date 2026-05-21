@@ -5,6 +5,11 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = "test_*.py"
+addopts = "-v --cov=nexus --cov-report=term-missing"
+
 [project]
 name = "nexus-cat"
 version = "0.1.1"
@@ -22,7 +27,7 @@ dependencies = [
     "colorama>=0.4.4",
     "numba>=0.53.0",
     "psutil>=5.8.0",
-    "scipy>=1.12.0"
+    "scipy>=1.12.0",
 ]
 classifiers = [
     "Development Status :: 5 - Production/Stable",
@@ -36,6 +41,12 @@ classifiers = [
     "Topic :: Scientific/Engineering :: Mathematics",
     "Topic :: Scientific/Engineering :: Visualization",
     "Operating System :: OS Independent",
+]
+
+[project.optional-dependencies]
+test = [
+    "pytest>=7.0.0",
+    "pytest-cov>=4.0.0",
 ]
 
 [project.urls]

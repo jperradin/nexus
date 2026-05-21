@@ -286,8 +286,8 @@ class Frame:
 
     def __del__(self) -> None:
         """Release references to internal data structures."""
-        del self.nodes
-        del self.clusters
-        del self.lattice
-        del self._data
-        del self.connectivities
+        for attr in ("nodes", "clusters", "lattice", "_data", "connectivities"):
+            try:
+                delattr(self, attr)
+            except AttributeError:
+                pass

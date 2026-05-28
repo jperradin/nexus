@@ -4,7 +4,7 @@ To install Nexus-CAT, follow these steps:
 
 ### Prerequisites
 
-- Python 3.9 or higher
+- Python 3.10 or higher
 - Required dependencies: `numpy`, `scipy`, `tqdm`, `colorama`, `numba`, and `psutil`
 
 ### Installation Steps

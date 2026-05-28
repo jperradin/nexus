@@ -139,7 +139,7 @@ pip install -e .
 
 ### Dependencies
 
-- Python >= 3.9
+- Python >= 3.10
 - NumPy >= 1.20
 - SciPy >= 1.12
 - Numba >= 0.53

@@ -28,5 +28,4 @@ benchmarks/validation/output/50/p0.*
 benchmarks/validation/output/extract_exponents.ipynb
 benchmarks/validation/validation1*
 benchmarks/*.xyz
-tests/
 ./README_for_Editors.md

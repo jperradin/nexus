@@ -1,0 +1,8 @@
+2
+Lattice="10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 10.0" Properties=species:S:1:pos:R:3
+A 1.0 1.0 1.0
+A 2.0 1.0 1.0
+2
+Lattice="10.0 0.0 0.0 0.0 10.0 0.0 0.0 0.0 10.0" Properties=species:S:1:pos:R:3
+A 1.5 1.0 1.0
+A 2.5 1.0 1.0

@@ -205,52 +205,42 @@
 @timestamp rot 0
 @timestamp font 0
 @timestamp char size 1.000000
-@timestamp def "Wed Dec  3 16:53:13 2025"
+@timestamp def "Mon Jun  1 11:55:35 2026"
 @with string
 @    string on
 @    string loctype view
-@    string 0.42, 0.6
+@    string 0.62, 0.91
 @    string color 1
+@    string rot 0
+@    string font 2
+@    string just 0
+@    string char size 1.140000
+@    string def "a)"
+@with string
+@    string on
+@    string loctype view
+@    string 0.58, 0.87
+@    string color 15
 @    string rot 0
 @    string font 5
 @    string just 0
 @    string char size 1.000000
-@    string def "distance strategy"
+@    string def "p < p\sc"
 @with string
 @    string on
 @    string loctype view
-@    string 1.1, 0.6
+@    string 0.19, 0.5
 @    string color 1
 @    string rot 0
-@    string font 5
+@    string font 2
 @    string just 0
-@    string char size 1.000000
-@    string def "bond strategy"
+@    string char size 1.140000
+@    string def "b)"
 @with string
 @    string on
 @    string loctype view
-@    string 0.37, 0.12
-@    string color 1
-@    string rot 0
-@    string font 5
-@    string just 0
-@    string char size 1.000000
-@    string def "coordination strategy"
-@with string
-@    string on
-@    string loctype view
-@    string 1.08, 0.12
-@    string color 1
-@    string rot 0
-@    string font 5
-@    string just 0
-@    string char size 1.000000
-@    string def "shared strategy"
-@with string
-@    string on
-@    string loctype view
-@    string 0.846153846154, 0.316519546028
-@    string color 104
+@    string 0.19, 0.45
+@    string color 15
 @    string rot 0
 @    string font 5
 @    string just 0
@@ -259,13 +249,43 @@
 @with string
 @    string on
 @    string loctype view
-@    string 1.09457755359, 0.208070617907
+@    string 1.2878184111, 0.91
+@    string color 1
+@    string rot 0
+@    string font 2
+@    string just 0
+@    string char size 1.140000
+@    string def "c)"
+@with string
+@    string on
+@    string loctype view
+@    string 0.88, 0.5
+@    string color 1
+@    string rot 0
+@    string font 2
+@    string just 0
+@    string char size 1.140000
+@    string def "d)"
+@with string
+@    string on
+@    string loctype view
+@    string 1.24520807062, 0.87
 @    string color 15
 @    string rot 0
 @    string font 5
 @    string just 0
 @    string char size 1.000000
 @    string def "p < p\sc"
+@with string
+@    string on
+@    string loctype view
+@    string 0.88, 0.45
+@    string color 15
+@    string rot 0
+@    string font 5
+@    string just 0
+@    string char size 1.000000
+@    string def "p > p\sc"
 @r0 off
 @link r0 to g0
 @r0 type above
@@ -312,10 +332,10 @@
 @g0 fixedpoint format general general
 @g0 fixedpoint prec 6, 6
 @with g0
-@    world 30000, 1000, 1000000, 10000000
+@    world 40000, 1.000001, 1000000, 10000
 @    stack world 0, 0, 0, 0
 @    znorm 1
-@    view 0.120000, 0.570000, 0.650000, 0.980000
+@    view 0.150000, 0.550000, 0.680000, 0.950000
 @    title ""
 @    title font 0
 @    title size 1.500000
@@ -338,7 +358,7 @@
 @    xaxis  label ""
 @    xaxis  label layout para
 @    xaxis  label place auto
-@    xaxis  label char size 1.150000
+@    xaxis  label char size 1.310000
 @    xaxis  label font 4
 @    xaxis  label color 1
 @    xaxis  label place normal
@@ -358,7 +378,7 @@
 @    xaxis  tick minor linestyle 1
 @    xaxis  tick minor grid off
 @    xaxis  tick minor size 0.500000
-@    xaxis  ticklabel on
+@    xaxis  ticklabel off
 @    xaxis  ticklabel format general
 @    xaxis  ticklabel prec 5
 @    xaxis  ticklabel formula ""
@@ -368,42 +388,17 @@
 @    xaxis  ticklabel skip 0
 @    xaxis  ticklabel stagger 0
 @    xaxis  ticklabel place normal
-@    xaxis  ticklabel offset spec
-@    xaxis  ticklabel offset 0.000000 , 0.007000
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
 @    xaxis  ticklabel start type auto
 @    xaxis  ticklabel start 0.000000
 @    xaxis  ticklabel stop type auto
 @    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 0.990000
+@    xaxis  ticklabel char size 1.300000
 @    xaxis  ticklabel font 4
 @    xaxis  ticklabel color 1
 @    xaxis  tick place both
-@    xaxis  tick spec type both
-@    xaxis  tick spec 21
-@    xaxis  tick major 0, 10000
-@    xaxis  ticklabel 0, "10\S4"
-@    xaxis  tick minor 1, 20000
-@    xaxis  tick minor 2, 30000
-@    xaxis  tick minor 3, 40000
-@    xaxis  tick minor 4, 50000
-@    xaxis  tick minor 5, 60000
-@    xaxis  tick minor 6, 70000
-@    xaxis  tick minor 7, 80000
-@    xaxis  tick minor 8, 90000
-@    xaxis  tick minor 9, 100000
-@    xaxis  tick major 10, 100000
-@    xaxis  ticklabel 10, "10\S5"
-@    xaxis  tick minor 11, 200000
-@    xaxis  tick minor 12, 300000
-@    xaxis  tick minor 13, 400000
-@    xaxis  tick minor 14, 500000
-@    xaxis  tick minor 15, 600000
-@    xaxis  tick minor 16, 700000
-@    xaxis  tick minor 17, 800000
-@    xaxis  tick minor 18, 900000
-@    xaxis  tick minor 19, 1000000
-@    xaxis  tick major 20, 1000000
-@    xaxis  ticklabel 20, "10\S6"
+@    xaxis  tick spec type none
 @    yaxis  on
 @    yaxis  type zero false
 @    yaxis  offset 0.000000 , 0.000000
@@ -411,10 +406,10 @@
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
 @    yaxis  bar linewidth 1.0
-@    yaxis  label "Execution time [ms]"
+@    yaxis  label "Execution time [s]"
 @    yaxis  label layout para
 @    yaxis  label place auto
-@    yaxis  label char size 1.150000
+@    yaxis  label char size 0.980000
 @    yaxis  label font 4
 @    yaxis  label color 1
 @    yaxis  label place normal
@@ -444,271 +439,77 @@
 @    yaxis  ticklabel skip 0
 @    yaxis  ticklabel stagger 0
 @    yaxis  ticklabel place normal
-@    yaxis  ticklabel offset spec
-@    yaxis  ticklabel offset 0.000000 , 0.007000
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
 @    yaxis  ticklabel start type auto
 @    yaxis  ticklabel start 0.000000
 @    yaxis  ticklabel stop type auto
 @    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 0.990000
+@    yaxis  ticklabel char size 1.050000
 @    yaxis  ticklabel font 4
 @    yaxis  ticklabel color 1
 @    yaxis  tick place both
 @    yaxis  tick spec type both
 @    yaxis  tick spec 41
-@    yaxis  tick major 0, 1000
-@    yaxis  ticklabel 0, "10\S3"
-@    yaxis  tick minor 1, 2000
-@    yaxis  tick minor 2, 3000
-@    yaxis  tick minor 3, 4000
-@    yaxis  tick minor 4, 5000
-@    yaxis  tick minor 5, 6000
-@    yaxis  tick minor 6, 7000
-@    yaxis  tick minor 7, 8000
-@    yaxis  tick minor 8, 9000
-@    yaxis  tick minor 9, 10000
-@    yaxis  tick major 10, 10000
-@    yaxis  ticklabel 10, "10\S4"
-@    yaxis  tick minor 11, 20000
-@    yaxis  tick minor 12, 30000
-@    yaxis  tick minor 13, 40000
-@    yaxis  tick minor 14, 50000
-@    yaxis  tick minor 15, 60000
-@    yaxis  tick minor 16, 70000
-@    yaxis  tick minor 17, 80000
-@    yaxis  tick minor 18, 90000
-@    yaxis  tick minor 19, 100000
-@    yaxis  tick major 20, 100000
-@    yaxis  ticklabel 20, "10\S5"
-@    yaxis  tick minor 21, 200000
-@    yaxis  tick minor 22, 300000
-@    yaxis  tick minor 23, 400000
-@    yaxis  tick minor 24, 500000
-@    yaxis  tick minor 25, 600000
-@    yaxis  tick minor 26, 700000
-@    yaxis  tick minor 27, 800000
-@    yaxis  tick minor 28, 900000
-@    yaxis  tick minor 29, 1000000
-@    yaxis  tick major 30, 1000000
-@    yaxis  ticklabel 30, "10\S6"
-@    yaxis  tick minor 31, 2000000
-@    yaxis  tick minor 32, 3000000
-@    yaxis  tick minor 33, 4000000
-@    yaxis  tick minor 34, 5000000
-@    yaxis  tick minor 35, 6000000
-@    yaxis  tick minor 36, 7000000
-@    yaxis  tick minor 37, 8000000
-@    yaxis  tick minor 38, 9000000
-@    yaxis  tick minor 39, 10000000
-@    yaxis  tick major 40, 10000000
-@    yaxis  ticklabel 40, "10\S7"
-@    altxaxis  on
-@    altxaxis  type zero false
-@    altxaxis  offset 0.000000 , 0.000000
-@    altxaxis  bar on
-@    altxaxis  bar color 1
-@    altxaxis  bar linestyle 1
-@    altxaxis  bar linewidth 1.0
-@    altxaxis  label ""
-@    altxaxis  label layout para
-@    altxaxis  label place auto
-@    altxaxis  label char size 1.150000
-@    altxaxis  label font 4
-@    altxaxis  label color 1
-@    altxaxis  label place normal
-@    altxaxis  tick on
-@    altxaxis  tick major 10
-@    altxaxis  tick minor ticks 9
-@    altxaxis  tick default 6
-@    altxaxis  tick place rounded true
-@    altxaxis  tick in
-@    altxaxis  tick major size 1.000000
-@    altxaxis  tick major color 1
-@    altxaxis  tick major linewidth 2.0
-@    altxaxis  tick major linestyle 1
-@    altxaxis  tick major grid off
-@    altxaxis  tick minor color 1
-@    altxaxis  tick minor linewidth 2.0
-@    altxaxis  tick minor linestyle 1
-@    altxaxis  tick minor grid off
-@    altxaxis  tick minor size 0.500000
-@    altxaxis  ticklabel on
-@    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
-@    altxaxis  ticklabel formula ""
-@    altxaxis  ticklabel append ""
-@    altxaxis  ticklabel prepend ""
-@    altxaxis  ticklabel angle 0
-@    altxaxis  ticklabel skip 0
-@    altxaxis  ticklabel stagger 0
-@    altxaxis  ticklabel place normal
-@    altxaxis  ticklabel offset spec
-@    altxaxis  ticklabel offset 0.000000 , 0.007000
-@    altxaxis  ticklabel start type auto
-@    altxaxis  ticklabel start 0.000000
-@    altxaxis  ticklabel stop type auto
-@    altxaxis  ticklabel stop 0.000000
-@    altxaxis  ticklabel char size 0.990000
-@    altxaxis  ticklabel font 4
-@    altxaxis  ticklabel color 1
-@    altxaxis  tick place both
-@    altxaxis  tick spec type both
-@    altxaxis  tick spec 41
-@    altxaxis  tick major 0, 0.001
-@    altxaxis  ticklabel 0, "10\S-3\N"
-@    altxaxis  tick minor 1, 0.002
-@    altxaxis  tick minor 2, 0.003
-@    altxaxis  tick minor 3, 0.004
-@    altxaxis  tick minor 4, 0.005
-@    altxaxis  tick minor 5, 0.006
-@    altxaxis  tick minor 6, 0.007
-@    altxaxis  tick minor 7, 0.008
-@    altxaxis  tick minor 8, 0.009
-@    altxaxis  tick major 9, 0.01
-@    altxaxis  ticklabel 9, "10\S-2\N"
-@    altxaxis  tick minor 10, 0.01
-@    altxaxis  tick minor 11, 0.02
-@    altxaxis  tick minor 12, 0.03
-@    altxaxis  tick minor 13, 0.04
-@    altxaxis  tick minor 14, 0.05
-@    altxaxis  tick minor 15, 0.06
-@    altxaxis  tick minor 16, 0.07
-@    altxaxis  tick minor 17, 0.08
-@    altxaxis  tick minor 18, 0.09
-@    altxaxis  tick major 19, 0.1
-@    altxaxis  ticklabel 19, "10\S-1\N"
-@    altxaxis  tick minor 20, 0.1
-@    altxaxis  tick minor 21, 0.2
-@    altxaxis  tick minor 22, 0.3
-@    altxaxis  tick minor 23, 0.4
-@    altxaxis  tick minor 24, 0.5
-@    altxaxis  tick minor 25, 0.6
-@    altxaxis  tick minor 26, 0.7
-@    altxaxis  tick minor 27, 0.8
-@    altxaxis  tick minor 28, 0.9
-@    altxaxis  tick minor 29, 1
-@    altxaxis  tick major 30, 1
-@    altxaxis  ticklabel 30, "10\S-0\N"
-@    altxaxis  tick minor 31, 2
-@    altxaxis  tick minor 32, 3
-@    altxaxis  tick minor 33, 4
-@    altxaxis  tick minor 34, 5
-@    altxaxis  tick minor 35, 6
-@    altxaxis  tick minor 36, 7
-@    altxaxis  tick minor 37, 8
-@    altxaxis  tick minor 38, 9
-@    altxaxis  tick major 39, 10
-@    altxaxis  ticklabel 39, "10\S1\N"
-@    altxaxis  tick minor 40, 10
-@    altyaxis  on
-@    altyaxis  type zero false
-@    altyaxis  offset 0.000000 , 0.000000
-@    altyaxis  bar on
-@    altyaxis  bar color 1
-@    altyaxis  bar linestyle 1
-@    altyaxis  bar linewidth 1.0
-@    altyaxis  label ""
-@    altyaxis  label layout para
-@    altyaxis  label place auto
-@    altyaxis  label char size 1.150000
-@    altyaxis  label font 4
-@    altyaxis  label color 1
-@    altyaxis  label place normal
-@    altyaxis  tick on
-@    altyaxis  tick major 10
-@    altyaxis  tick minor ticks 9
-@    altyaxis  tick default 6
-@    altyaxis  tick place rounded true
-@    altyaxis  tick in
-@    altyaxis  tick major size 1.000000
-@    altyaxis  tick major color 1
-@    altyaxis  tick major linewidth 2.0
-@    altyaxis  tick major linestyle 1
-@    altyaxis  tick major grid off
-@    altyaxis  tick minor color 1
-@    altyaxis  tick minor linewidth 2.0
-@    altyaxis  tick minor linestyle 1
-@    altyaxis  tick minor grid off
-@    altyaxis  tick minor size 0.500000
-@    altyaxis  ticklabel on
-@    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
-@    altyaxis  ticklabel formula ""
-@    altyaxis  ticklabel append ""
-@    altyaxis  ticklabel prepend ""
-@    altyaxis  ticklabel angle 0
-@    altyaxis  ticklabel skip 0
-@    altyaxis  ticklabel stagger 0
-@    altyaxis  ticklabel place normal
-@    altyaxis  ticklabel offset spec
-@    altyaxis  ticklabel offset 0.000000 , 0.007000
-@    altyaxis  ticklabel start type auto
-@    altyaxis  ticklabel start 0.000000
-@    altyaxis  ticklabel stop type auto
-@    altyaxis  ticklabel stop 0.000000
-@    altyaxis  ticklabel char size 0.990000
-@    altyaxis  ticklabel font 4
-@    altyaxis  ticklabel color 1
-@    altyaxis  tick place both
-@    altyaxis  tick spec type both
-@    altyaxis  tick spec 41
-@    altyaxis  tick major 0, 0.001
-@    altyaxis  ticklabel 0, "10\S-3\N"
-@    altyaxis  tick minor 1, 0.002
-@    altyaxis  tick minor 2, 0.003
-@    altyaxis  tick minor 3, 0.004
-@    altyaxis  tick minor 4, 0.005
-@    altyaxis  tick minor 5, 0.006
-@    altyaxis  tick minor 6, 0.007
-@    altyaxis  tick minor 7, 0.008
-@    altyaxis  tick minor 8, 0.009
-@    altyaxis  tick major 9, 0.01
-@    altyaxis  ticklabel 9, "10\S-2\N"
-@    altyaxis  tick minor 10, 0.01
-@    altyaxis  tick minor 11, 0.02
-@    altyaxis  tick minor 12, 0.03
-@    altyaxis  tick minor 13, 0.04
-@    altyaxis  tick minor 14, 0.05
-@    altyaxis  tick minor 15, 0.06
-@    altyaxis  tick minor 16, 0.07
-@    altyaxis  tick minor 17, 0.08
-@    altyaxis  tick minor 18, 0.09
-@    altyaxis  tick major 19, 0.1
-@    altyaxis  ticklabel 19, "10\S-1\N"
-@    altyaxis  tick minor 20, 0.1
-@    altyaxis  tick minor 21, 0.2
-@    altyaxis  tick minor 22, 0.3
-@    altyaxis  tick minor 23, 0.4
-@    altyaxis  tick minor 24, 0.5
-@    altyaxis  tick minor 25, 0.6
-@    altyaxis  tick minor 26, 0.7
-@    altyaxis  tick minor 27, 0.8
-@    altyaxis  tick minor 28, 0.9
-@    altyaxis  tick minor 29, 1
-@    altyaxis  tick major 30, 1
-@    altyaxis  ticklabel 30, "10\S-0\N"
-@    altyaxis  tick minor 31, 2
-@    altyaxis  tick minor 32, 3
-@    altyaxis  tick minor 33, 4
-@    altyaxis  tick minor 34, 5
-@    altyaxis  tick minor 35, 6
-@    altyaxis  tick minor 36, 7
-@    altyaxis  tick minor 37, 8
-@    altyaxis  tick minor 38, 9
-@    altyaxis  tick major 39, 10
-@    altyaxis  ticklabel 39, "10\S1\N"
-@    altyaxis  tick minor 40, 10
+@    yaxis  tick major 0, 1
+@    yaxis  ticklabel 0, "10\S0"
+@    yaxis  tick minor 1, 2
+@    yaxis  tick minor 2, 3
+@    yaxis  tick minor 3, 4
+@    yaxis  tick minor 4, 5
+@    yaxis  tick minor 5, 6
+@    yaxis  tick minor 6, 7
+@    yaxis  tick minor 7, 8
+@    yaxis  tick minor 8, 9
+@    yaxis  tick minor 9, 10
+@    yaxis  tick major 10, 10
+@    yaxis  ticklabel 10, "10\S1"
+@    yaxis  tick minor 11, 20
+@    yaxis  tick minor 12, 30
+@    yaxis  tick minor 13, 40
+@    yaxis  tick minor 14, 50
+@    yaxis  tick minor 15, 60
+@    yaxis  tick minor 16, 70
+@    yaxis  tick minor 17, 80
+@    yaxis  tick minor 18, 90
+@    yaxis  tick minor 19, 100
+@    yaxis  tick major 20, 100
+@    yaxis  ticklabel 20, "10\S2"
+@    yaxis  tick minor 21, 200
+@    yaxis  tick minor 22, 300
+@    yaxis  tick minor 23, 400
+@    yaxis  tick minor 24, 500
+@    yaxis  tick minor 25, 600
+@    yaxis  tick minor 26, 700
+@    yaxis  tick minor 27, 800
+@    yaxis  tick minor 28, 900
+@    yaxis  tick minor 29, 1000
+@    yaxis  tick major 30, 1000
+@    yaxis  ticklabel 30, "10\S3"
+@    yaxis  tick minor 31, 2000
+@    yaxis  tick minor 32, 3000
+@    yaxis  tick minor 33, 4000
+@    yaxis  tick minor 34, 5000
+@    yaxis  tick minor 35, 6000
+@    yaxis  tick minor 36, 7000
+@    yaxis  tick minor 37, 8000
+@    yaxis  tick minor 38, 9000
+@    yaxis  tick minor 39, 10000
+@    yaxis  tick major 40, 10000
+@    yaxis  ticklabel 40, "10\S4"
+@    altxaxis  off
+@    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 0.15, 0.96
+@    legend 0.19, 0.924928912
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0
 @    legend box linestyle 0
 @    legend box fill color 0
 @    legend box fill pattern 0
-@    legend font 5
-@    legend char size 0.950000
+@    legend font 4
+@    legend char size 0.880000
 @    legend color 1
 @    legend length 4
 @    legend vgap 1
@@ -724,7 +525,7 @@
 @    s0 hidden false
 @    s0 type xy
 @    s0 symbol 1
-@    s0 symbol size 1.000000
+@    s0 symbol size 0.870000
 @    s0 symbol color 1
 @    s0 symbol pattern 1
 @    s0 symbol fill color 15
@@ -735,7 +536,7 @@
 @    s0 symbol char font 0
 @    s0 symbol skip 0
 @    s0 line type 1
-@    s0 line linestyle 0
+@    s0 line linestyle 1
 @    s0 line linewidth 1.0
 @    s0 line color 1
 @    s0 line pattern 1
@@ -768,15 +569,15 @@
 @    s0 errorbar riser linestyle 1
 @    s0 errorbar riser clip off
 @    s0 errorbar riser clip length 0.100000
-@    s0 comment "/home/jperradin/repos/nexus/benchmarks/performance/output/distance_strategy/performance_fit_04.dat"
-@    s0 legend  ""
+@    s0 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_lt_pc-distance.dat"
+@    s0 legend  "distance"
 @    s1 hidden false
 @    s1 type xy
-@    s1 symbol 1
-@    s1 symbol size 1.000000
+@    s1 symbol 2
+@    s1 symbol size 0.810000
 @    s1 symbol color 1
 @    s1 symbol pattern 1
-@    s1 symbol fill color 104
+@    s1 symbol fill color 68
 @    s1 symbol fill pattern 1
 @    s1 symbol linewidth 1.5
 @    s1 symbol linestyle 1
@@ -784,7 +585,7 @@
 @    s1 symbol char font 0
 @    s1 symbol skip 0
 @    s1 line type 1
-@    s1 line linestyle 0
+@    s1 line linestyle 1
 @    s1 line linewidth 1.0
 @    s1 line color 1
 @    s1 line pattern 1
@@ -817,25 +618,25 @@
 @    s1 errorbar riser linestyle 1
 @    s1 errorbar riser clip off
 @    s1 errorbar riser clip length 0.100000
-@    s1 comment "/home/jperradin/repos/nexus/benchmarks/performance/output/distance_strategy/performance_fit_06.dat"
-@    s1 legend  ""
+@    s1 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_lt_pc-bond.dat"
+@    s1 legend  "bond"
 @    s2 hidden false
 @    s2 type xy
-@    s2 symbol 0
-@    s2 symbol size 1.000000
-@    s2 symbol color 15
+@    s2 symbol 3
+@    s2 symbol size 0.990000
+@    s2 symbol color 1
 @    s2 symbol pattern 1
-@    s2 symbol fill color 15
-@    s2 symbol fill pattern 0
-@    s2 symbol linewidth 1.0
+@    s2 symbol fill color 104
+@    s2 symbol fill pattern 1
+@    s2 symbol linewidth 1.5
 @    s2 symbol linestyle 1
 @    s2 symbol char 65
 @    s2 symbol char font 0
 @    s2 symbol skip 0
 @    s2 line type 1
 @    s2 line linestyle 1
-@    s2 line linewidth 2.0
-@    s2 line color 15
+@    s2 line linewidth 1.0
+@    s2 line color 1
 @    s2 line pattern 1
 @    s2 baseline type 0
 @    s2 baseline off
@@ -857,7 +658,7 @@
 @    s2 avalue offset 0.000000 , 0.000000
 @    s2 errorbar on
 @    s2 errorbar place both
-@    s2 errorbar color 15
+@    s2 errorbar color 1
 @    s2 errorbar pattern 1
 @    s2 errorbar size 1.000000
 @    s2 errorbar linewidth 1.0
@@ -866,25 +667,25 @@
 @    s2 errorbar riser linestyle 1
 @    s2 errorbar riser clip off
 @    s2 errorbar riser clip length 0.100000
-@    s2 comment "performance.agr"
-@    s2 legend  "O(N^1.67)"
+@    s2 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_lt_pc-coordination.dat"
+@    s2 legend  "ccordination"
 @    s3 hidden false
 @    s3 type xy
-@    s3 symbol 0
-@    s3 symbol size 1.000000
-@    s3 symbol color 104
+@    s3 symbol 4
+@    s3 symbol size 0.990000
+@    s3 symbol color 1
 @    s3 symbol pattern 1
-@    s3 symbol fill color 104
-@    s3 symbol fill pattern 0
-@    s3 symbol linewidth 1.0
+@    s3 symbol fill color 128
+@    s3 symbol fill pattern 1
+@    s3 symbol linewidth 1.5
 @    s3 symbol linestyle 1
 @    s3 symbol char 65
 @    s3 symbol char font 0
 @    s3 symbol skip 0
 @    s3 line type 1
 @    s3 line linestyle 1
-@    s3 line linewidth 2.0
-@    s3 line color 104
+@    s3 line linewidth 1.0
+@    s3 line color 1
 @    s3 line pattern 1
 @    s3 baseline type 0
 @    s3 baseline off
@@ -906,7 +707,7 @@
 @    s3 avalue offset 0.000000 , 0.000000
 @    s3 errorbar on
 @    s3 errorbar place both
-@    s3 errorbar color 104
+@    s3 errorbar color 1
 @    s3 errorbar pattern 1
 @    s3 errorbar size 1.000000
 @    s3 errorbar linewidth 1.0
@@ -915,10 +716,10 @@
 @    s3 errorbar riser linestyle 1
 @    s3 errorbar riser clip off
 @    s3 errorbar riser clip length 0.100000
-@    s3 comment "performance.agr"
-@    s3 legend  "O(N^2.46)"
+@    s3 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_lt_pc-shared.dat"
+@    s3 legend  "shared"
 @g1 on
-@g1 hidden true
+@g1 hidden false
 @g1 type XY
 @g1 stacked false
 @g1 bar hgap 0.000000
@@ -928,10 +729,10 @@
 @g1 fixedpoint format general general
 @g1 fixedpoint prec 6, 6
 @with g1
-@    world 30000, 1000, 1000000, 10000000
+@    world 40000, 1, 1000000, 10000
 @    stack world 0, 0, 0, 0
 @    znorm 1
-@    view 0.630000, 0.550000, 1.130000, 0.980000
+@    view 0.150000, 0.150000, 0.680000, 0.550000
 @    title ""
 @    title font 0
 @    title size 1.500000
@@ -951,10 +752,10 @@
 @    xaxis  bar color 1
 @    xaxis  bar linestyle 1
 @    xaxis  bar linewidth 1.0
-@    xaxis  label ""
+@    xaxis  label "Number of nodes"
 @    xaxis  label layout para
 @    xaxis  label place auto
-@    xaxis  label char size 1.150000
+@    xaxis  label char size 0.980000
 @    xaxis  label font 4
 @    xaxis  label color 1
 @    xaxis  label place normal
@@ -984,42 +785,17 @@
 @    xaxis  ticklabel skip 0
 @    xaxis  ticklabel stagger 0
 @    xaxis  ticklabel place normal
-@    xaxis  ticklabel offset spec
-@    xaxis  ticklabel offset 0.000000 , 0.007000
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
 @    xaxis  ticklabel start type auto
 @    xaxis  ticklabel start 0.000000
 @    xaxis  ticklabel stop type auto
 @    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 0.990000
+@    xaxis  ticklabel char size 1.050000
 @    xaxis  ticklabel font 4
 @    xaxis  ticklabel color 1
 @    xaxis  tick place both
-@    xaxis  tick spec type both
-@    xaxis  tick spec 21
-@    xaxis  tick major 0, 10000
-@    xaxis  ticklabel 0, "10\S4"
-@    xaxis  tick minor 1, 20000
-@    xaxis  tick minor 2, 30000
-@    xaxis  tick minor 3, 40000
-@    xaxis  tick minor 4, 50000
-@    xaxis  tick minor 5, 60000
-@    xaxis  tick minor 6, 70000
-@    xaxis  tick minor 7, 80000
-@    xaxis  tick minor 8, 90000
-@    xaxis  tick minor 9, 100000
-@    xaxis  tick major 10, 100000
-@    xaxis  ticklabel 10, "10\S5"
-@    xaxis  tick minor 11, 200000
-@    xaxis  tick minor 12, 300000
-@    xaxis  tick minor 13, 400000
-@    xaxis  tick minor 14, 500000
-@    xaxis  tick minor 15, 600000
-@    xaxis  tick minor 16, 700000
-@    xaxis  tick minor 17, 800000
-@    xaxis  tick minor 18, 900000
-@    xaxis  tick minor 19, 1000000
-@    xaxis  tick major 20, 1000000
-@    xaxis  ticklabel 20, "10\S6"
+@    xaxis  tick spec type none
 @    yaxis  on
 @    yaxis  type zero false
 @    yaxis  offset 0.000000 , 0.000000
@@ -1027,10 +803,10 @@
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
 @    yaxis  bar linewidth 1.0
-@    yaxis  label ""
+@    yaxis  label "Execution time [ms]"
 @    yaxis  label layout para
 @    yaxis  label place auto
-@    yaxis  label char size 1.150000
+@    yaxis  label char size 0.980000
 @    yaxis  label font 4
 @    yaxis  label color 1
 @    yaxis  label place normal
@@ -1060,273 +836,79 @@
 @    yaxis  ticklabel skip 0
 @    yaxis  ticklabel stagger 0
 @    yaxis  ticklabel place normal
-@    yaxis  ticklabel offset spec
-@    yaxis  ticklabel offset 0.000000 , 0.007000
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
 @    yaxis  ticklabel start type auto
 @    yaxis  ticklabel start 0.000000
 @    yaxis  ticklabel stop type auto
 @    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 0.990000
+@    yaxis  ticklabel char size 1.050000
 @    yaxis  ticklabel font 4
 @    yaxis  ticklabel color 1
 @    yaxis  tick place both
 @    yaxis  tick spec type both
 @    yaxis  tick spec 41
-@    yaxis  tick major 0, 1000
-@    yaxis  ticklabel 0, "10\S3"
-@    yaxis  tick minor 1, 2000
-@    yaxis  tick minor 2, 3000
-@    yaxis  tick minor 3, 4000
-@    yaxis  tick minor 4, 5000
-@    yaxis  tick minor 5, 6000
-@    yaxis  tick minor 6, 7000
-@    yaxis  tick minor 7, 8000
-@    yaxis  tick minor 8, 9000
-@    yaxis  tick minor 9, 10000
-@    yaxis  tick major 10, 10000
-@    yaxis  ticklabel 10, "10\S4"
-@    yaxis  tick minor 11, 20000
-@    yaxis  tick minor 12, 30000
-@    yaxis  tick minor 13, 40000
-@    yaxis  tick minor 14, 50000
-@    yaxis  tick minor 15, 60000
-@    yaxis  tick minor 16, 70000
-@    yaxis  tick minor 17, 80000
-@    yaxis  tick minor 18, 90000
-@    yaxis  tick minor 19, 100000
-@    yaxis  tick major 20, 100000
-@    yaxis  ticklabel 20, "10\S5"
-@    yaxis  tick minor 21, 200000
-@    yaxis  tick minor 22, 300000
-@    yaxis  tick minor 23, 400000
-@    yaxis  tick minor 24, 500000
-@    yaxis  tick minor 25, 600000
-@    yaxis  tick minor 26, 700000
-@    yaxis  tick minor 27, 800000
-@    yaxis  tick minor 28, 900000
-@    yaxis  tick minor 29, 1000000
-@    yaxis  tick major 30, 1000000
-@    yaxis  ticklabel 30, "10\S6"
-@    yaxis  tick minor 31, 2000000
-@    yaxis  tick minor 32, 3000000
-@    yaxis  tick minor 33, 4000000
-@    yaxis  tick minor 34, 5000000
-@    yaxis  tick minor 35, 6000000
-@    yaxis  tick minor 36, 7000000
-@    yaxis  tick minor 37, 8000000
-@    yaxis  tick minor 38, 9000000
-@    yaxis  tick minor 39, 10000000
-@    yaxis  tick major 40, 10000000
-@    yaxis  ticklabel 40, "10\S7"
-@    altxaxis  on
-@    altxaxis  type zero false
-@    altxaxis  offset 0.000000 , 0.000000
-@    altxaxis  bar on
-@    altxaxis  bar color 1
-@    altxaxis  bar linestyle 1
-@    altxaxis  bar linewidth 1.0
-@    altxaxis  label ""
-@    altxaxis  label layout para
-@    altxaxis  label place auto
-@    altxaxis  label char size 1.150000
-@    altxaxis  label font 4
-@    altxaxis  label color 1
-@    altxaxis  label place normal
-@    altxaxis  tick on
-@    altxaxis  tick major 10
-@    altxaxis  tick minor ticks 9
-@    altxaxis  tick default 6
-@    altxaxis  tick place rounded true
-@    altxaxis  tick in
-@    altxaxis  tick major size 1.000000
-@    altxaxis  tick major color 1
-@    altxaxis  tick major linewidth 2.0
-@    altxaxis  tick major linestyle 1
-@    altxaxis  tick major grid off
-@    altxaxis  tick minor color 1
-@    altxaxis  tick minor linewidth 2.0
-@    altxaxis  tick minor linestyle 1
-@    altxaxis  tick minor grid off
-@    altxaxis  tick minor size 0.500000
-@    altxaxis  ticklabel on
-@    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
-@    altxaxis  ticklabel formula ""
-@    altxaxis  ticklabel append ""
-@    altxaxis  ticklabel prepend ""
-@    altxaxis  ticklabel angle 0
-@    altxaxis  ticklabel skip 0
-@    altxaxis  ticklabel stagger 0
-@    altxaxis  ticklabel place normal
-@    altxaxis  ticklabel offset spec
-@    altxaxis  ticklabel offset 0.000000 , 0.007000
-@    altxaxis  ticklabel start type auto
-@    altxaxis  ticklabel start 0.000000
-@    altxaxis  ticklabel stop type auto
-@    altxaxis  ticklabel stop 0.000000
-@    altxaxis  ticklabel char size 0.990000
-@    altxaxis  ticklabel font 4
-@    altxaxis  ticklabel color 1
-@    altxaxis  tick place both
-@    altxaxis  tick spec type both
-@    altxaxis  tick spec 41
-@    altxaxis  tick major 0, 0.001
-@    altxaxis  ticklabel 0, "10\S-3\N"
-@    altxaxis  tick minor 1, 0.002
-@    altxaxis  tick minor 2, 0.003
-@    altxaxis  tick minor 3, 0.004
-@    altxaxis  tick minor 4, 0.005
-@    altxaxis  tick minor 5, 0.006
-@    altxaxis  tick minor 6, 0.007
-@    altxaxis  tick minor 7, 0.008
-@    altxaxis  tick minor 8, 0.009
-@    altxaxis  tick major 9, 0.01
-@    altxaxis  ticklabel 9, "10\S-2\N"
-@    altxaxis  tick minor 10, 0.01
-@    altxaxis  tick minor 11, 0.02
-@    altxaxis  tick minor 12, 0.03
-@    altxaxis  tick minor 13, 0.04
-@    altxaxis  tick minor 14, 0.05
-@    altxaxis  tick minor 15, 0.06
-@    altxaxis  tick minor 16, 0.07
-@    altxaxis  tick minor 17, 0.08
-@    altxaxis  tick minor 18, 0.09
-@    altxaxis  tick major 19, 0.1
-@    altxaxis  ticklabel 19, "10\S-1\N"
-@    altxaxis  tick minor 20, 0.1
-@    altxaxis  tick minor 21, 0.2
-@    altxaxis  tick minor 22, 0.3
-@    altxaxis  tick minor 23, 0.4
-@    altxaxis  tick minor 24, 0.5
-@    altxaxis  tick minor 25, 0.6
-@    altxaxis  tick minor 26, 0.7
-@    altxaxis  tick minor 27, 0.8
-@    altxaxis  tick minor 28, 0.9
-@    altxaxis  tick minor 29, 1
-@    altxaxis  tick major 30, 1
-@    altxaxis  ticklabel 30, "10\S-0\N"
-@    altxaxis  tick minor 31, 2
-@    altxaxis  tick minor 32, 3
-@    altxaxis  tick minor 33, 4
-@    altxaxis  tick minor 34, 5
-@    altxaxis  tick minor 35, 6
-@    altxaxis  tick minor 36, 7
-@    altxaxis  tick minor 37, 8
-@    altxaxis  tick minor 38, 9
-@    altxaxis  tick major 39, 10
-@    altxaxis  ticklabel 39, "10\S1\N"
-@    altxaxis  tick minor 40, 10
-@    altyaxis  on
-@    altyaxis  type zero false
-@    altyaxis  offset 0.000000 , 0.000000
-@    altyaxis  bar on
-@    altyaxis  bar color 1
-@    altyaxis  bar linestyle 1
-@    altyaxis  bar linewidth 1.0
-@    altyaxis  label ""
-@    altyaxis  label layout para
-@    altyaxis  label place auto
-@    altyaxis  label char size 1.150000
-@    altyaxis  label font 4
-@    altyaxis  label color 1
-@    altyaxis  label place normal
-@    altyaxis  tick on
-@    altyaxis  tick major 10
-@    altyaxis  tick minor ticks 9
-@    altyaxis  tick default 6
-@    altyaxis  tick place rounded true
-@    altyaxis  tick in
-@    altyaxis  tick major size 1.000000
-@    altyaxis  tick major color 1
-@    altyaxis  tick major linewidth 2.0
-@    altyaxis  tick major linestyle 1
-@    altyaxis  tick major grid off
-@    altyaxis  tick minor color 1
-@    altyaxis  tick minor linewidth 2.0
-@    altyaxis  tick minor linestyle 1
-@    altyaxis  tick minor grid off
-@    altyaxis  tick minor size 0.500000
-@    altyaxis  ticklabel on
-@    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
-@    altyaxis  ticklabel formula ""
-@    altyaxis  ticklabel append ""
-@    altyaxis  ticklabel prepend ""
-@    altyaxis  ticklabel angle 0
-@    altyaxis  ticklabel skip 0
-@    altyaxis  ticklabel stagger 0
-@    altyaxis  ticklabel place normal
-@    altyaxis  ticklabel offset spec
-@    altyaxis  ticklabel offset 0.000000 , 0.007000
-@    altyaxis  ticklabel start type auto
-@    altyaxis  ticklabel start 0.000000
-@    altyaxis  ticklabel stop type auto
-@    altyaxis  ticklabel stop 0.000000
-@    altyaxis  ticklabel char size 0.990000
-@    altyaxis  ticklabel font 4
-@    altyaxis  ticklabel color 1
-@    altyaxis  tick place both
-@    altyaxis  tick spec type both
-@    altyaxis  tick spec 41
-@    altyaxis  tick major 0, 0.001
-@    altyaxis  ticklabel 0, "10\S-3\N"
-@    altyaxis  tick minor 1, 0.002
-@    altyaxis  tick minor 2, 0.003
-@    altyaxis  tick minor 3, 0.004
-@    altyaxis  tick minor 4, 0.005
-@    altyaxis  tick minor 5, 0.006
-@    altyaxis  tick minor 6, 0.007
-@    altyaxis  tick minor 7, 0.008
-@    altyaxis  tick minor 8, 0.009
-@    altyaxis  tick major 9, 0.01
-@    altyaxis  ticklabel 9, "10\S-2\N"
-@    altyaxis  tick minor 10, 0.01
-@    altyaxis  tick minor 11, 0.02
-@    altyaxis  tick minor 12, 0.03
-@    altyaxis  tick minor 13, 0.04
-@    altyaxis  tick minor 14, 0.05
-@    altyaxis  tick minor 15, 0.06
-@    altyaxis  tick minor 16, 0.07
-@    altyaxis  tick minor 17, 0.08
-@    altyaxis  tick minor 18, 0.09
-@    altyaxis  tick major 19, 0.1
-@    altyaxis  ticklabel 19, "10\S-1\N"
-@    altyaxis  tick minor 20, 0.1
-@    altyaxis  tick minor 21, 0.2
-@    altyaxis  tick minor 22, 0.3
-@    altyaxis  tick minor 23, 0.4
-@    altyaxis  tick minor 24, 0.5
-@    altyaxis  tick minor 25, 0.6
-@    altyaxis  tick minor 26, 0.7
-@    altyaxis  tick minor 27, 0.8
-@    altyaxis  tick minor 28, 0.9
-@    altyaxis  tick minor 29, 1
-@    altyaxis  tick major 30, 1
-@    altyaxis  ticklabel 30, "10\S-0\N"
-@    altyaxis  tick minor 31, 2
-@    altyaxis  tick minor 32, 3
-@    altyaxis  tick minor 33, 4
-@    altyaxis  tick minor 34, 5
-@    altyaxis  tick minor 35, 6
-@    altyaxis  tick minor 36, 7
-@    altyaxis  tick minor 37, 8
-@    altyaxis  tick minor 38, 9
-@    altyaxis  tick major 39, 10
-@    altyaxis  ticklabel 39, "10\S1\N"
-@    altyaxis  tick minor 40, 10
+@    yaxis  tick major 0, 1
+@    yaxis  ticklabel 0, "10\S0"
+@    yaxis  tick minor 1, 2
+@    yaxis  tick minor 2, 3
+@    yaxis  tick minor 3, 4
+@    yaxis  tick minor 4, 5
+@    yaxis  tick minor 5, 6
+@    yaxis  tick minor 6, 7
+@    yaxis  tick minor 7, 8
+@    yaxis  tick minor 8, 9
+@    yaxis  tick minor 9, 10
+@    yaxis  tick major 10, 10
+@    yaxis  ticklabel 10, "10\S1"
+@    yaxis  tick minor 11, 20
+@    yaxis  tick minor 12, 30
+@    yaxis  tick minor 13, 40
+@    yaxis  tick minor 14, 50
+@    yaxis  tick minor 15, 60
+@    yaxis  tick minor 16, 70
+@    yaxis  tick minor 17, 80
+@    yaxis  tick minor 18, 90
+@    yaxis  tick minor 19, 100
+@    yaxis  tick major 20, 100
+@    yaxis  ticklabel 20, "10\S2"
+@    yaxis  tick minor 21, 200
+@    yaxis  tick minor 22, 300
+@    yaxis  tick minor 23, 400
+@    yaxis  tick minor 24, 500
+@    yaxis  tick minor 25, 600
+@    yaxis  tick minor 26, 700
+@    yaxis  tick minor 27, 800
+@    yaxis  tick minor 28, 900
+@    yaxis  tick minor 29, 1000
+@    yaxis  tick major 30, 1000
+@    yaxis  ticklabel 30, "10\S3"
+@    yaxis  tick minor 31, 2000
+@    yaxis  tick minor 32, 3000
+@    yaxis  tick minor 33, 4000
+@    yaxis  tick minor 34, 5000
+@    yaxis  tick minor 35, 6000
+@    yaxis  tick minor 36, 7000
+@    yaxis  tick minor 37, 8000
+@    yaxis  tick minor 38, 9000
+@    yaxis  tick minor 39, 10000
+@    yaxis  tick major 40, 10000
+@    yaxis  ticklabel 40, "10\S4"
+@    altxaxis  off
+@    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 0.5, 0.8
+@    legend 0.15, 0.92745098
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0
-@    legend box linestyle 1
+@    legend box linestyle 0
 @    legend box fill color 0
-@    legend box fill pattern 1
-@    legend font 0
-@    legend char size 1.000000
+@    legend box fill pattern 0
+@    legend font 4
+@    legend char size 1.210000
 @    legend color 1
-@    legend length 4
+@    legend length 6
 @    legend vgap 1
 @    legend hgap 1
 @    legend invert false
@@ -1337,6 +919,202 @@
 @    frame pattern 1
 @    frame background color 0
 @    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 1
+@    s0 symbol size 0.810000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 15
+@    s0 symbol fill pattern 1
+@    s0 symbol linewidth 1.5
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 1
+@    s0 line linewidth 1.0
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_gt_pc-distance.dat"
+@    s0 legend  ""
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 2
+@    s1 symbol size 0.810000
+@    s1 symbol color 1
+@    s1 symbol pattern 1
+@    s1 symbol fill color 68
+@    s1 symbol fill pattern 1
+@    s1 symbol linewidth 1.5
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 1
+@    s1 line linewidth 1.0
+@    s1 line color 1
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 1
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_gt_pc-bond.dat"
+@    s1 legend  ""
+@    s2 hidden false
+@    s2 type xy
+@    s2 symbol 3
+@    s2 symbol size 0.990000
+@    s2 symbol color 1
+@    s2 symbol pattern 1
+@    s2 symbol fill color 104
+@    s2 symbol fill pattern 1
+@    s2 symbol linewidth 1.5
+@    s2 symbol linestyle 1
+@    s2 symbol char 65
+@    s2 symbol char font 0
+@    s2 symbol skip 0
+@    s2 line type 1
+@    s2 line linestyle 1
+@    s2 line linewidth 1.0
+@    s2 line color 1
+@    s2 line pattern 1
+@    s2 baseline type 0
+@    s2 baseline off
+@    s2 dropline off
+@    s2 fill type 0
+@    s2 fill rule 0
+@    s2 fill color 1
+@    s2 fill pattern 1
+@    s2 avalue off
+@    s2 avalue type 2
+@    s2 avalue char size 1.000000
+@    s2 avalue font 0
+@    s2 avalue color 1
+@    s2 avalue rot 0
+@    s2 avalue format general
+@    s2 avalue prec 3
+@    s2 avalue prepend ""
+@    s2 avalue append ""
+@    s2 avalue offset 0.000000 , 0.000000
+@    s2 errorbar on
+@    s2 errorbar place both
+@    s2 errorbar color 1
+@    s2 errorbar pattern 1
+@    s2 errorbar size 1.000000
+@    s2 errorbar linewidth 1.0
+@    s2 errorbar linestyle 1
+@    s2 errorbar riser linewidth 1.0
+@    s2 errorbar riser linestyle 1
+@    s2 errorbar riser clip off
+@    s2 errorbar riser clip length 0.100000
+@    s2 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_gt_pc-coordination.dat"
+@    s2 legend  ""
+@    s3 hidden false
+@    s3 type xy
+@    s3 symbol 4
+@    s3 symbol size 0.990000
+@    s3 symbol color 1
+@    s3 symbol pattern 1
+@    s3 symbol fill color 128
+@    s3 symbol fill pattern 1
+@    s3 symbol linewidth 1.5
+@    s3 symbol linestyle 1
+@    s3 symbol char 65
+@    s3 symbol char font 0
+@    s3 symbol skip 0
+@    s3 line type 1
+@    s3 line linestyle 1
+@    s3 line linewidth 1.0
+@    s3 line color 1
+@    s3 line pattern 1
+@    s3 baseline type 0
+@    s3 baseline off
+@    s3 dropline off
+@    s3 fill type 0
+@    s3 fill rule 0
+@    s3 fill color 1
+@    s3 fill pattern 1
+@    s3 avalue off
+@    s3 avalue type 2
+@    s3 avalue char size 1.000000
+@    s3 avalue font 0
+@    s3 avalue color 1
+@    s3 avalue rot 0
+@    s3 avalue format general
+@    s3 avalue prec 3
+@    s3 avalue prepend ""
+@    s3 avalue append ""
+@    s3 avalue offset 0.000000 , 0.000000
+@    s3 errorbar on
+@    s3 errorbar place both
+@    s3 errorbar color 1
+@    s3 errorbar pattern 1
+@    s3 errorbar size 1.000000
+@    s3 errorbar linewidth 1.0
+@    s3 errorbar linestyle 1
+@    s3 errorbar riser linewidth 1.0
+@    s3 errorbar riser linestyle 1
+@    s3 errorbar riser clip off
+@    s3 errorbar riser clip length 0.100000
+@    s3 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_gt_pc-shared.dat"
+@    s3 legend  ""
 @g2 on
 @g2 hidden false
 @g2 type XY
@@ -1348,1242 +1126,10 @@
 @g2 fixedpoint format general general
 @g2 fixedpoint prec 6, 6
 @with g2
-@    world 30000, 10000, 1000000, 10000000
+@    world 40000, 1, 1000000, 10000
 @    stack world 0, 0, 0, 0
 @    znorm 1
-@    view 0.120000, 0.090000, 0.650000, 0.520000
-@    title ""
-@    title font 0
-@    title size 1.500000
-@    title color 1
-@    subtitle ""
-@    subtitle font 0
-@    subtitle size 1.000000
-@    subtitle color 1
-@    xaxes scale Logarithmic
-@    yaxes scale Logarithmic
-@    xaxes invert off
-@    yaxes invert off
-@    xaxis  on
-@    xaxis  type zero false
-@    xaxis  offset 0.000000 , 0.000000
-@    xaxis  bar on
-@    xaxis  bar color 1
-@    xaxis  bar linestyle 1
-@    xaxis  bar linewidth 1.0
-@    xaxis  label "Number of nodes"
-@    xaxis  label layout para
-@    xaxis  label place auto
-@    xaxis  label char size 1.150000
-@    xaxis  label font 4
-@    xaxis  label color 1
-@    xaxis  label place normal
-@    xaxis  tick on
-@    xaxis  tick major 10
-@    xaxis  tick minor ticks 9
-@    xaxis  tick default 6
-@    xaxis  tick place rounded true
-@    xaxis  tick in
-@    xaxis  tick major size 1.000000
-@    xaxis  tick major color 1
-@    xaxis  tick major linewidth 2.0
-@    xaxis  tick major linestyle 1
-@    xaxis  tick major grid off
-@    xaxis  tick minor color 1
-@    xaxis  tick minor linewidth 2.0
-@    xaxis  tick minor linestyle 1
-@    xaxis  tick minor grid off
-@    xaxis  tick minor size 0.500000
-@    xaxis  ticklabel on
-@    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
-@    xaxis  ticklabel formula ""
-@    xaxis  ticklabel append ""
-@    xaxis  ticklabel prepend ""
-@    xaxis  ticklabel angle 0
-@    xaxis  ticklabel skip 0
-@    xaxis  ticklabel stagger 0
-@    xaxis  ticklabel place normal
-@    xaxis  ticklabel offset spec
-@    xaxis  ticklabel offset 0.000000 , 0.007000
-@    xaxis  ticklabel start type auto
-@    xaxis  ticklabel start 0.000000
-@    xaxis  ticklabel stop type auto
-@    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 0.990000
-@    xaxis  ticklabel font 4
-@    xaxis  ticklabel color 1
-@    xaxis  tick place both
-@    xaxis  tick spec type both
-@    xaxis  tick spec 21
-@    xaxis  tick major 0, 10000
-@    xaxis  ticklabel 0, "10\S4"
-@    xaxis  tick minor 1, 20000
-@    xaxis  tick minor 2, 30000
-@    xaxis  tick minor 3, 40000
-@    xaxis  tick minor 4, 50000
-@    xaxis  tick minor 5, 60000
-@    xaxis  tick minor 6, 70000
-@    xaxis  tick minor 7, 80000
-@    xaxis  tick minor 8, 90000
-@    xaxis  tick minor 9, 100000
-@    xaxis  tick major 10, 100000
-@    xaxis  ticklabel 10, "10\S5"
-@    xaxis  tick minor 11, 200000
-@    xaxis  tick minor 12, 300000
-@    xaxis  tick minor 13, 400000
-@    xaxis  tick minor 14, 500000
-@    xaxis  tick minor 15, 600000
-@    xaxis  tick minor 16, 700000
-@    xaxis  tick minor 17, 800000
-@    xaxis  tick minor 18, 900000
-@    xaxis  tick minor 19, 1000000
-@    xaxis  tick major 20, 1000000
-@    xaxis  ticklabel 20, "10\S6"
-@    yaxis  on
-@    yaxis  type zero false
-@    yaxis  offset 0.000000 , 0.000000
-@    yaxis  bar on
-@    yaxis  bar color 1
-@    yaxis  bar linestyle 1
-@    yaxis  bar linewidth 1.0
-@    yaxis  label "Execution time [ms]"
-@    yaxis  label layout para
-@    yaxis  label place auto
-@    yaxis  label char size 1.150000
-@    yaxis  label font 4
-@    yaxis  label color 1
-@    yaxis  label place normal
-@    yaxis  tick on
-@    yaxis  tick major 10
-@    yaxis  tick minor ticks 9
-@    yaxis  tick default 6
-@    yaxis  tick place rounded true
-@    yaxis  tick in
-@    yaxis  tick major size 1.000000
-@    yaxis  tick major color 1
-@    yaxis  tick major linewidth 2.0
-@    yaxis  tick major linestyle 1
-@    yaxis  tick major grid off
-@    yaxis  tick minor color 1
-@    yaxis  tick minor linewidth 2.0
-@    yaxis  tick minor linestyle 1
-@    yaxis  tick minor grid off
-@    yaxis  tick minor size 0.500000
-@    yaxis  ticklabel on
-@    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
-@    yaxis  ticklabel formula ""
-@    yaxis  ticklabel append ""
-@    yaxis  ticklabel prepend ""
-@    yaxis  ticklabel angle 0
-@    yaxis  ticklabel skip 0
-@    yaxis  ticklabel stagger 0
-@    yaxis  ticklabel place normal
-@    yaxis  ticklabel offset spec
-@    yaxis  ticklabel offset 0.000000 , 0.007000
-@    yaxis  ticklabel start type auto
-@    yaxis  ticklabel start 0.000000
-@    yaxis  ticklabel stop type auto
-@    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 0.990000
-@    yaxis  ticklabel font 4
-@    yaxis  ticklabel color 1
-@    yaxis  tick place both
-@    yaxis  tick spec type both
-@    yaxis  tick spec 41
-@    yaxis  tick major 0, 1000
-@    yaxis  ticklabel 0, "10\S3"
-@    yaxis  tick minor 1, 2000
-@    yaxis  tick minor 2, 3000
-@    yaxis  tick minor 3, 4000
-@    yaxis  tick minor 4, 5000
-@    yaxis  tick minor 5, 6000
-@    yaxis  tick minor 6, 7000
-@    yaxis  tick minor 7, 8000
-@    yaxis  tick minor 8, 9000
-@    yaxis  tick minor 9, 10000
-@    yaxis  tick major 10, 10000
-@    yaxis  ticklabel 10, "10\S4"
-@    yaxis  tick minor 11, 20000
-@    yaxis  tick minor 12, 30000
-@    yaxis  tick minor 13, 40000
-@    yaxis  tick minor 14, 50000
-@    yaxis  tick minor 15, 60000
-@    yaxis  tick minor 16, 70000
-@    yaxis  tick minor 17, 80000
-@    yaxis  tick minor 18, 90000
-@    yaxis  tick minor 19, 100000
-@    yaxis  tick major 20, 100000
-@    yaxis  ticklabel 20, "10\S5"
-@    yaxis  tick minor 21, 200000
-@    yaxis  tick minor 22, 300000
-@    yaxis  tick minor 23, 400000
-@    yaxis  tick minor 24, 500000
-@    yaxis  tick minor 25, 600000
-@    yaxis  tick minor 26, 700000
-@    yaxis  tick minor 27, 800000
-@    yaxis  tick minor 28, 900000
-@    yaxis  tick minor 29, 1000000
-@    yaxis  tick major 30, 1000000
-@    yaxis  ticklabel 30, "10\S6"
-@    yaxis  tick minor 31, 2000000
-@    yaxis  tick minor 32, 3000000
-@    yaxis  tick minor 33, 4000000
-@    yaxis  tick minor 34, 5000000
-@    yaxis  tick minor 35, 6000000
-@    yaxis  tick minor 36, 7000000
-@    yaxis  tick minor 37, 8000000
-@    yaxis  tick minor 38, 9000000
-@    yaxis  tick minor 39, 10000000
-@    yaxis  tick major 40, 10000000
-@    yaxis  ticklabel 40, "10\S7"
-@    altxaxis  on
-@    altxaxis  type zero false
-@    altxaxis  offset 0.000000 , 0.000000
-@    altxaxis  bar on
-@    altxaxis  bar color 1
-@    altxaxis  bar linestyle 1
-@    altxaxis  bar linewidth 1.0
-@    altxaxis  label ""
-@    altxaxis  label layout para
-@    altxaxis  label place auto
-@    altxaxis  label char size 1.150000
-@    altxaxis  label font 4
-@    altxaxis  label color 1
-@    altxaxis  label place normal
-@    altxaxis  tick on
-@    altxaxis  tick major 10
-@    altxaxis  tick minor ticks 9
-@    altxaxis  tick default 6
-@    altxaxis  tick place rounded true
-@    altxaxis  tick in
-@    altxaxis  tick major size 1.000000
-@    altxaxis  tick major color 1
-@    altxaxis  tick major linewidth 2.0
-@    altxaxis  tick major linestyle 1
-@    altxaxis  tick major grid off
-@    altxaxis  tick minor color 1
-@    altxaxis  tick minor linewidth 2.0
-@    altxaxis  tick minor linestyle 1
-@    altxaxis  tick minor grid off
-@    altxaxis  tick minor size 0.500000
-@    altxaxis  ticklabel on
-@    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
-@    altxaxis  ticklabel formula ""
-@    altxaxis  ticklabel append ""
-@    altxaxis  ticklabel prepend ""
-@    altxaxis  ticklabel angle 0
-@    altxaxis  ticklabel skip 0
-@    altxaxis  ticklabel stagger 0
-@    altxaxis  ticklabel place normal
-@    altxaxis  ticklabel offset spec
-@    altxaxis  ticklabel offset 0.000000 , 0.007000
-@    altxaxis  ticklabel start type auto
-@    altxaxis  ticklabel start 0.000000
-@    altxaxis  ticklabel stop type auto
-@    altxaxis  ticklabel stop 0.000000
-@    altxaxis  ticklabel char size 0.990000
-@    altxaxis  ticklabel font 4
-@    altxaxis  ticklabel color 1
-@    altxaxis  tick place both
-@    altxaxis  tick spec type both
-@    altxaxis  tick spec 41
-@    altxaxis  tick major 0, 0.001
-@    altxaxis  ticklabel 0, "10\S-3\N"
-@    altxaxis  tick minor 1, 0.002
-@    altxaxis  tick minor 2, 0.003
-@    altxaxis  tick minor 3, 0.004
-@    altxaxis  tick minor 4, 0.005
-@    altxaxis  tick minor 5, 0.006
-@    altxaxis  tick minor 6, 0.007
-@    altxaxis  tick minor 7, 0.008
-@    altxaxis  tick minor 8, 0.009
-@    altxaxis  tick major 9, 0.01
-@    altxaxis  ticklabel 9, "10\S-2\N"
-@    altxaxis  tick minor 10, 0.01
-@    altxaxis  tick minor 11, 0.02
-@    altxaxis  tick minor 12, 0.03
-@    altxaxis  tick minor 13, 0.04
-@    altxaxis  tick minor 14, 0.05
-@    altxaxis  tick minor 15, 0.06
-@    altxaxis  tick minor 16, 0.07
-@    altxaxis  tick minor 17, 0.08
-@    altxaxis  tick minor 18, 0.09
-@    altxaxis  tick major 19, 0.1
-@    altxaxis  ticklabel 19, "10\S-1\N"
-@    altxaxis  tick minor 20, 0.1
-@    altxaxis  tick minor 21, 0.2
-@    altxaxis  tick minor 22, 0.3
-@    altxaxis  tick minor 23, 0.4
-@    altxaxis  tick minor 24, 0.5
-@    altxaxis  tick minor 25, 0.6
-@    altxaxis  tick minor 26, 0.7
-@    altxaxis  tick minor 27, 0.8
-@    altxaxis  tick minor 28, 0.9
-@    altxaxis  tick minor 29, 1
-@    altxaxis  tick major 30, 1
-@    altxaxis  ticklabel 30, "10\S-0\N"
-@    altxaxis  tick minor 31, 2
-@    altxaxis  tick minor 32, 3
-@    altxaxis  tick minor 33, 4
-@    altxaxis  tick minor 34, 5
-@    altxaxis  tick minor 35, 6
-@    altxaxis  tick minor 36, 7
-@    altxaxis  tick minor 37, 8
-@    altxaxis  tick minor 38, 9
-@    altxaxis  tick major 39, 10
-@    altxaxis  ticklabel 39, "10\S1\N"
-@    altxaxis  tick minor 40, 10
-@    altyaxis  on
-@    altyaxis  type zero false
-@    altyaxis  offset 0.000000 , 0.000000
-@    altyaxis  bar on
-@    altyaxis  bar color 1
-@    altyaxis  bar linestyle 1
-@    altyaxis  bar linewidth 1.0
-@    altyaxis  label ""
-@    altyaxis  label layout para
-@    altyaxis  label place auto
-@    altyaxis  label char size 1.150000
-@    altyaxis  label font 4
-@    altyaxis  label color 1
-@    altyaxis  label place normal
-@    altyaxis  tick on
-@    altyaxis  tick major 10
-@    altyaxis  tick minor ticks 9
-@    altyaxis  tick default 6
-@    altyaxis  tick place rounded true
-@    altyaxis  tick in
-@    altyaxis  tick major size 1.000000
-@    altyaxis  tick major color 1
-@    altyaxis  tick major linewidth 2.0
-@    altyaxis  tick major linestyle 1
-@    altyaxis  tick major grid off
-@    altyaxis  tick minor color 1
-@    altyaxis  tick minor linewidth 2.0
-@    altyaxis  tick minor linestyle 1
-@    altyaxis  tick minor grid off
-@    altyaxis  tick minor size 0.500000
-@    altyaxis  ticklabel on
-@    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
-@    altyaxis  ticklabel formula ""
-@    altyaxis  ticklabel append ""
-@    altyaxis  ticklabel prepend ""
-@    altyaxis  ticklabel angle 0
-@    altyaxis  ticklabel skip 0
-@    altyaxis  ticklabel stagger 0
-@    altyaxis  ticklabel place normal
-@    altyaxis  ticklabel offset spec
-@    altyaxis  ticklabel offset 0.000000 , 0.007000
-@    altyaxis  ticklabel start type auto
-@    altyaxis  ticklabel start 0.000000
-@    altyaxis  ticklabel stop type auto
-@    altyaxis  ticklabel stop 0.000000
-@    altyaxis  ticklabel char size 0.990000
-@    altyaxis  ticklabel font 4
-@    altyaxis  ticklabel color 1
-@    altyaxis  tick place both
-@    altyaxis  tick spec type both
-@    altyaxis  tick spec 41
-@    altyaxis  tick major 0, 0.001
-@    altyaxis  ticklabel 0, "10\S-3\N"
-@    altyaxis  tick minor 1, 0.002
-@    altyaxis  tick minor 2, 0.003
-@    altyaxis  tick minor 3, 0.004
-@    altyaxis  tick minor 4, 0.005
-@    altyaxis  tick minor 5, 0.006
-@    altyaxis  tick minor 6, 0.007
-@    altyaxis  tick minor 7, 0.008
-@    altyaxis  tick minor 8, 0.009
-@    altyaxis  tick major 9, 0.01
-@    altyaxis  ticklabel 9, "10\S-2\N"
-@    altyaxis  tick minor 10, 0.01
-@    altyaxis  tick minor 11, 0.02
-@    altyaxis  tick minor 12, 0.03
-@    altyaxis  tick minor 13, 0.04
-@    altyaxis  tick minor 14, 0.05
-@    altyaxis  tick minor 15, 0.06
-@    altyaxis  tick minor 16, 0.07
-@    altyaxis  tick minor 17, 0.08
-@    altyaxis  tick minor 18, 0.09
-@    altyaxis  tick major 19, 0.1
-@    altyaxis  ticklabel 19, "10\S-1\N"
-@    altyaxis  tick minor 20, 0.1
-@    altyaxis  tick minor 21, 0.2
-@    altyaxis  tick minor 22, 0.3
-@    altyaxis  tick minor 23, 0.4
-@    altyaxis  tick minor 24, 0.5
-@    altyaxis  tick minor 25, 0.6
-@    altyaxis  tick minor 26, 0.7
-@    altyaxis  tick minor 27, 0.8
-@    altyaxis  tick minor 28, 0.9
-@    altyaxis  tick minor 29, 1
-@    altyaxis  tick major 30, 1
-@    altyaxis  ticklabel 30, "10\S-0\N"
-@    altyaxis  tick minor 31, 2
-@    altyaxis  tick minor 32, 3
-@    altyaxis  tick minor 33, 4
-@    altyaxis  tick minor 34, 5
-@    altyaxis  tick minor 35, 6
-@    altyaxis  tick minor 36, 7
-@    altyaxis  tick minor 37, 8
-@    altyaxis  tick minor 38, 9
-@    altyaxis  tick major 39, 10
-@    altyaxis  ticklabel 39, "10\S1\N"
-@    altyaxis  tick minor 40, 10
-@    legend on
-@    legend loctype view
-@    legend 0.15, 0.5
-@    legend box color 1
-@    legend box pattern 1
-@    legend box linewidth 1.0
-@    legend box linestyle 0
-@    legend box fill color 0
-@    legend box fill pattern 0
-@    legend font 5
-@    legend char size 0.950000
-@    legend color 1
-@    legend length 4
-@    legend vgap 1
-@    legend hgap 1
-@    legend invert false
-@    frame type 0
-@    frame linestyle 1
-@    frame linewidth 2.0
-@    frame color 1
-@    frame pattern 1
-@    frame background color 0
-@    frame background pattern 0
-@    s0 hidden false
-@    s0 type xy
-@    s0 symbol 1
-@    s0 symbol size 1.000000
-@    s0 symbol color 1
-@    s0 symbol pattern 1
-@    s0 symbol fill color 15
-@    s0 symbol fill pattern 1
-@    s0 symbol linewidth 1.5
-@    s0 symbol linestyle 1
-@    s0 symbol char 65
-@    s0 symbol char font 0
-@    s0 symbol skip 0
-@    s0 line type 1
-@    s0 line linestyle 0
-@    s0 line linewidth 1.0
-@    s0 line color 1
-@    s0 line pattern 1
-@    s0 baseline type 0
-@    s0 baseline off
-@    s0 dropline off
-@    s0 fill type 0
-@    s0 fill rule 0
-@    s0 fill color 1
-@    s0 fill pattern 1
-@    s0 avalue off
-@    s0 avalue type 2
-@    s0 avalue char size 1.000000
-@    s0 avalue font 0
-@    s0 avalue color 1
-@    s0 avalue rot 0
-@    s0 avalue format general
-@    s0 avalue prec 3
-@    s0 avalue prepend ""
-@    s0 avalue append ""
-@    s0 avalue offset 0.000000 , 0.000000
-@    s0 errorbar on
-@    s0 errorbar place both
-@    s0 errorbar color 1
-@    s0 errorbar pattern 1
-@    s0 errorbar size 1.000000
-@    s0 errorbar linewidth 1.0
-@    s0 errorbar linestyle 1
-@    s0 errorbar riser linewidth 1.0
-@    s0 errorbar riser linestyle 1
-@    s0 errorbar riser clip off
-@    s0 errorbar riser clip length 0.100000
-@    s0 comment "/home/jperradin/repos/nexus/benchmarks/performance/output/coordination_strategy/performance_fit_04.dat"
-@    s0 legend  ""
-@    s1 hidden false
-@    s1 type xy
-@    s1 symbol 1
-@    s1 symbol size 1.000000
-@    s1 symbol color 1
-@    s1 symbol pattern 1
-@    s1 symbol fill color 104
-@    s1 symbol fill pattern 1
-@    s1 symbol linewidth 1.5
-@    s1 symbol linestyle 1
-@    s1 symbol char 65
-@    s1 symbol char font 0
-@    s1 symbol skip 0
-@    s1 line type 1
-@    s1 line linestyle 0
-@    s1 line linewidth 1.0
-@    s1 line color 1
-@    s1 line pattern 1
-@    s1 baseline type 0
-@    s1 baseline off
-@    s1 dropline off
-@    s1 fill type 0
-@    s1 fill rule 0
-@    s1 fill color 1
-@    s1 fill pattern 1
-@    s1 avalue off
-@    s1 avalue type 2
-@    s1 avalue char size 1.000000
-@    s1 avalue font 0
-@    s1 avalue color 1
-@    s1 avalue rot 0
-@    s1 avalue format general
-@    s1 avalue prec 3
-@    s1 avalue prepend ""
-@    s1 avalue append ""
-@    s1 avalue offset 0.000000 , 0.000000
-@    s1 errorbar on
-@    s1 errorbar place both
-@    s1 errorbar color 1
-@    s1 errorbar pattern 1
-@    s1 errorbar size 1.000000
-@    s1 errorbar linewidth 1.0
-@    s1 errorbar linestyle 1
-@    s1 errorbar riser linewidth 1.0
-@    s1 errorbar riser linestyle 1
-@    s1 errorbar riser clip off
-@    s1 errorbar riser clip length 0.100000
-@    s1 comment "/home/jperradin/repos/nexus/benchmarks/performance/output/coordination_strategy/performance_fit_06.dat"
-@    s1 legend  ""
-@    s2 hidden false
-@    s2 type xy
-@    s2 symbol 0
-@    s2 symbol size 1.000000
-@    s2 symbol color 15
-@    s2 symbol pattern 1
-@    s2 symbol fill color 15
-@    s2 symbol fill pattern 0
-@    s2 symbol linewidth 1.0
-@    s2 symbol linestyle 1
-@    s2 symbol char 65
-@    s2 symbol char font 0
-@    s2 symbol skip 0
-@    s2 line type 1
-@    s2 line linestyle 1
-@    s2 line linewidth 2.0
-@    s2 line color 15
-@    s2 line pattern 1
-@    s2 baseline type 0
-@    s2 baseline off
-@    s2 dropline off
-@    s2 fill type 0
-@    s2 fill rule 0
-@    s2 fill color 1
-@    s2 fill pattern 1
-@    s2 avalue off
-@    s2 avalue type 2
-@    s2 avalue char size 1.000000
-@    s2 avalue font 0
-@    s2 avalue color 1
-@    s2 avalue rot 0
-@    s2 avalue format general
-@    s2 avalue prec 3
-@    s2 avalue prepend ""
-@    s2 avalue append ""
-@    s2 avalue offset 0.000000 , 0.000000
-@    s2 errorbar on
-@    s2 errorbar place both
-@    s2 errorbar color 15
-@    s2 errorbar pattern 1
-@    s2 errorbar size 1.000000
-@    s2 errorbar linewidth 1.0
-@    s2 errorbar linestyle 1
-@    s2 errorbar riser linewidth 1.0
-@    s2 errorbar riser linestyle 1
-@    s2 errorbar riser clip off
-@    s2 errorbar riser clip length 0.100000
-@    s2 comment "performance.agr"
-@    s2 legend  "O(N^2.17)"
-@    s3 hidden false
-@    s3 type xy
-@    s3 symbol 0
-@    s3 symbol size 1.000000
-@    s3 symbol color 104
-@    s3 symbol pattern 1
-@    s3 symbol fill color 104
-@    s3 symbol fill pattern 0
-@    s3 symbol linewidth 1.0
-@    s3 symbol linestyle 1
-@    s3 symbol char 65
-@    s3 symbol char font 0
-@    s3 symbol skip 0
-@    s3 line type 1
-@    s3 line linestyle 1
-@    s3 line linewidth 2.0
-@    s3 line color 104
-@    s3 line pattern 1
-@    s3 baseline type 0
-@    s3 baseline off
-@    s3 dropline off
-@    s3 fill type 0
-@    s3 fill rule 0
-@    s3 fill color 1
-@    s3 fill pattern 1
-@    s3 avalue off
-@    s3 avalue type 2
-@    s3 avalue char size 1.000000
-@    s3 avalue font 0
-@    s3 avalue color 1
-@    s3 avalue rot 0
-@    s3 avalue format general
-@    s3 avalue prec 3
-@    s3 avalue prepend ""
-@    s3 avalue append ""
-@    s3 avalue offset 0.000000 , 0.000000
-@    s3 errorbar on
-@    s3 errorbar place both
-@    s3 errorbar color 104
-@    s3 errorbar pattern 1
-@    s3 errorbar size 1.000000
-@    s3 errorbar linewidth 1.0
-@    s3 errorbar linestyle 1
-@    s3 errorbar riser linewidth 1.0
-@    s3 errorbar riser linestyle 1
-@    s3 errorbar riser clip off
-@    s3 errorbar riser clip length 0.100000
-@    s3 comment "performance.agr"
-@    s3 legend  "O(N^2.19)"
-@g3 on
-@g3 hidden false
-@g3 type XY
-@g3 stacked false
-@g3 bar hgap 0.000000
-@g3 fixedpoint off
-@g3 fixedpoint type 0
-@g3 fixedpoint xy 0.000000, 0.000000
-@g3 fixedpoint format general general
-@g3 fixedpoint prec 6, 6
-@with g3
-@    world 30000, 1000, 1000000, 10000000
-@    stack world 0, 0, 0, 0
-@    znorm 1
-@    view 0.770000, 0.090000, 1.300000, 0.520000
-@    title ""
-@    title font 0
-@    title size 1.500000
-@    title color 1
-@    subtitle ""
-@    subtitle font 0
-@    subtitle size 1.000000
-@    subtitle color 1
-@    xaxes scale Logarithmic
-@    yaxes scale Logarithmic
-@    xaxes invert off
-@    yaxes invert off
-@    xaxis  on
-@    xaxis  type zero false
-@    xaxis  offset 0.000000 , 0.000000
-@    xaxis  bar on
-@    xaxis  bar color 1
-@    xaxis  bar linestyle 1
-@    xaxis  bar linewidth 1.0
-@    xaxis  label "Number of nodes"
-@    xaxis  label layout para
-@    xaxis  label place auto
-@    xaxis  label char size 1.150000
-@    xaxis  label font 4
-@    xaxis  label color 1
-@    xaxis  label place normal
-@    xaxis  tick on
-@    xaxis  tick major 10
-@    xaxis  tick minor ticks 9
-@    xaxis  tick default 6
-@    xaxis  tick place rounded true
-@    xaxis  tick in
-@    xaxis  tick major size 1.000000
-@    xaxis  tick major color 1
-@    xaxis  tick major linewidth 2.0
-@    xaxis  tick major linestyle 1
-@    xaxis  tick major grid off
-@    xaxis  tick minor color 1
-@    xaxis  tick minor linewidth 2.0
-@    xaxis  tick minor linestyle 1
-@    xaxis  tick minor grid off
-@    xaxis  tick minor size 0.500000
-@    xaxis  ticklabel on
-@    xaxis  ticklabel format general
-@    xaxis  ticklabel prec 5
-@    xaxis  ticklabel formula ""
-@    xaxis  ticklabel append ""
-@    xaxis  ticklabel prepend ""
-@    xaxis  ticklabel angle 0
-@    xaxis  ticklabel skip 0
-@    xaxis  ticklabel stagger 0
-@    xaxis  ticklabel place normal
-@    xaxis  ticklabel offset spec
-@    xaxis  ticklabel offset 0.000000 , 0.007000
-@    xaxis  ticklabel start type auto
-@    xaxis  ticklabel start 0.000000
-@    xaxis  ticklabel stop type auto
-@    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 0.990000
-@    xaxis  ticklabel font 4
-@    xaxis  ticklabel color 1
-@    xaxis  tick place both
-@    xaxis  tick spec type both
-@    xaxis  tick spec 21
-@    xaxis  tick major 0, 10000
-@    xaxis  ticklabel 0, "10\S4"
-@    xaxis  tick minor 1, 20000
-@    xaxis  tick minor 2, 30000
-@    xaxis  tick minor 3, 40000
-@    xaxis  tick minor 4, 50000
-@    xaxis  tick minor 5, 60000
-@    xaxis  tick minor 6, 70000
-@    xaxis  tick minor 7, 80000
-@    xaxis  tick minor 8, 90000
-@    xaxis  tick minor 9, 100000
-@    xaxis  tick major 10, 100000
-@    xaxis  ticklabel 10, "10\S5"
-@    xaxis  tick minor 11, 200000
-@    xaxis  tick minor 12, 300000
-@    xaxis  tick minor 13, 400000
-@    xaxis  tick minor 14, 500000
-@    xaxis  tick minor 15, 600000
-@    xaxis  tick minor 16, 700000
-@    xaxis  tick minor 17, 800000
-@    xaxis  tick minor 18, 900000
-@    xaxis  tick minor 19, 1000000
-@    xaxis  tick major 20, 1000000
-@    xaxis  ticklabel 20, "10\S6"
-@    yaxis  on
-@    yaxis  type zero false
-@    yaxis  offset 0.000000 , 0.000000
-@    yaxis  bar on
-@    yaxis  bar color 1
-@    yaxis  bar linestyle 1
-@    yaxis  bar linewidth 1.0
-@    yaxis  label ""
-@    yaxis  label layout para
-@    yaxis  label place auto
-@    yaxis  label char size 1.150000
-@    yaxis  label font 4
-@    yaxis  label color 1
-@    yaxis  label place normal
-@    yaxis  tick on
-@    yaxis  tick major 10
-@    yaxis  tick minor ticks 9
-@    yaxis  tick default 6
-@    yaxis  tick place rounded true
-@    yaxis  tick in
-@    yaxis  tick major size 1.000000
-@    yaxis  tick major color 1
-@    yaxis  tick major linewidth 2.0
-@    yaxis  tick major linestyle 1
-@    yaxis  tick major grid off
-@    yaxis  tick minor color 1
-@    yaxis  tick minor linewidth 2.0
-@    yaxis  tick minor linestyle 1
-@    yaxis  tick minor grid off
-@    yaxis  tick minor size 0.500000
-@    yaxis  ticklabel on
-@    yaxis  ticklabel format general
-@    yaxis  ticklabel prec 5
-@    yaxis  ticklabel formula ""
-@    yaxis  ticklabel append ""
-@    yaxis  ticklabel prepend ""
-@    yaxis  ticklabel angle 0
-@    yaxis  ticklabel skip 0
-@    yaxis  ticklabel stagger 0
-@    yaxis  ticklabel place normal
-@    yaxis  ticklabel offset spec
-@    yaxis  ticklabel offset 0.000000 , 0.007000
-@    yaxis  ticklabel start type auto
-@    yaxis  ticklabel start 0.000000
-@    yaxis  ticklabel stop type auto
-@    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 0.990000
-@    yaxis  ticklabel font 4
-@    yaxis  ticklabel color 1
-@    yaxis  tick place both
-@    yaxis  tick spec type both
-@    yaxis  tick spec 41
-@    yaxis  tick major 0, 1000
-@    yaxis  ticklabel 0, "10\S3"
-@    yaxis  tick minor 1, 2000
-@    yaxis  tick minor 2, 3000
-@    yaxis  tick minor 3, 4000
-@    yaxis  tick minor 4, 5000
-@    yaxis  tick minor 5, 6000
-@    yaxis  tick minor 6, 7000
-@    yaxis  tick minor 7, 8000
-@    yaxis  tick minor 8, 9000
-@    yaxis  tick minor 9, 10000
-@    yaxis  tick major 10, 10000
-@    yaxis  ticklabel 10, "10\S4"
-@    yaxis  tick minor 11, 20000
-@    yaxis  tick minor 12, 30000
-@    yaxis  tick minor 13, 40000
-@    yaxis  tick minor 14, 50000
-@    yaxis  tick minor 15, 60000
-@    yaxis  tick minor 16, 70000
-@    yaxis  tick minor 17, 80000
-@    yaxis  tick minor 18, 90000
-@    yaxis  tick minor 19, 100000
-@    yaxis  tick major 20, 100000
-@    yaxis  ticklabel 20, "10\S5"
-@    yaxis  tick minor 21, 200000
-@    yaxis  tick minor 22, 300000
-@    yaxis  tick minor 23, 400000
-@    yaxis  tick minor 24, 500000
-@    yaxis  tick minor 25, 600000
-@    yaxis  tick minor 26, 700000
-@    yaxis  tick minor 27, 800000
-@    yaxis  tick minor 28, 900000
-@    yaxis  tick minor 29, 1000000
-@    yaxis  tick major 30, 1000000
-@    yaxis  ticklabel 30, "10\S6"
-@    yaxis  tick minor 31, 2000000
-@    yaxis  tick minor 32, 3000000
-@    yaxis  tick minor 33, 4000000
-@    yaxis  tick minor 34, 5000000
-@    yaxis  tick minor 35, 6000000
-@    yaxis  tick minor 36, 7000000
-@    yaxis  tick minor 37, 8000000
-@    yaxis  tick minor 38, 9000000
-@    yaxis  tick minor 39, 10000000
-@    yaxis  tick major 40, 10000000
-@    yaxis  ticklabel 40, "10\S7"
-@    altxaxis  on
-@    altxaxis  type zero false
-@    altxaxis  offset 0.000000 , 0.000000
-@    altxaxis  bar on
-@    altxaxis  bar color 1
-@    altxaxis  bar linestyle 1
-@    altxaxis  bar linewidth 1.0
-@    altxaxis  label ""
-@    altxaxis  label layout para
-@    altxaxis  label place auto
-@    altxaxis  label char size 1.150000
-@    altxaxis  label font 4
-@    altxaxis  label color 1
-@    altxaxis  label place normal
-@    altxaxis  tick on
-@    altxaxis  tick major 10
-@    altxaxis  tick minor ticks 9
-@    altxaxis  tick default 6
-@    altxaxis  tick place rounded true
-@    altxaxis  tick in
-@    altxaxis  tick major size 1.000000
-@    altxaxis  tick major color 1
-@    altxaxis  tick major linewidth 2.0
-@    altxaxis  tick major linestyle 1
-@    altxaxis  tick major grid off
-@    altxaxis  tick minor color 1
-@    altxaxis  tick minor linewidth 2.0
-@    altxaxis  tick minor linestyle 1
-@    altxaxis  tick minor grid off
-@    altxaxis  tick minor size 0.500000
-@    altxaxis  ticklabel on
-@    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
-@    altxaxis  ticklabel formula ""
-@    altxaxis  ticklabel append ""
-@    altxaxis  ticklabel prepend ""
-@    altxaxis  ticklabel angle 0
-@    altxaxis  ticklabel skip 0
-@    altxaxis  ticklabel stagger 0
-@    altxaxis  ticklabel place normal
-@    altxaxis  ticklabel offset spec
-@    altxaxis  ticklabel offset 0.000000 , 0.007000
-@    altxaxis  ticklabel start type auto
-@    altxaxis  ticklabel start 0.000000
-@    altxaxis  ticklabel stop type auto
-@    altxaxis  ticklabel stop 0.000000
-@    altxaxis  ticklabel char size 0.990000
-@    altxaxis  ticklabel font 4
-@    altxaxis  ticklabel color 1
-@    altxaxis  tick place both
-@    altxaxis  tick spec type both
-@    altxaxis  tick spec 41
-@    altxaxis  tick major 0, 0.001
-@    altxaxis  ticklabel 0, "10\S-3\N"
-@    altxaxis  tick minor 1, 0.002
-@    altxaxis  tick minor 2, 0.003
-@    altxaxis  tick minor 3, 0.004
-@    altxaxis  tick minor 4, 0.005
-@    altxaxis  tick minor 5, 0.006
-@    altxaxis  tick minor 6, 0.007
-@    altxaxis  tick minor 7, 0.008
-@    altxaxis  tick minor 8, 0.009
-@    altxaxis  tick major 9, 0.01
-@    altxaxis  ticklabel 9, "10\S-2\N"
-@    altxaxis  tick minor 10, 0.01
-@    altxaxis  tick minor 11, 0.02
-@    altxaxis  tick minor 12, 0.03
-@    altxaxis  tick minor 13, 0.04
-@    altxaxis  tick minor 14, 0.05
-@    altxaxis  tick minor 15, 0.06
-@    altxaxis  tick minor 16, 0.07
-@    altxaxis  tick minor 17, 0.08
-@    altxaxis  tick minor 18, 0.09
-@    altxaxis  tick major 19, 0.1
-@    altxaxis  ticklabel 19, "10\S-1\N"
-@    altxaxis  tick minor 20, 0.1
-@    altxaxis  tick minor 21, 0.2
-@    altxaxis  tick minor 22, 0.3
-@    altxaxis  tick minor 23, 0.4
-@    altxaxis  tick minor 24, 0.5
-@    altxaxis  tick minor 25, 0.6
-@    altxaxis  tick minor 26, 0.7
-@    altxaxis  tick minor 27, 0.8
-@    altxaxis  tick minor 28, 0.9
-@    altxaxis  tick minor 29, 1
-@    altxaxis  tick major 30, 1
-@    altxaxis  ticklabel 30, "10\S-0\N"
-@    altxaxis  tick minor 31, 2
-@    altxaxis  tick minor 32, 3
-@    altxaxis  tick minor 33, 4
-@    altxaxis  tick minor 34, 5
-@    altxaxis  tick minor 35, 6
-@    altxaxis  tick minor 36, 7
-@    altxaxis  tick minor 37, 8
-@    altxaxis  tick minor 38, 9
-@    altxaxis  tick major 39, 10
-@    altxaxis  ticklabel 39, "10\S1\N"
-@    altxaxis  tick minor 40, 10
-@    altyaxis  on
-@    altyaxis  type zero false
-@    altyaxis  offset 0.000000 , 0.000000
-@    altyaxis  bar on
-@    altyaxis  bar color 1
-@    altyaxis  bar linestyle 1
-@    altyaxis  bar linewidth 1.0
-@    altyaxis  label ""
-@    altyaxis  label layout para
-@    altyaxis  label place auto
-@    altyaxis  label char size 1.150000
-@    altyaxis  label font 4
-@    altyaxis  label color 1
-@    altyaxis  label place normal
-@    altyaxis  tick on
-@    altyaxis  tick major 10
-@    altyaxis  tick minor ticks 9
-@    altyaxis  tick default 6
-@    altyaxis  tick place rounded true
-@    altyaxis  tick in
-@    altyaxis  tick major size 1.000000
-@    altyaxis  tick major color 1
-@    altyaxis  tick major linewidth 2.0
-@    altyaxis  tick major linestyle 1
-@    altyaxis  tick major grid off
-@    altyaxis  tick minor color 1
-@    altyaxis  tick minor linewidth 2.0
-@    altyaxis  tick minor linestyle 1
-@    altyaxis  tick minor grid off
-@    altyaxis  tick minor size 0.500000
-@    altyaxis  ticklabel on
-@    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
-@    altyaxis  ticklabel formula ""
-@    altyaxis  ticklabel append ""
-@    altyaxis  ticklabel prepend ""
-@    altyaxis  ticklabel angle 0
-@    altyaxis  ticklabel skip 0
-@    altyaxis  ticklabel stagger 0
-@    altyaxis  ticklabel place normal
-@    altyaxis  ticklabel offset spec
-@    altyaxis  ticklabel offset 0.000000 , 0.007000
-@    altyaxis  ticklabel start type auto
-@    altyaxis  ticklabel start 0.000000
-@    altyaxis  ticklabel stop type auto
-@    altyaxis  ticklabel stop 0.000000
-@    altyaxis  ticklabel char size 0.990000
-@    altyaxis  ticklabel font 4
-@    altyaxis  ticklabel color 1
-@    altyaxis  tick place both
-@    altyaxis  tick spec type both
-@    altyaxis  tick spec 41
-@    altyaxis  tick major 0, 0.001
-@    altyaxis  ticklabel 0, "10\S-3\N"
-@    altyaxis  tick minor 1, 0.002
-@    altyaxis  tick minor 2, 0.003
-@    altyaxis  tick minor 3, 0.004
-@    altyaxis  tick minor 4, 0.005
-@    altyaxis  tick minor 5, 0.006
-@    altyaxis  tick minor 6, 0.007
-@    altyaxis  tick minor 7, 0.008
-@    altyaxis  tick minor 8, 0.009
-@    altyaxis  tick major 9, 0.01
-@    altyaxis  ticklabel 9, "10\S-2\N"
-@    altyaxis  tick minor 10, 0.01
-@    altyaxis  tick minor 11, 0.02
-@    altyaxis  tick minor 12, 0.03
-@    altyaxis  tick minor 13, 0.04
-@    altyaxis  tick minor 14, 0.05
-@    altyaxis  tick minor 15, 0.06
-@    altyaxis  tick minor 16, 0.07
-@    altyaxis  tick minor 17, 0.08
-@    altyaxis  tick minor 18, 0.09
-@    altyaxis  tick major 19, 0.1
-@    altyaxis  ticklabel 19, "10\S-1\N"
-@    altyaxis  tick minor 20, 0.1
-@    altyaxis  tick minor 21, 0.2
-@    altyaxis  tick minor 22, 0.3
-@    altyaxis  tick minor 23, 0.4
-@    altyaxis  tick minor 24, 0.5
-@    altyaxis  tick minor 25, 0.6
-@    altyaxis  tick minor 26, 0.7
-@    altyaxis  tick minor 27, 0.8
-@    altyaxis  tick minor 28, 0.9
-@    altyaxis  tick minor 29, 1
-@    altyaxis  tick major 30, 1
-@    altyaxis  ticklabel 30, "10\S-0\N"
-@    altyaxis  tick minor 31, 2
-@    altyaxis  tick minor 32, 3
-@    altyaxis  tick minor 33, 4
-@    altyaxis  tick minor 34, 5
-@    altyaxis  tick minor 35, 6
-@    altyaxis  tick minor 36, 7
-@    altyaxis  tick minor 37, 8
-@    altyaxis  tick minor 38, 9
-@    altyaxis  tick major 39, 10
-@    altyaxis  ticklabel 39, "10\S1\N"
-@    altyaxis  tick minor 40, 10
-@    legend on
-@    legend loctype view
-@    legend 0.795, 0.5
-@    legend box color 1
-@    legend box pattern 1
-@    legend box linewidth 1.0
-@    legend box linestyle 0
-@    legend box fill color 0
-@    legend box fill pattern 0
-@    legend font 5
-@    legend char size 0.950000
-@    legend color 1
-@    legend length 4
-@    legend vgap 1
-@    legend hgap 1
-@    legend invert false
-@    frame type 0
-@    frame linestyle 1
-@    frame linewidth 2.0
-@    frame color 1
-@    frame pattern 1
-@    frame background color 0
-@    frame background pattern 0
-@    s0 hidden false
-@    s0 type xy
-@    s0 symbol 1
-@    s0 symbol size 1.000000
-@    s0 symbol color 1
-@    s0 symbol pattern 1
-@    s0 symbol fill color 15
-@    s0 symbol fill pattern 1
-@    s0 symbol linewidth 1.5
-@    s0 symbol linestyle 1
-@    s0 symbol char 65
-@    s0 symbol char font 0
-@    s0 symbol skip 0
-@    s0 line type 1
-@    s0 line linestyle 0
-@    s0 line linewidth 1.0
-@    s0 line color 1
-@    s0 line pattern 1
-@    s0 baseline type 0
-@    s0 baseline off
-@    s0 dropline off
-@    s0 fill type 0
-@    s0 fill rule 0
-@    s0 fill color 1
-@    s0 fill pattern 1
-@    s0 avalue off
-@    s0 avalue type 2
-@    s0 avalue char size 1.000000
-@    s0 avalue font 0
-@    s0 avalue color 1
-@    s0 avalue rot 0
-@    s0 avalue format general
-@    s0 avalue prec 3
-@    s0 avalue prepend ""
-@    s0 avalue append ""
-@    s0 avalue offset 0.000000 , 0.000000
-@    s0 errorbar on
-@    s0 errorbar place both
-@    s0 errorbar color 1
-@    s0 errorbar pattern 1
-@    s0 errorbar size 1.000000
-@    s0 errorbar linewidth 1.0
-@    s0 errorbar linestyle 1
-@    s0 errorbar riser linewidth 1.0
-@    s0 errorbar riser linestyle 1
-@    s0 errorbar riser clip off
-@    s0 errorbar riser clip length 0.100000
-@    s0 comment "/home/jperradin/repos/nexus/benchmarks/performance/output/shared_strategy/performance_fit_04.dat"
-@    s0 legend  ""
-@    s1 hidden false
-@    s1 type xy
-@    s1 symbol 1
-@    s1 symbol size 1.000000
-@    s1 symbol color 1
-@    s1 symbol pattern 1
-@    s1 symbol fill color 104
-@    s1 symbol fill pattern 1
-@    s1 symbol linewidth 1.5
-@    s1 symbol linestyle 1
-@    s1 symbol char 65
-@    s1 symbol char font 0
-@    s1 symbol skip 0
-@    s1 line type 1
-@    s1 line linestyle 0
-@    s1 line linewidth 1.0
-@    s1 line color 1
-@    s1 line pattern 1
-@    s1 baseline type 0
-@    s1 baseline off
-@    s1 dropline off
-@    s1 fill type 0
-@    s1 fill rule 0
-@    s1 fill color 1
-@    s1 fill pattern 1
-@    s1 avalue off
-@    s1 avalue type 2
-@    s1 avalue char size 1.000000
-@    s1 avalue font 0
-@    s1 avalue color 1
-@    s1 avalue rot 0
-@    s1 avalue format general
-@    s1 avalue prec 3
-@    s1 avalue prepend ""
-@    s1 avalue append ""
-@    s1 avalue offset 0.000000 , 0.000000
-@    s1 errorbar on
-@    s1 errorbar place both
-@    s1 errorbar color 1
-@    s1 errorbar pattern 1
-@    s1 errorbar size 1.000000
-@    s1 errorbar linewidth 1.0
-@    s1 errorbar linestyle 1
-@    s1 errorbar riser linewidth 1.0
-@    s1 errorbar riser linestyle 1
-@    s1 errorbar riser clip off
-@    s1 errorbar riser clip length 0.100000
-@    s1 comment "/home/jperradin/repos/nexus/benchmarks/performance/output/shared_strategy/performance_fit_06.dat"
-@    s1 legend  ""
-@    s2 hidden false
-@    s2 type xy
-@    s2 symbol 0
-@    s2 symbol size 1.000000
-@    s2 symbol color 15
-@    s2 symbol pattern 1
-@    s2 symbol fill color 15
-@    s2 symbol fill pattern 0
-@    s2 symbol linewidth 1.0
-@    s2 symbol linestyle 1
-@    s2 symbol char 65
-@    s2 symbol char font 0
-@    s2 symbol skip 0
-@    s2 line type 1
-@    s2 line linestyle 1
-@    s2 line linewidth 2.0
-@    s2 line color 15
-@    s2 line pattern 1
-@    s2 baseline type 0
-@    s2 baseline off
-@    s2 dropline off
-@    s2 fill type 0
-@    s2 fill rule 0
-@    s2 fill color 1
-@    s2 fill pattern 1
-@    s2 avalue off
-@    s2 avalue type 2
-@    s2 avalue char size 1.000000
-@    s2 avalue font 0
-@    s2 avalue color 1
-@    s2 avalue rot 0
-@    s2 avalue format general
-@    s2 avalue prec 3
-@    s2 avalue prepend ""
-@    s2 avalue append ""
-@    s2 avalue offset 0.000000 , 0.000000
-@    s2 errorbar on
-@    s2 errorbar place both
-@    s2 errorbar color 15
-@    s2 errorbar pattern 1
-@    s2 errorbar size 1.000000
-@    s2 errorbar linewidth 1.0
-@    s2 errorbar linestyle 1
-@    s2 errorbar riser linewidth 1.0
-@    s2 errorbar riser linestyle 1
-@    s2 errorbar riser clip off
-@    s2 errorbar riser clip length 0.100000
-@    s2 comment "performance.agr"
-@    s2 legend  "O(N^1.97)"
-@    s3 hidden false
-@    s3 type xy
-@    s3 symbol 0
-@    s3 symbol size 1.000000
-@    s3 symbol color 104
-@    s3 symbol pattern 1
-@    s3 symbol fill color 104
-@    s3 symbol fill pattern 0
-@    s3 symbol linewidth 1.0
-@    s3 symbol linestyle 1
-@    s3 symbol char 65
-@    s3 symbol char font 0
-@    s3 symbol skip 0
-@    s3 line type 1
-@    s3 line linestyle 1
-@    s3 line linewidth 2.0
-@    s3 line color 104
-@    s3 line pattern 1
-@    s3 baseline type 0
-@    s3 baseline off
-@    s3 dropline off
-@    s3 fill type 0
-@    s3 fill rule 0
-@    s3 fill color 1
-@    s3 fill pattern 1
-@    s3 avalue off
-@    s3 avalue type 2
-@    s3 avalue char size 1.000000
-@    s3 avalue font 0
-@    s3 avalue color 1
-@    s3 avalue rot 0
-@    s3 avalue format general
-@    s3 avalue prec 3
-@    s3 avalue prepend ""
-@    s3 avalue append ""
-@    s3 avalue offset 0.000000 , 0.000000
-@    s3 errorbar on
-@    s3 errorbar place both
-@    s3 errorbar color 104
-@    s3 errorbar pattern 1
-@    s3 errorbar size 1.000000
-@    s3 errorbar linewidth 1.0
-@    s3 errorbar linestyle 1
-@    s3 errorbar riser linewidth 1.0
-@    s3 errorbar riser linestyle 1
-@    s3 errorbar riser clip off
-@    s3 errorbar riser clip length 0.100000
-@    s3 comment "performance.agr"
-@    s3 legend  "O(N^2.15)"
-@g4 on
-@g4 hidden false
-@g4 type XY
-@g4 stacked false
-@g4 bar hgap 0.000000
-@g4 fixedpoint off
-@g4 fixedpoint type 0
-@g4 fixedpoint xy 0.000000, 0.000000
-@g4 fixedpoint format general general
-@g4 fixedpoint prec 6, 6
-@with g4
-@    world 30000, 1000, 1000000, 10000000
-@    stack world 0, 0, 0, 0
-@    znorm 1
-@    view 0.770000, 0.570000, 1.300000, 0.980000
+@    view 0.150000, 0.550000, 0.680000, 0.950000
 @    title ""
 @    title font 0
 @    title size 1.500000
@@ -2606,7 +1152,7 @@
 @    xaxis  label ""
 @    xaxis  label layout para
 @    xaxis  label place auto
-@    xaxis  label char size 1.150000
+@    xaxis  label char size 1.310000
 @    xaxis  label font 4
 @    xaxis  label color 1
 @    xaxis  label place normal
@@ -2626,7 +1172,7 @@
 @    xaxis  tick minor linestyle 1
 @    xaxis  tick minor grid off
 @    xaxis  tick minor size 0.500000
-@    xaxis  ticklabel on
+@    xaxis  ticklabel off
 @    xaxis  ticklabel format general
 @    xaxis  ticklabel prec 5
 @    xaxis  ticklabel formula ""
@@ -2636,42 +1182,17 @@
 @    xaxis  ticklabel skip 0
 @    xaxis  ticklabel stagger 0
 @    xaxis  ticklabel place normal
-@    xaxis  ticklabel offset spec
-@    xaxis  ticklabel offset 0.000000 , 0.007000
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
 @    xaxis  ticklabel start type auto
 @    xaxis  ticklabel start 0.000000
 @    xaxis  ticklabel stop type auto
 @    xaxis  ticklabel stop 0.000000
-@    xaxis  ticklabel char size 0.990000
+@    xaxis  ticklabel char size 1.300000
 @    xaxis  ticklabel font 4
 @    xaxis  ticklabel color 1
 @    xaxis  tick place both
-@    xaxis  tick spec type both
-@    xaxis  tick spec 21
-@    xaxis  tick major 0, 10000
-@    xaxis  ticklabel 0, "10\S4"
-@    xaxis  tick minor 1, 20000
-@    xaxis  tick minor 2, 30000
-@    xaxis  tick minor 3, 40000
-@    xaxis  tick minor 4, 50000
-@    xaxis  tick minor 5, 60000
-@    xaxis  tick minor 6, 70000
-@    xaxis  tick minor 7, 80000
-@    xaxis  tick minor 8, 90000
-@    xaxis  tick minor 9, 100000
-@    xaxis  tick major 10, 100000
-@    xaxis  ticklabel 10, "10\S5"
-@    xaxis  tick minor 11, 200000
-@    xaxis  tick minor 12, 300000
-@    xaxis  tick minor 13, 400000
-@    xaxis  tick minor 14, 500000
-@    xaxis  tick minor 15, 600000
-@    xaxis  tick minor 16, 700000
-@    xaxis  tick minor 17, 800000
-@    xaxis  tick minor 18, 900000
-@    xaxis  tick minor 19, 1000000
-@    xaxis  tick major 20, 1000000
-@    xaxis  ticklabel 20, "10\S6"
+@    xaxis  tick spec type none
 @    yaxis  on
 @    yaxis  type zero false
 @    yaxis  offset 0.000000 , 0.000000
@@ -2679,10 +1200,10 @@
 @    yaxis  bar color 1
 @    yaxis  bar linestyle 1
 @    yaxis  bar linewidth 1.0
-@    yaxis  label ""
+@    yaxis  label "Execution time [s]"
 @    yaxis  label layout para
 @    yaxis  label place auto
-@    yaxis  label char size 1.150000
+@    yaxis  label char size 0.980000
 @    yaxis  label font 4
 @    yaxis  label color 1
 @    yaxis  label place normal
@@ -2712,13 +1233,13 @@
 @    yaxis  ticklabel skip 0
 @    yaxis  ticklabel stagger 0
 @    yaxis  ticklabel place normal
-@    yaxis  ticklabel offset spec
-@    yaxis  ticklabel offset 0.000000 , 0.007000
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
 @    yaxis  ticklabel start type auto
 @    yaxis  ticklabel start 0.000000
 @    yaxis  ticklabel stop type auto
 @    yaxis  ticklabel stop 0.000000
-@    yaxis  ticklabel char size 0.990000
+@    yaxis  ticklabel char size 1.050000
 @    yaxis  ticklabel font 4
 @    yaxis  ticklabel color 1
 @    yaxis  tick place both
@@ -2770,213 +1291,766 @@
 @    yaxis  tick minor 39, 10000000
 @    yaxis  tick major 40, 10000000
 @    yaxis  ticklabel 40, "10\S7"
-@    altxaxis  on
-@    altxaxis  type zero false
-@    altxaxis  offset 0.000000 , 0.000000
-@    altxaxis  bar on
-@    altxaxis  bar color 1
-@    altxaxis  bar linestyle 1
-@    altxaxis  bar linewidth 1.0
-@    altxaxis  label ""
-@    altxaxis  label layout para
-@    altxaxis  label place auto
-@    altxaxis  label char size 1.150000
-@    altxaxis  label font 4
-@    altxaxis  label color 1
-@    altxaxis  label place normal
-@    altxaxis  tick on
-@    altxaxis  tick major 10
-@    altxaxis  tick minor ticks 9
-@    altxaxis  tick default 6
-@    altxaxis  tick place rounded true
-@    altxaxis  tick in
-@    altxaxis  tick major size 1.000000
-@    altxaxis  tick major color 1
-@    altxaxis  tick major linewidth 2.0
-@    altxaxis  tick major linestyle 1
-@    altxaxis  tick major grid off
-@    altxaxis  tick minor color 1
-@    altxaxis  tick minor linewidth 2.0
-@    altxaxis  tick minor linestyle 1
-@    altxaxis  tick minor grid off
-@    altxaxis  tick minor size 0.500000
-@    altxaxis  ticklabel on
-@    altxaxis  ticklabel format general
-@    altxaxis  ticklabel prec 5
-@    altxaxis  ticklabel formula ""
-@    altxaxis  ticklabel append ""
-@    altxaxis  ticklabel prepend ""
-@    altxaxis  ticklabel angle 0
-@    altxaxis  ticklabel skip 0
-@    altxaxis  ticklabel stagger 0
-@    altxaxis  ticklabel place normal
-@    altxaxis  ticklabel offset spec
-@    altxaxis  ticklabel offset 0.000000 , 0.007000
-@    altxaxis  ticklabel start type auto
-@    altxaxis  ticklabel start 0.000000
-@    altxaxis  ticklabel stop type auto
-@    altxaxis  ticklabel stop 0.000000
-@    altxaxis  ticklabel char size 0.990000
-@    altxaxis  ticklabel font 4
-@    altxaxis  ticklabel color 1
-@    altxaxis  tick place both
-@    altxaxis  tick spec type both
-@    altxaxis  tick spec 41
-@    altxaxis  tick major 0, 0.001
-@    altxaxis  ticklabel 0, "10\S-3\N"
-@    altxaxis  tick minor 1, 0.002
-@    altxaxis  tick minor 2, 0.003
-@    altxaxis  tick minor 3, 0.004
-@    altxaxis  tick minor 4, 0.005
-@    altxaxis  tick minor 5, 0.006
-@    altxaxis  tick minor 6, 0.007
-@    altxaxis  tick minor 7, 0.008
-@    altxaxis  tick minor 8, 0.009
-@    altxaxis  tick major 9, 0.01
-@    altxaxis  ticklabel 9, "10\S-2\N"
-@    altxaxis  tick minor 10, 0.01
-@    altxaxis  tick minor 11, 0.02
-@    altxaxis  tick minor 12, 0.03
-@    altxaxis  tick minor 13, 0.04
-@    altxaxis  tick minor 14, 0.05
-@    altxaxis  tick minor 15, 0.06
-@    altxaxis  tick minor 16, 0.07
-@    altxaxis  tick minor 17, 0.08
-@    altxaxis  tick minor 18, 0.09
-@    altxaxis  tick major 19, 0.1
-@    altxaxis  ticklabel 19, "10\S-1\N"
-@    altxaxis  tick minor 20, 0.1
-@    altxaxis  tick minor 21, 0.2
-@    altxaxis  tick minor 22, 0.3
-@    altxaxis  tick minor 23, 0.4
-@    altxaxis  tick minor 24, 0.5
-@    altxaxis  tick minor 25, 0.6
-@    altxaxis  tick minor 26, 0.7
-@    altxaxis  tick minor 27, 0.8
-@    altxaxis  tick minor 28, 0.9
-@    altxaxis  tick minor 29, 1
-@    altxaxis  tick major 30, 1
-@    altxaxis  ticklabel 30, "10\S-0\N"
-@    altxaxis  tick minor 31, 2
-@    altxaxis  tick minor 32, 3
-@    altxaxis  tick minor 33, 4
-@    altxaxis  tick minor 34, 5
-@    altxaxis  tick minor 35, 6
-@    altxaxis  tick minor 36, 7
-@    altxaxis  tick minor 37, 8
-@    altxaxis  tick minor 38, 9
-@    altxaxis  tick major 39, 10
-@    altxaxis  ticklabel 39, "10\S1\N"
-@    altxaxis  tick minor 40, 10
-@    altyaxis  on
-@    altyaxis  type zero false
-@    altyaxis  offset 0.000000 , 0.000000
-@    altyaxis  bar on
-@    altyaxis  bar color 1
-@    altyaxis  bar linestyle 1
-@    altyaxis  bar linewidth 1.0
-@    altyaxis  label ""
-@    altyaxis  label layout para
-@    altyaxis  label place auto
-@    altyaxis  label char size 1.150000
-@    altyaxis  label font 4
-@    altyaxis  label color 1
-@    altyaxis  label place normal
-@    altyaxis  tick on
-@    altyaxis  tick major 10
-@    altyaxis  tick minor ticks 9
-@    altyaxis  tick default 6
-@    altyaxis  tick place rounded true
-@    altyaxis  tick in
-@    altyaxis  tick major size 1.000000
-@    altyaxis  tick major color 1
-@    altyaxis  tick major linewidth 2.0
-@    altyaxis  tick major linestyle 1
-@    altyaxis  tick major grid off
-@    altyaxis  tick minor color 1
-@    altyaxis  tick minor linewidth 2.0
-@    altyaxis  tick minor linestyle 1
-@    altyaxis  tick minor grid off
-@    altyaxis  tick minor size 0.500000
-@    altyaxis  ticklabel on
-@    altyaxis  ticklabel format general
-@    altyaxis  ticklabel prec 5
-@    altyaxis  ticklabel formula ""
-@    altyaxis  ticklabel append ""
-@    altyaxis  ticklabel prepend ""
-@    altyaxis  ticklabel angle 0
-@    altyaxis  ticklabel skip 0
-@    altyaxis  ticklabel stagger 0
-@    altyaxis  ticklabel place normal
-@    altyaxis  ticklabel offset spec
-@    altyaxis  ticklabel offset 0.000000 , 0.007000
-@    altyaxis  ticklabel start type auto
-@    altyaxis  ticklabel start 0.000000
-@    altyaxis  ticklabel stop type auto
-@    altyaxis  ticklabel stop 0.000000
-@    altyaxis  ticklabel char size 0.990000
-@    altyaxis  ticklabel font 4
-@    altyaxis  ticklabel color 1
-@    altyaxis  tick place both
-@    altyaxis  tick spec type both
-@    altyaxis  tick spec 41
-@    altyaxis  tick major 0, 0.001
-@    altyaxis  ticklabel 0, "10\S-3\N"
-@    altyaxis  tick minor 1, 0.002
-@    altyaxis  tick minor 2, 0.003
-@    altyaxis  tick minor 3, 0.004
-@    altyaxis  tick minor 4, 0.005
-@    altyaxis  tick minor 5, 0.006
-@    altyaxis  tick minor 6, 0.007
-@    altyaxis  tick minor 7, 0.008
-@    altyaxis  tick minor 8, 0.009
-@    altyaxis  tick major 9, 0.01
-@    altyaxis  ticklabel 9, "10\S-2\N"
-@    altyaxis  tick minor 10, 0.01
-@    altyaxis  tick minor 11, 0.02
-@    altyaxis  tick minor 12, 0.03
-@    altyaxis  tick minor 13, 0.04
-@    altyaxis  tick minor 14, 0.05
-@    altyaxis  tick minor 15, 0.06
-@    altyaxis  tick minor 16, 0.07
-@    altyaxis  tick minor 17, 0.08
-@    altyaxis  tick minor 18, 0.09
-@    altyaxis  tick major 19, 0.1
-@    altyaxis  ticklabel 19, "10\S-1\N"
-@    altyaxis  tick minor 20, 0.1
-@    altyaxis  tick minor 21, 0.2
-@    altyaxis  tick minor 22, 0.3
-@    altyaxis  tick minor 23, 0.4
-@    altyaxis  tick minor 24, 0.5
-@    altyaxis  tick minor 25, 0.6
-@    altyaxis  tick minor 26, 0.7
-@    altyaxis  tick minor 27, 0.8
-@    altyaxis  tick minor 28, 0.9
-@    altyaxis  tick minor 29, 1
-@    altyaxis  tick major 30, 1
-@    altyaxis  ticklabel 30, "10\S-0\N"
-@    altyaxis  tick minor 31, 2
-@    altyaxis  tick minor 32, 3
-@    altyaxis  tick minor 33, 4
-@    altyaxis  tick minor 34, 5
-@    altyaxis  tick minor 35, 6
-@    altyaxis  tick minor 36, 7
-@    altyaxis  tick minor 37, 8
-@    altyaxis  tick minor 38, 9
-@    altyaxis  tick major 39, 10
-@    altyaxis  ticklabel 39, "10\S1\N"
-@    altyaxis  tick minor 40, 10
+@    altxaxis  off
+@    altyaxis  off
 @    legend on
 @    legend loctype view
-@    legend 0.795, 0.96
+@    legend 0.46, 0.701725885
 @    legend box color 1
 @    legend box pattern 1
 @    legend box linewidth 1.0
 @    legend box linestyle 0
-@    legend box fill color 14
+@    legend box fill color 0
 @    legend box fill pattern 0
-@    legend font 5
-@    legend char size 0.950000
+@    legend font 4
+@    legend char size 0.880000
+@    legend color 1
+@    legend length 4
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 2.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 0
+@    s0 symbol size 0.680000
+@    s0 symbol color 15
+@    s0 symbol pattern 1
+@    s0 symbol fill color 15
+@    s0 symbol fill pattern 1
+@    s0 symbol linewidth 1.0
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 3
+@    s0 line linewidth 2.5
+@    s0 line color 15
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 15
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_lt_pc-distance-fit.dat"
+@    s0 legend  "O(N^1.69)"
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 0
+@    s1 symbol size 0.680000
+@    s1 symbol color 68
+@    s1 symbol pattern 1
+@    s1 symbol fill color 68
+@    s1 symbol fill pattern 1
+@    s1 symbol linewidth 1.0
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 3
+@    s1 line linewidth 2.5
+@    s1 line color 68
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 68
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_lt_pc-bond-fit.dat"
+@    s1 legend  "O(N^1.52)"
+@    s2 hidden false
+@    s2 type xy
+@    s2 symbol 0
+@    s2 symbol size 0.680000
+@    s2 symbol color 104
+@    s2 symbol pattern 1
+@    s2 symbol fill color 104
+@    s2 symbol fill pattern 1
+@    s2 symbol linewidth 1.0
+@    s2 symbol linestyle 1
+@    s2 symbol char 65
+@    s2 symbol char font 0
+@    s2 symbol skip 0
+@    s2 line type 1
+@    s2 line linestyle 3
+@    s2 line linewidth 2.5
+@    s2 line color 104
+@    s2 line pattern 1
+@    s2 baseline type 0
+@    s2 baseline off
+@    s2 dropline off
+@    s2 fill type 0
+@    s2 fill rule 0
+@    s2 fill color 1
+@    s2 fill pattern 1
+@    s2 avalue off
+@    s2 avalue type 2
+@    s2 avalue char size 1.000000
+@    s2 avalue font 0
+@    s2 avalue color 1
+@    s2 avalue rot 0
+@    s2 avalue format general
+@    s2 avalue prec 3
+@    s2 avalue prepend ""
+@    s2 avalue append ""
+@    s2 avalue offset 0.000000 , 0.000000
+@    s2 errorbar on
+@    s2 errorbar place both
+@    s2 errorbar color 104
+@    s2 errorbar pattern 1
+@    s2 errorbar size 1.000000
+@    s2 errorbar linewidth 1.0
+@    s2 errorbar linestyle 1
+@    s2 errorbar riser linewidth 1.0
+@    s2 errorbar riser linestyle 1
+@    s2 errorbar riser clip off
+@    s2 errorbar riser clip length 0.100000
+@    s2 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_lt_pc-coordination-fit.dat"
+@    s2 legend  "O(N^2.08)"
+@    s3 hidden false
+@    s3 type xy
+@    s3 symbol 0
+@    s3 symbol size 0.680000
+@    s3 symbol color 127
+@    s3 symbol pattern 1
+@    s3 symbol fill color 127
+@    s3 symbol fill pattern 1
+@    s3 symbol linewidth 1.0
+@    s3 symbol linestyle 1
+@    s3 symbol char 65
+@    s3 symbol char font 0
+@    s3 symbol skip 0
+@    s3 line type 1
+@    s3 line linestyle 3
+@    s3 line linewidth 2.5
+@    s3 line color 127
+@    s3 line pattern 1
+@    s3 baseline type 0
+@    s3 baseline off
+@    s3 dropline off
+@    s3 fill type 0
+@    s3 fill rule 0
+@    s3 fill color 1
+@    s3 fill pattern 1
+@    s3 avalue off
+@    s3 avalue type 2
+@    s3 avalue char size 1.000000
+@    s3 avalue font 0
+@    s3 avalue color 1
+@    s3 avalue rot 0
+@    s3 avalue format general
+@    s3 avalue prec 3
+@    s3 avalue prepend ""
+@    s3 avalue append ""
+@    s3 avalue offset 0.000000 , 0.000000
+@    s3 errorbar on
+@    s3 errorbar place both
+@    s3 errorbar color 127
+@    s3 errorbar pattern 1
+@    s3 errorbar size 1.000000
+@    s3 errorbar linewidth 1.0
+@    s3 errorbar linestyle 1
+@    s3 errorbar riser linewidth 1.0
+@    s3 errorbar riser linestyle 1
+@    s3 errorbar riser clip off
+@    s3 errorbar riser clip length 0.100000
+@    s3 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_lt_pc-shared-fit.dat"
+@    s3 legend  "O(N^2.03)"
+@g3 on
+@g3 hidden false
+@g3 type XY
+@g3 stacked false
+@g3 bar hgap 0.000000
+@g3 fixedpoint off
+@g3 fixedpoint type 0
+@g3 fixedpoint xy 0.000000, 0.000000
+@g3 fixedpoint format general general
+@g3 fixedpoint prec 6, 6
+@with g3
+@    world 40000, 1, 1000000, 10000
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view 0.150000, 0.150000, 0.680000, 0.550000
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Logarithmic
+@    yaxes scale Logarithmic
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label "Number of nodes"
+@    xaxis  label layout para
+@    xaxis  label place auto
+@    xaxis  label char size 0.980000
+@    xaxis  label font 4
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 10
+@    xaxis  tick minor ticks 9
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 2.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 2.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 1.050000
+@    xaxis  ticklabel font 4
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type none
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label "Execution time [ms]"
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 0.980000
+@    yaxis  label font 4
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 10
+@    yaxis  tick minor ticks 9
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 2.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 2.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 1.050000
+@    yaxis  ticklabel font 4
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type both
+@    yaxis  tick spec 41
+@    yaxis  tick major 0, 1
+@    yaxis  ticklabel 0, "10\S0"
+@    yaxis  tick minor 1, 2
+@    yaxis  tick minor 2, 3
+@    yaxis  tick minor 3, 4
+@    yaxis  tick minor 4, 5
+@    yaxis  tick minor 5, 6
+@    yaxis  tick minor 6, 7
+@    yaxis  tick minor 7, 8
+@    yaxis  tick minor 8, 9
+@    yaxis  tick minor 9, 10
+@    yaxis  tick major 10, 10
+@    yaxis  ticklabel 10, "10\S1"
+@    yaxis  tick minor 11, 20
+@    yaxis  tick minor 12, 30
+@    yaxis  tick minor 13, 40
+@    yaxis  tick minor 14, 50
+@    yaxis  tick minor 15, 60
+@    yaxis  tick minor 16, 70
+@    yaxis  tick minor 17, 80
+@    yaxis  tick minor 18, 90
+@    yaxis  tick minor 19, 100
+@    yaxis  tick major 20, 100
+@    yaxis  ticklabel 20, "10\S2"
+@    yaxis  tick minor 21, 200
+@    yaxis  tick minor 22, 300
+@    yaxis  tick minor 23, 400
+@    yaxis  tick minor 24, 500
+@    yaxis  tick minor 25, 600
+@    yaxis  tick minor 26, 700
+@    yaxis  tick minor 27, 800
+@    yaxis  tick minor 28, 900
+@    yaxis  tick minor 29, 1000
+@    yaxis  tick major 30, 1000
+@    yaxis  ticklabel 30, "10\S3"
+@    yaxis  tick minor 31, 2000
+@    yaxis  tick minor 32, 3000
+@    yaxis  tick minor 33, 4000
+@    yaxis  tick minor 34, 5000
+@    yaxis  tick minor 35, 6000
+@    yaxis  tick minor 36, 7000
+@    yaxis  tick minor 37, 8000
+@    yaxis  tick minor 38, 9000
+@    yaxis  tick minor 39, 10000
+@    yaxis  tick major 40, 10000
+@    yaxis  ticklabel 40, "10\S4"
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend 0.46, 0.322154637
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 0
+@    legend box fill color 0
+@    legend box fill pattern 0
+@    legend font 4
+@    legend char size 0.880000
+@    legend color 1
+@    legend length 6
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 2.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 0
+@    s0 symbol size 0.810000
+@    s0 symbol color 15
+@    s0 symbol pattern 1
+@    s0 symbol fill color 15
+@    s0 symbol fill pattern 1
+@    s0 symbol linewidth 1.5
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 3
+@    s0 line linewidth 2.5
+@    s0 line color 15
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 15
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_gt_pc-distance-fit.dat"
+@    s0 legend  "O(N^2.42)"
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 0
+@    s1 symbol size 0.810000
+@    s1 symbol color 68
+@    s1 symbol pattern 1
+@    s1 symbol fill color 68
+@    s1 symbol fill pattern 1
+@    s1 symbol linewidth 1.5
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 3
+@    s1 line linewidth 2.5
+@    s1 line color 68
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 68
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_gt_pc-bond-fit.dat"
+@    s1 legend  "O(N^2.12)"
+@    s2 hidden false
+@    s2 type xy
+@    s2 symbol 0
+@    s2 symbol size 0.810000
+@    s2 symbol color 104
+@    s2 symbol pattern 1
+@    s2 symbol fill color 104
+@    s2 symbol fill pattern 1
+@    s2 symbol linewidth 1.5
+@    s2 symbol linestyle 1
+@    s2 symbol char 65
+@    s2 symbol char font 0
+@    s2 symbol skip 0
+@    s2 line type 1
+@    s2 line linestyle 3
+@    s2 line linewidth 2.5
+@    s2 line color 104
+@    s2 line pattern 1
+@    s2 baseline type 0
+@    s2 baseline off
+@    s2 dropline off
+@    s2 fill type 0
+@    s2 fill rule 0
+@    s2 fill color 1
+@    s2 fill pattern 1
+@    s2 avalue off
+@    s2 avalue type 2
+@    s2 avalue char size 1.000000
+@    s2 avalue font 0
+@    s2 avalue color 1
+@    s2 avalue rot 0
+@    s2 avalue format general
+@    s2 avalue prec 3
+@    s2 avalue prepend ""
+@    s2 avalue append ""
+@    s2 avalue offset 0.000000 , 0.000000
+@    s2 errorbar on
+@    s2 errorbar place both
+@    s2 errorbar color 104
+@    s2 errorbar pattern 1
+@    s2 errorbar size 1.000000
+@    s2 errorbar linewidth 1.0
+@    s2 errorbar linestyle 1
+@    s2 errorbar riser linewidth 1.0
+@    s2 errorbar riser linestyle 1
+@    s2 errorbar riser clip off
+@    s2 errorbar riser clip length 0.100000
+@    s2 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_gt_pc-coordination-fit.dat"
+@    s2 legend  "O(N^2.16)"
+@    s3 hidden false
+@    s3 type xy
+@    s3 symbol 0
+@    s3 symbol size 0.810000
+@    s3 symbol color 128
+@    s3 symbol pattern 1
+@    s3 symbol fill color 128
+@    s3 symbol fill pattern 1
+@    s3 symbol linewidth 1.5
+@    s3 symbol linestyle 1
+@    s3 symbol char 65
+@    s3 symbol char font 0
+@    s3 symbol skip 0
+@    s3 line type 1
+@    s3 line linestyle 3
+@    s3 line linewidth 2.5
+@    s3 line color 128
+@    s3 line pattern 1
+@    s3 baseline type 0
+@    s3 baseline off
+@    s3 dropline off
+@    s3 fill type 0
+@    s3 fill rule 0
+@    s3 fill color 1
+@    s3 fill pattern 1
+@    s3 avalue off
+@    s3 avalue type 2
+@    s3 avalue char size 1.000000
+@    s3 avalue font 0
+@    s3 avalue color 1
+@    s3 avalue rot 0
+@    s3 avalue format general
+@    s3 avalue prec 3
+@    s3 avalue prepend ""
+@    s3 avalue append ""
+@    s3 avalue offset 0.000000 , 0.000000
+@    s3 errorbar on
+@    s3 errorbar place both
+@    s3 errorbar color 128
+@    s3 errorbar pattern 1
+@    s3 errorbar size 1.000000
+@    s3 errorbar linewidth 1.0
+@    s3 errorbar linestyle 1
+@    s3 errorbar riser linewidth 1.0
+@    s3 errorbar riser linestyle 1
+@    s3 errorbar riser clip off
+@    s3 errorbar riser clip length 0.100000
+@    s3 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/execution_time_s-p_gt_pc-shared-fit.dat"
+@    s3 legend  "O(N^2.16)"
+@g4 on
+@g4 hidden false
+@g4 type XY
+@g4 stacked false
+@g4 bar hgap 0.000000
+@g4 fixedpoint off
+@g4 fixedpoint type 0
+@g4 fixedpoint xy 0.000000, 0.000000
+@g4 fixedpoint format general general
+@g4 fixedpoint prec 6, 6
+@with g4
+@    world 40000, 200.1, 1000000, 1000
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view 0.840000, 0.550000, 1.370000, 0.950000
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Logarithmic
+@    yaxes scale Normal
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label ""
+@    xaxis  label layout para
+@    xaxis  label place auto
+@    xaxis  label char size 1.310000
+@    xaxis  label font 4
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 10
+@    xaxis  tick minor ticks 9
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 2.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 2.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel off
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 1.300000
+@    xaxis  ticklabel font 4
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type none
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label "Memory usage [MB]"
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 0.980000
+@    yaxis  label font 4
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 100
+@    yaxis  tick minor ticks 0
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 2.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 2.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 1.050000
+@    yaxis  ticklabel font 4
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type none
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend 0.89, 0.924928912
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 0
+@    legend box fill color 0
+@    legend box fill pattern 0
+@    legend font 4
+@    legend char size 0.880000
 @    legend color 1
 @    legend length 4
 @    legend vgap 1
@@ -2992,7 +2066,7 @@
 @    s0 hidden false
 @    s0 type xy
 @    s0 symbol 1
-@    s0 symbol size 1.000000
+@    s0 symbol size 0.870000
 @    s0 symbol color 1
 @    s0 symbol pattern 1
 @    s0 symbol fill color 15
@@ -3003,7 +2077,7 @@
 @    s0 symbol char font 0
 @    s0 symbol skip 0
 @    s0 line type 1
-@    s0 line linestyle 0
+@    s0 line linestyle 1
 @    s0 line linewidth 1.0
 @    s0 line color 1
 @    s0 line pattern 1
@@ -3036,15 +2110,15 @@
 @    s0 errorbar riser linestyle 1
 @    s0 errorbar riser clip off
 @    s0 errorbar riser clip length 0.100000
-@    s0 comment "/home/jperradin/repos/nexus/benchmarks/performance/output/bond_strategy/performance_fit_04.dat"
-@    s0 legend  "p = 0.4"
+@    s0 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/memory_mb-p_lt_pc-distance.dat"
+@    s0 legend  "distance"
 @    s1 hidden false
 @    s1 type xy
-@    s1 symbol 1
-@    s1 symbol size 1.000000
+@    s1 symbol 2
+@    s1 symbol size 0.810000
 @    s1 symbol color 1
 @    s1 symbol pattern 1
-@    s1 symbol fill color 104
+@    s1 symbol fill color 68
 @    s1 symbol fill pattern 1
 @    s1 symbol linewidth 1.5
 @    s1 symbol linestyle 1
@@ -3052,7 +2126,7 @@
 @    s1 symbol char font 0
 @    s1 symbol skip 0
 @    s1 line type 1
-@    s1 line linestyle 0
+@    s1 line linestyle 1
 @    s1 line linewidth 1.0
 @    s1 line color 1
 @    s1 line pattern 1
@@ -3085,25 +2159,25 @@
 @    s1 errorbar riser linestyle 1
 @    s1 errorbar riser clip off
 @    s1 errorbar riser clip length 0.100000
-@    s1 comment "/home/jperradin/repos/nexus/benchmarks/performance/output/bond_strategy/performance_fit_06.dat"
-@    s1 legend  "p = 0.6"
+@    s1 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/memory_mb-p_lt_pc-bond.dat"
+@    s1 legend  "bond"
 @    s2 hidden false
 @    s2 type xy
-@    s2 symbol 0
-@    s2 symbol size 1.000000
-@    s2 symbol color 15
+@    s2 symbol 3
+@    s2 symbol size 0.990000
+@    s2 symbol color 1
 @    s2 symbol pattern 1
-@    s2 symbol fill color 15
-@    s2 symbol fill pattern 0
-@    s2 symbol linewidth 1.0
+@    s2 symbol fill color 104
+@    s2 symbol fill pattern 1
+@    s2 symbol linewidth 1.5
 @    s2 symbol linestyle 1
 @    s2 symbol char 65
 @    s2 symbol char font 0
 @    s2 symbol skip 0
 @    s2 line type 1
 @    s2 line linestyle 1
-@    s2 line linewidth 2.0
-@    s2 line color 15
+@    s2 line linewidth 1.0
+@    s2 line color 1
 @    s2 line pattern 1
 @    s2 baseline type 0
 @    s2 baseline off
@@ -3125,7 +2199,7 @@
 @    s2 avalue offset 0.000000 , 0.000000
 @    s2 errorbar on
 @    s2 errorbar place both
-@    s2 errorbar color 15
+@    s2 errorbar color 1
 @    s2 errorbar pattern 1
 @    s2 errorbar size 1.000000
 @    s2 errorbar linewidth 1.0
@@ -3134,25 +2208,25 @@
 @    s2 errorbar riser linestyle 1
 @    s2 errorbar riser clip off
 @    s2 errorbar riser clip length 0.100000
-@    s2 comment "performance.agr"
-@    s2 legend  "O(N^1.43)"
+@    s2 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/memory_mb-p_lt_pc-coordination.dat"
+@    s2 legend  "ccordination"
 @    s3 hidden false
 @    s3 type xy
-@    s3 symbol 0
-@    s3 symbol size 1.000000
-@    s3 symbol color 104
+@    s3 symbol 4
+@    s3 symbol size 0.990000
+@    s3 symbol color 1
 @    s3 symbol pattern 1
-@    s3 symbol fill color 104
-@    s3 symbol fill pattern 0
-@    s3 symbol linewidth 1.0
+@    s3 symbol fill color 128
+@    s3 symbol fill pattern 1
+@    s3 symbol linewidth 1.5
 @    s3 symbol linestyle 1
 @    s3 symbol char 65
 @    s3 symbol char font 0
 @    s3 symbol skip 0
 @    s3 line type 1
 @    s3 line linestyle 1
-@    s3 line linewidth 2.0
-@    s3 line color 104
+@    s3 line linewidth 1.0
+@    s3 line color 1
 @    s3 line pattern 1
 @    s3 baseline type 0
 @    s3 baseline off
@@ -3174,7 +2248,7 @@
 @    s3 avalue offset 0.000000 , 0.000000
 @    s3 errorbar on
 @    s3 errorbar place both
-@    s3 errorbar color 104
+@    s3 errorbar color 1
 @    s3 errorbar pattern 1
 @    s3 errorbar size 1.000000
 @    s3 errorbar linewidth 1.0
@@ -3183,141 +2257,1323 @@
 @    s3 errorbar riser linestyle 1
 @    s3 errorbar riser clip off
 @    s3 errorbar riser clip length 0.100000
-@    s3 comment "performance.agr"
-@    s3 legend  "O(N^2.16)"
+@    s3 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/memory_mb-p_lt_pc-shared.dat"
+@    s3 legend  "shared"
+@g5 on
+@g5 hidden false
+@g5 type XY
+@g5 stacked false
+@g5 bar hgap 0.000000
+@g5 fixedpoint off
+@g5 fixedpoint type 0
+@g5 fixedpoint xy 0.000000, 0.000000
+@g5 fixedpoint format general general
+@g5 fixedpoint prec 6, 6
+@with g5
+@    world 40000, 200, 1000000, 1000
+@    stack world 0, 0, 0, 0
+@    znorm 1
+@    view 0.840000, 0.150000, 1.370000, 0.550000
+@    title ""
+@    title font 0
+@    title size 1.500000
+@    title color 1
+@    subtitle ""
+@    subtitle font 0
+@    subtitle size 1.000000
+@    subtitle color 1
+@    xaxes scale Logarithmic
+@    yaxes scale Normal
+@    xaxes invert off
+@    yaxes invert off
+@    xaxis  on
+@    xaxis  type zero false
+@    xaxis  offset 0.000000 , 0.000000
+@    xaxis  bar on
+@    xaxis  bar color 1
+@    xaxis  bar linestyle 1
+@    xaxis  bar linewidth 1.0
+@    xaxis  label "Number of nodes"
+@    xaxis  label layout para
+@    xaxis  label place auto
+@    xaxis  label char size 0.980000
+@    xaxis  label font 4
+@    xaxis  label color 1
+@    xaxis  label place normal
+@    xaxis  tick on
+@    xaxis  tick major 10
+@    xaxis  tick minor ticks 9
+@    xaxis  tick default 6
+@    xaxis  tick place rounded true
+@    xaxis  tick in
+@    xaxis  tick major size 1.000000
+@    xaxis  tick major color 1
+@    xaxis  tick major linewidth 2.0
+@    xaxis  tick major linestyle 1
+@    xaxis  tick major grid off
+@    xaxis  tick minor color 1
+@    xaxis  tick minor linewidth 2.0
+@    xaxis  tick minor linestyle 1
+@    xaxis  tick minor grid off
+@    xaxis  tick minor size 0.500000
+@    xaxis  ticklabel on
+@    xaxis  ticklabel format general
+@    xaxis  ticklabel prec 5
+@    xaxis  ticklabel formula ""
+@    xaxis  ticklabel append ""
+@    xaxis  ticklabel prepend ""
+@    xaxis  ticklabel angle 0
+@    xaxis  ticklabel skip 0
+@    xaxis  ticklabel stagger 0
+@    xaxis  ticklabel place normal
+@    xaxis  ticklabel offset auto
+@    xaxis  ticklabel offset 0.000000 , 0.010000
+@    xaxis  ticklabel start type auto
+@    xaxis  ticklabel start 0.000000
+@    xaxis  ticklabel stop type auto
+@    xaxis  ticklabel stop 0.000000
+@    xaxis  ticklabel char size 1.050000
+@    xaxis  ticklabel font 4
+@    xaxis  ticklabel color 1
+@    xaxis  tick place both
+@    xaxis  tick spec type none
+@    yaxis  on
+@    yaxis  type zero false
+@    yaxis  offset 0.000000 , 0.000000
+@    yaxis  bar on
+@    yaxis  bar color 1
+@    yaxis  bar linestyle 1
+@    yaxis  bar linewidth 1.0
+@    yaxis  label "Memory usage [MB]"
+@    yaxis  label layout para
+@    yaxis  label place auto
+@    yaxis  label char size 0.980000
+@    yaxis  label font 4
+@    yaxis  label color 1
+@    yaxis  label place normal
+@    yaxis  tick on
+@    yaxis  tick major 100
+@    yaxis  tick minor ticks 0
+@    yaxis  tick default 6
+@    yaxis  tick place rounded true
+@    yaxis  tick in
+@    yaxis  tick major size 1.000000
+@    yaxis  tick major color 1
+@    yaxis  tick major linewidth 2.0
+@    yaxis  tick major linestyle 1
+@    yaxis  tick major grid off
+@    yaxis  tick minor color 1
+@    yaxis  tick minor linewidth 2.0
+@    yaxis  tick minor linestyle 1
+@    yaxis  tick minor grid off
+@    yaxis  tick minor size 0.500000
+@    yaxis  ticklabel on
+@    yaxis  ticklabel format general
+@    yaxis  ticklabel prec 5
+@    yaxis  ticklabel formula ""
+@    yaxis  ticklabel append ""
+@    yaxis  ticklabel prepend ""
+@    yaxis  ticklabel angle 0
+@    yaxis  ticklabel skip 0
+@    yaxis  ticklabel stagger 0
+@    yaxis  ticklabel place normal
+@    yaxis  ticklabel offset auto
+@    yaxis  ticklabel offset 0.000000 , 0.010000
+@    yaxis  ticklabel start type auto
+@    yaxis  ticklabel start 0.000000
+@    yaxis  ticklabel stop type auto
+@    yaxis  ticklabel stop 0.000000
+@    yaxis  ticklabel char size 1.050000
+@    yaxis  ticklabel font 4
+@    yaxis  ticklabel color 1
+@    yaxis  tick place both
+@    yaxis  tick spec type none
+@    altxaxis  off
+@    altyaxis  off
+@    legend on
+@    legend loctype view
+@    legend 0.89, 0.92745098
+@    legend box color 1
+@    legend box pattern 1
+@    legend box linewidth 1.0
+@    legend box linestyle 0
+@    legend box fill color 0
+@    legend box fill pattern 0
+@    legend font 4
+@    legend char size 1.210000
+@    legend color 1
+@    legend length 6
+@    legend vgap 1
+@    legend hgap 1
+@    legend invert false
+@    frame type 0
+@    frame linestyle 1
+@    frame linewidth 2.0
+@    frame color 1
+@    frame pattern 1
+@    frame background color 0
+@    frame background pattern 0
+@    s0 hidden false
+@    s0 type xy
+@    s0 symbol 1
+@    s0 symbol size 0.810000
+@    s0 symbol color 1
+@    s0 symbol pattern 1
+@    s0 symbol fill color 15
+@    s0 symbol fill pattern 1
+@    s0 symbol linewidth 1.5
+@    s0 symbol linestyle 1
+@    s0 symbol char 65
+@    s0 symbol char font 0
+@    s0 symbol skip 0
+@    s0 line type 1
+@    s0 line linestyle 1
+@    s0 line linewidth 1.0
+@    s0 line color 1
+@    s0 line pattern 1
+@    s0 baseline type 0
+@    s0 baseline off
+@    s0 dropline off
+@    s0 fill type 0
+@    s0 fill rule 0
+@    s0 fill color 1
+@    s0 fill pattern 1
+@    s0 avalue off
+@    s0 avalue type 2
+@    s0 avalue char size 1.000000
+@    s0 avalue font 0
+@    s0 avalue color 1
+@    s0 avalue rot 0
+@    s0 avalue format general
+@    s0 avalue prec 3
+@    s0 avalue prepend ""
+@    s0 avalue append ""
+@    s0 avalue offset 0.000000 , 0.000000
+@    s0 errorbar on
+@    s0 errorbar place both
+@    s0 errorbar color 1
+@    s0 errorbar pattern 1
+@    s0 errorbar size 1.000000
+@    s0 errorbar linewidth 1.0
+@    s0 errorbar linestyle 1
+@    s0 errorbar riser linewidth 1.0
+@    s0 errorbar riser linestyle 1
+@    s0 errorbar riser clip off
+@    s0 errorbar riser clip length 0.100000
+@    s0 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/memory_mb-p_gt_pc-distance.dat"
+@    s0 legend  ""
+@    s1 hidden false
+@    s1 type xy
+@    s1 symbol 2
+@    s1 symbol size 0.810000
+@    s1 symbol color 1
+@    s1 symbol pattern 1
+@    s1 symbol fill color 68
+@    s1 symbol fill pattern 1
+@    s1 symbol linewidth 1.5
+@    s1 symbol linestyle 1
+@    s1 symbol char 65
+@    s1 symbol char font 0
+@    s1 symbol skip 0
+@    s1 line type 1
+@    s1 line linestyle 1
+@    s1 line linewidth 1.0
+@    s1 line color 1
+@    s1 line pattern 1
+@    s1 baseline type 0
+@    s1 baseline off
+@    s1 dropline off
+@    s1 fill type 0
+@    s1 fill rule 0
+@    s1 fill color 1
+@    s1 fill pattern 1
+@    s1 avalue off
+@    s1 avalue type 2
+@    s1 avalue char size 1.000000
+@    s1 avalue font 0
+@    s1 avalue color 1
+@    s1 avalue rot 0
+@    s1 avalue format general
+@    s1 avalue prec 3
+@    s1 avalue prepend ""
+@    s1 avalue append ""
+@    s1 avalue offset 0.000000 , 0.000000
+@    s1 errorbar on
+@    s1 errorbar place both
+@    s1 errorbar color 1
+@    s1 errorbar pattern 1
+@    s1 errorbar size 1.000000
+@    s1 errorbar linewidth 1.0
+@    s1 errorbar linestyle 1
+@    s1 errorbar riser linewidth 1.0
+@    s1 errorbar riser linestyle 1
+@    s1 errorbar riser clip off
+@    s1 errorbar riser clip length 0.100000
+@    s1 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/memory_mb-p_gt_pc-bond.dat"
+@    s1 legend  ""
+@    s2 hidden false
+@    s2 type xy
+@    s2 symbol 3
+@    s2 symbol size 0.990000
+@    s2 symbol color 1
+@    s2 symbol pattern 1
+@    s2 symbol fill color 104
+@    s2 symbol fill pattern 1
+@    s2 symbol linewidth 1.5
+@    s2 symbol linestyle 1
+@    s2 symbol char 65
+@    s2 symbol char font 0
+@    s2 symbol skip 0
+@    s2 line type 1
+@    s2 line linestyle 1
+@    s2 line linewidth 1.0
+@    s2 line color 1
+@    s2 line pattern 1
+@    s2 baseline type 0
+@    s2 baseline off
+@    s2 dropline off
+@    s2 fill type 0
+@    s2 fill rule 0
+@    s2 fill color 1
+@    s2 fill pattern 1
+@    s2 avalue off
+@    s2 avalue type 2
+@    s2 avalue char size 1.000000
+@    s2 avalue font 0
+@    s2 avalue color 1
+@    s2 avalue rot 0
+@    s2 avalue format general
+@    s2 avalue prec 3
+@    s2 avalue prepend ""
+@    s2 avalue append ""
+@    s2 avalue offset 0.000000 , 0.000000
+@    s2 errorbar on
+@    s2 errorbar place both
+@    s2 errorbar color 1
+@    s2 errorbar pattern 1
+@    s2 errorbar size 1.000000
+@    s2 errorbar linewidth 1.0
+@    s2 errorbar linestyle 1
+@    s2 errorbar riser linewidth 1.0
+@    s2 errorbar riser linestyle 1
+@    s2 errorbar riser clip off
+@    s2 errorbar riser clip length 0.100000
+@    s2 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/memory_mb-p_gt_pc-coordination.dat"
+@    s2 legend  ""
+@    s3 hidden false
+@    s3 type xy
+@    s3 symbol 4
+@    s3 symbol size 0.990000
+@    s3 symbol color 1
+@    s3 symbol pattern 1
+@    s3 symbol fill color 128
+@    s3 symbol fill pattern 1
+@    s3 symbol linewidth 1.5
+@    s3 symbol linestyle 1
+@    s3 symbol char 65
+@    s3 symbol char font 0
+@    s3 symbol skip 0
+@    s3 line type 1
+@    s3 line linestyle 1
+@    s3 line linewidth 1.0
+@    s3 line color 1
+@    s3 line pattern 1
+@    s3 baseline type 0
+@    s3 baseline off
+@    s3 dropline off
+@    s3 fill type 0
+@    s3 fill rule 0
+@    s3 fill color 1
+@    s3 fill pattern 1
+@    s3 avalue off
+@    s3 avalue type 2
+@    s3 avalue char size 1.000000
+@    s3 avalue font 0
+@    s3 avalue color 1
+@    s3 avalue rot 0
+@    s3 avalue format general
+@    s3 avalue prec 3
+@    s3 avalue prepend ""
+@    s3 avalue append ""
+@    s3 avalue offset 0.000000 , 0.000000
+@    s3 errorbar on
+@    s3 errorbar place both
+@    s3 errorbar color 1
+@    s3 errorbar pattern 1
+@    s3 errorbar size 1.000000
+@    s3 errorbar linewidth 1.0
+@    s3 errorbar linestyle 1
+@    s3 errorbar riser linewidth 1.0
+@    s3 errorbar riser linestyle 1
+@    s3 errorbar riser clip off
+@    s3 errorbar riser clip length 0.100000
+@    s3 comment "/home/jperradin/Documents/repos/nexus/benchmarks/performance/export/memory_mb-p_gt_pc-shared.dat"
+@    s3 legend  ""
 @target G0.S0
 @type xy
-50000 3691.5247
-86400 7442.3068
-137200 15514.579
-204800 31136.986
-291600 62565.891
-400000 113722.54
+50000 3.2241364
+86400 7.2859087
+137200 15.215924
+204800 30.585987
+291600 59.123303
+400000 108.63351
 &
 @target G0.S1
 @type xy
-75000 41476.702
-129600 133893.98
-205800 393265.71
-307200 1245615.2
-437400 3127409.6
-600000 6044673.8
+50000 2.2686617
+86400 4.4664841
+137200 9.4435086
+204800 17.077843
+291600 29.89036
+400000 53.737731
 &
 @target G0.S2
 @type xy
-50000 3163.9095
-137500 17143.359
-225000 39027.067
-312500 67558.677
-400000 102039.25
+50000 19.645631
+86400 54.092489
+137200 148.23044
+204800 359.16018
+291600 737.97832
+400000 1442.0972
 &
 @target G0.S3
 @type xy
-75000 37084.74
-206250 445570.47
-337500 1494706
-468750 3351050.8
-600000 6147017
+50000 1.8844755
+86400 4.1022556
+137200 8.6616502
+204800 24.315195
+291600 61.885116
+400000 113.96366
+&
+@target G1.S0
+@type xy
+75000 42.640164
+129600 135.21532
+205800 380.82841
+307200 1228.1186
+437400 2832.6569
+600000 6142.1607
+&
+@target G1.S1
+@type xy
+75000 12.380985
+129600 34.46074
+205800 84.359509
+307200 200.40562
+437400 449.98376
+600000 1052.9485
+&
+@target G1.S2
+@type xy
+75000 42.219809
+129600 121.25304
+205800 338.67564
+307200 779.45609
+437400 1619.5397
+600000 4059.9562
+&
+@target G1.S3
+@type xy
+75000 35.039533
+129600 119.17105
+205800 307.78853
+307200 713.13541
+437400 1537.4584
+600000 3295.0806
 &
 @target G2.S0
 @type xy
-50000 18092.81
-86400 55064.837
-137200 151441.66
-204800 369771.84
-291600 796771.44
-400000 1609184.5
+50000 2.9782905
+51061.33 3.0860204
+52145.189 3.1976471
+53252.054 3.3133115
+54382.415 3.4331598
+55536.769 3.5573431
+56715.626 3.6860184
+57919.506 3.819348
+59148.941 3.9575005
+60404.472 4.1006501
+61686.654 4.2489778
+62996.052 4.4026706
+64333.245 4.5619229
+65698.821 4.7269355
+67093.384 4.897917
+68517.549 5.0750831
+69971.944 5.2586577
+71457.211 5.4488725
+72974.005 5.6459676
+74522.996 5.8501921
+76104.866 6.0618036
+77720.314 6.2810696
+79370.053 6.5082668
+81054.809 6.7436821
+82775.328 6.9876127
+84532.367 7.2403668
+86326.703 7.5022634
+88159.126 7.7736333
+90030.445 8.0548191
+91941.485 8.3461759
+93893.091 8.6480715
+95886.123 8.9608873
+97921.46 9.2850181
+100000 9.6208733
+102122.66 9.968877
+104290.38 10.329469
+106504.11 10.703103
+108764.83 11.090253
+111073.54 11.491407
+113431.25 11.907071
+115839.01 12.33777
+118297.88 12.784049
+120808.94 13.24647
+123373.31 13.725618
+125992.1 14.222097
+128666.49 14.736535
+131397.64 15.269581
+134186.77 15.821908
+137035.1 16.394214
+139943.89 16.987221
+142914.42 17.601679
+145948.01 18.238362
+149045.99 18.898075
+152209.73 19.581651
+155440.63 20.289953
+158740.11 21.023876
+162109.62 21.784346
+165550.66 22.572324
+169064.73 23.388804
+172653.41 24.234818
+176318.25 25.111433
+180060.89 26.019757
+183882.97 26.960937
+187786.18 27.93616
+191772.25 28.94666
+195842.92 29.993711
+200000 31.078635
+204245.32 32.202803
+208580.76 33.367635
+213008.22 34.5746
+217529.66 35.825223
+222147.08 37.121083
+226862.5 38.463817
+231678.03 39.85512
+236595.76 41.296749
+241617.89 42.790524
+246746.62 44.338332
+251984.21 45.942126
+257332.98 47.603932
+262795.29 49.325849
+268373.54 51.11005
+274070.2 52.95879
+279887.78 54.874401
+285828.84 56.859303
+291896.02 58.916003
+298091.98 61.047097
+304419.46 63.255276
+310881.26 65.543329
+317480.21 67.914145
+324219.24 70.370717
+331101.31 72.916148
+338129.47 75.553651
+345306.81 78.286558
+352636.5 81.118318
+360121.78 84.052509
+367765.94 87.092834
+375572.36 90.243132
+383544.49 93.507383
+391685.84 96.889707
+400000 100.39438
 &
 @target G2.S1
 @type xy
-75000 43176.532
-129600 132363.46
-205800 361589.69
-307200 810000.84
-437400 1976474.5
-600000 4203662.1
+50000 2.0850419
+51061.33 2.1528297
+52145.189 2.2228214
+53252.054 2.2950886
+54382.415 2.3697053
+55536.769 2.446748
+56715.626 2.5262954
+57919.506 2.608429
+59148.941 2.6932328
+60404.472 2.7807938
+61686.654 2.8712015
+62996.052 2.9645485
+64333.245 3.0609304
+65698.821 3.1604458
+67093.384 3.2631965
+68517.549 3.3692879
+69971.944 3.4788284
+71457.211 3.5919302
+72974.005 3.7087092
+74522.996 3.8292848
+76104.866 3.9537805
+77720.314 4.0823238
+79370.053 4.2150461
+81054.809 4.3520835
+82775.328 4.4935762
+84532.367 4.639669
+86326.703 4.7905115
+88159.126 4.9462581
+90030.445 5.1070683
+91941.485 5.2731066
+93893.091 5.4445431
+95886.123 5.6215532
+97921.46 5.8043182
+100000 5.9930252
+102122.66 6.1878673
+104290.38 6.389044
+106504.11 6.5967613
+108764.83 6.8112317
+111073.54 7.0326749
+113431.25 7.2613176
+115839.01 7.4973938
+118297.88 7.7411451
+120808.94 7.9928212
+123373.31 8.2526796
+125992.1 8.5209864
+128666.49 8.7980163
+131397.64 9.0840528
+134186.77 9.3793888
+137035.1 9.6843266
+139943.89 9.9991783
+142914.42 10.324266
+145948.01 10.659924
+149045.99 11.006493
+152209.73 11.364331
+155440.63 11.733802
+158740.11 12.115285
+162109.62 12.509171
+165550.66 12.915863
+169064.73 13.335776
+172653.41 13.769342
+176318.25 14.217004
+180060.89 14.67922
+183882.97 15.156463
+187786.18 15.649222
+191772.25 16.158001
+195842.92 16.683322
+200000 17.225721
+204245.32 17.785755
+208580.76 18.363996
+213008.22 18.961037
+217529.66 19.577488
+222147.08 20.213981
+226862.5 20.871167
+231678.03 21.54972
+236595.76 22.250333
+241617.89 22.973724
+246746.62 23.720634
+251984.21 24.491827
+257332.98 25.288092
+262795.29 26.110246
+268373.54 26.959128
+274070.2 27.835609
+279887.78 28.740586
+285828.84 29.674985
+291896.02 30.639763
+298091.98 31.635907
+304419.46 32.664437
+310881.26 33.726406
+317480.21 34.822901
+324219.24 35.955045
+331101.31 37.123997
+338129.47 38.330953
+345306.81 39.577149
+352636.5 40.86386
+360121.78 42.192405
+367765.94 43.564142
+375572.36 44.980477
+383544.49 46.442859
+391685.84 47.952785
+400000 49.511801
 &
 @target G2.S2
 @type xy
-50000 17382.594
-137500 155816.47
-225000 453228.5
-312500 923907.8
-400000 1577851.3
+50000 18.528813
+51061.33 19.359239
+52145.189 20.226883
+53252.054 21.133414
+54382.415 22.080573
+55536.769 23.070183
+56715.626 24.104145
+57919.506 25.184447
+59148.941 26.313166
+60404.472 27.492472
+61686.654 28.724632
+62996.052 30.012015
+64333.245 31.357097
+65698.821 32.762463
+67093.384 34.230814
+68517.549 35.764974
+69971.944 37.367892
+71457.211 39.04265
+72974.005 40.792467
+74522.996 42.620708
+76104.866 44.530888
+77720.314 46.526677
+79370.053 48.611915
+81054.809 50.790608
+82775.328 53.066947
+84532.367 55.445307
+86326.703 57.93026
+88159.126 60.526584
+90030.445 63.239271
+91941.485 66.073535
+93893.091 69.034825
+95886.123 72.128835
+97921.46 75.361512
+100000 78.739072
+102122.66 82.268007
+104290.38 85.955103
+106504.11 89.807448
+108764.83 93.832447
+111073.54 98.037839
+113431.25 102.43171
+115839.01 107.0225
+118297.88 111.81905
+120808.94 116.83057
+123373.31 122.06669
+125992.1 127.53749
+128666.49 133.25347
+131397.64 139.22564
+134186.77 145.46547
+137035.1 151.98496
+139943.89 158.79663
+142914.42 165.9136
+145948.01 173.34953
+149045.99 181.11873
+152209.73 189.23612
+155440.63 197.71733
+158740.11 206.57864
+162109.62 215.83711
+165550.66 225.51051
+169064.73 235.61747
+172653.41 246.17739
+176318.25 257.2106
+180060.89 268.73829
+183882.97 280.78263
+187786.18 293.36677
+191772.25 306.51491
+195842.92 320.25233
+200000 334.60543
+204245.32 349.60181
+208580.76 365.2703
+213008.22 381.64102
+217529.66 398.74545
+222147.08 416.61646
+226862.5 435.28842
+231678.03 454.79722
+236595.76 475.18036
+241617.89 496.47705
+246746.62 518.7282
+251984.21 541.97662
+257332.98 566.26698
+262795.29 591.64599
+268373.54 618.16244
+274070.2 645.8673
+279887.78 674.81385
+285828.84 705.05772
+291896.02 736.65707
+298091.98 769.67264
+304419.46 804.16791
+310881.26 840.20919
+317480.21 877.86577
+324219.24 917.21004
+331101.31 958.31765
+338129.47 1001.2676
+345306.81 1046.1425
+352636.5 1093.0287
+360121.78 1142.0161
+367765.94 1193.1991
+375572.36 1246.676
+383544.49 1302.5497
+391685.84 1360.9275
+400000 1421.9217
 &
 @target G2.S3
 @type xy
-75000 40547.247
-206250 372274.71
-337500 1095549.7
-468750 2250722
-600000 3866322
+50000 1.4948411
+51061.33 1.5600619
+52145.189 1.6281283
+53252.054 1.6991645
+54382.415 1.7733001
+55536.769 1.8506702
+56715.626 1.931416
+57919.506 2.0156849
+59148.941 2.1036304
+60404.472 2.195413
+61686.654 2.2912002
+62996.052 2.3911666
+64333.245 2.4954947
+65698.821 2.6043746
+67093.384 2.718005
+68517.549 2.8365932
+69971.944 2.9603554
+71457.211 3.0895175
+72974.005 3.224315
+74522.996 3.3649938
+76104.866 3.5118104
+77720.314 3.6650328
+79370.053 3.8249404
+81054.809 3.9918248
+82775.328 4.1659905
+84532.367 4.3477551
+86326.703 4.5374503
+88159.126 4.7354219
+90030.445 4.9420312
+91941.485 5.157655
+93893.091 5.3826865
+95886.123 5.6175363
+97921.46 5.8626328
+100000 6.1184229
+102122.66 6.3853734
+104290.38 6.663971
+106504.11 6.954724
+108764.83 7.2581628
+111073.54 7.5748408
+113431.25 7.9053356
+115839.01 8.2502501
+118297.88 8.6102134
+120808.94 8.9858821
+123373.31 9.3779415
+125992.1 9.7871067
+128666.49 10.214124
+131397.64 10.659772
+134186.77 11.124864
+137035.1 11.610249
+139943.89 12.116811
+142914.42 12.645475
+145948.01 13.197204
+149045.99 13.773006
+152209.73 14.373931
+155440.63 15.001074
+158740.11 15.655579
+162109.62 16.338642
+165550.66 17.051506
+169064.73 17.795474
+172653.41 18.571901
+176318.25 19.382204
+180060.89 20.227861
+183882.97 21.110415
+187786.18 22.031475
+191772.25 22.992721
+195842.92 23.995907
+200000 25.042863
+204245.32 26.135498
+208580.76 27.275805
+213008.22 28.465865
+217529.66 29.707847
+222147.08 31.004018
+226862.5 32.356742
+231678.03 33.768486
+236595.76 35.241825
+241617.89 36.779447
+246746.62 38.384156
+251984.21 40.05888
+257332.98 41.806672
+262795.29 43.630722
+268373.54 45.534357
+274070.2 47.521048
+279887.78 49.59442
+285828.84 51.758254
+291896.02 54.016497
+298091.98 56.373269
+304419.46 58.832868
+310881.26 61.399781
+317480.21 64.07869
+324219.24 66.874482
+331101.31 69.792255
+338129.47 72.837333
+345306.81 76.015269
+352636.5 79.33186
+360121.78 82.793156
+367765.94 86.405471
+375572.36 90.175393
+383544.49 94.109799
+391685.84 98.215866
+400000 102.50108
 &
 @target G3.S0
 @type xy
-50000 2765.4738
-86400 6294.677
-137200 13236.95
-204800 36668.919
-291600 76833.782
-400000 145149.62
+75000 38.331641
+76591.995 40.334327
+78217.784 42.441646
+79878.082 44.659064
+81573.622 46.992334
+83305.153 49.447509
+85073.439 52.030957
+86879.26 54.749381
+88723.411 57.609833
+90606.708 60.619733
+92529.981 63.786889
+94494.079 67.119516
+96499.867 70.626262
+98548.232 74.316221
+100640.08 78.198968
+102776.32 82.284573
+104957.92 86.583636
+107185.82 91.107309
+109461.01 95.867328
+111784.49 100.87604
+114157.3 106.14644
+116580.47 111.69219
+119055.08 117.5277
+121582.21 123.66808
+124162.99 130.12928
+126798.55 136.92805
+129490.05 144.08203
+132238.69 151.60978
+135045.67 159.53083
+137912.23 167.86572
+140839.64 176.63608
+143829.18 185.86466
+146882.19 195.5754
+150000 205.79349
+153183.99 216.54543
+156435.57 227.85913
+159756.16 239.76392
+163147.24 252.29069
+166610.31 265.47194
+170146.88 279.34186
+173758.52 293.93644
+177446.82 309.29353
+181213.42 325.45296
+185059.96 342.45667
+188988.16 360.34876
+192999.73 379.17564
+197096.46 398.98616
+201280.15 419.8317
+205552.65 441.76635
+209915.83 464.847
+214371.63 489.13353
+218922.02 514.68894
+223568.99 541.57952
+228314.6 569.87504
+233160.94 599.64889
+238110.16 630.97831
+243164.43 663.94459
+248325.98 698.63322
+253597.1 735.13421
+258980.11 773.54224
+264477.38 813.95695
+270091.33 856.48317
+275824.46 901.23124
+281679.27 948.31722
+287658.37 997.86327
+293764.38 1049.9979
+300000 1104.8564
+306367.98 1162.581
+312871.13 1223.3216
+319512.33 1287.2356
+326294.49 1354.4889
+333220.61 1425.2559
+340293.76 1499.7202
+347517.04 1578.075
+354893.65 1660.5236
+362426.83 1747.2797
+370119.92 1838.5686
+377976.32 1934.627
+385999.47 2035.7041
+394192.93 2142.062
+402560.31 2253.9768
+411105.3 2371.7387
+419831.67 2495.6532
+428743.27 2626.0419
+437844.03 2763.2428
+447137.97 2907.6119
+456629.2 3059.5239
+466321.88 3219.3726
+476220.32 3387.5729
+486328.86 3564.561
+496651.97 3750.796
+507194.2 3946.7612
+517960.22 4152.9648
+528954.75 4369.9417
+540182.67 4598.255
+551648.91 4838.4967
+563358.55 5091.2901
+575316.74 5357.2911
+587528.76 5637.1897
+600000 5931.7119
 &
 @target G3.S1
 @type xy
-75000 46774.722
-129600 149560.33
-205800 391936.04
-307200 888249.44
-437400 1966267.6
-600000 4389000.3
+75000 11.09851
+76591.995 11.603303
+78217.784 12.131056
+79878.082 12.682812
+81573.622 13.259663
+83305.153 13.862752
+85073.439 14.493271
+86879.26 15.152467
+88723.411 15.841646
+90606.708 16.56217
+92529.981 17.315467
+94494.079 18.103025
+96499.867 18.926404
+98548.232 19.787232
+100640.08 20.687214
+102776.32 21.628129
+104957.92 22.61184
+107185.82 23.640293
+109461.01 24.715523
+111784.49 25.839658
+114157.3 27.014921
+116580.47 28.243639
+119055.08 29.528243
+121582.21 30.871274
+124162.99 32.27539
+126798.55 33.74337
+129490.05 35.278118
+132238.69 36.88267
+135045.67 38.560203
+137912.23 40.314034
+140839.64 42.147635
+143829.18 44.064633
+146882.19 46.068822
+150000 48.164168
+153183.99 50.354815
+156435.57 52.6451
+159756.16 55.039554
+163147.24 57.542915
+166610.31 60.160136
+170146.88 62.896396
+173758.52 65.757109
+177446.82 68.747936
+181213.42 71.874794
+185059.96 75.143871
+188988.16 78.561635
+192999.73 82.134849
+197096.46 85.870583
+201280.15 89.77623
+205552.65 93.859517
+209915.83 98.128523
+214371.63 102.5917
+218922.02 107.25787
+223568.99 112.13627
+228314.6 117.23656
+233160.94 122.56882
+238110.16 128.14361
+243164.43 133.97196
+248325.98 140.0654
+253597.1 146.43599
+258980.11 153.09633
+264477.38 160.0596
+270091.33 167.33958
+275824.46 174.95067
+281679.27 182.90794
+287658.37 191.22714
+293764.38 199.92471
+300000 209.01787
+306367.98 218.52462
+312871.13 228.46376
+319512.33 238.85496
+326294.49 249.71879
+333220.61 261.07673
+340293.76 272.95127
+347517.04 285.3659
+354893.65 298.34518
+362426.83 311.91479
+370119.92 326.1016
+377976.32 340.93365
+385999.47 356.44032
+394192.93 372.65227
+402560.31 389.60159
+411105.3 407.32182
+419831.67 425.84801
+428743.27 445.21683
+437844.03 465.4666
+447137.97 486.63739
+456629.2 508.77109
+466321.88 531.9115
+476220.32 556.1044
+486328.86 581.39766
+496651.97 607.84133
+507194.2 635.48774
+517960.22 664.39159
+528954.75 694.61008
+540182.67 726.20299
+551648.91 759.23283
+563358.55 793.76497
+575316.74 829.86774
+587528.76 867.61256
+600000 907.07413
 &
 @target G3.S2
 @type xy
-50000 2230.8092
-137500 16314.032
-225000 42976.352
-312500 82003.855
-400000 133259.92
+75000 38.934415
+76591.995 40.747082
+78217.784 42.644142
+79878.082 44.629523
+81573.622 46.707337
+83305.153 48.881889
+85073.439 51.15768
+86879.26 53.539426
+88723.411 56.032058
+90606.708 58.640739
+92529.981 61.370873
+94494.079 64.228114
+96499.867 67.218379
+98548.232 70.347862
+100640.08 73.623043
+102776.32 77.050708
+104957.92 80.637953
+107185.82 84.39221
+109461.01 88.321254
+111784.49 92.433222
+114157.3 96.736631
+116580.47 101.24039
+119055.08 105.95384
+121582.21 110.88672
+124162.99 116.04927
+126798.55 121.45217
+129490.05 127.10661
+132238.69 133.02431
+135045.67 139.21752
+137912.23 145.69906
+140839.64 152.48236
+143829.18 159.58148
+146882.19 167.0111
+150000 174.78663
+153183.99 182.92416
+156435.57 191.44055
+159756.16 200.35344
+163147.24 209.68129
+166610.31 219.44341
+170146.88 229.66002
+173758.52 240.35229
+177446.82 251.54236
+181213.42 263.25341
+185059.96 275.50968
+188988.16 288.33657
+192999.73 301.76064
+197096.46 315.8097
+201280.15 330.51283
+205552.65 345.9005
+209915.83 362.00457
+214371.63 378.8584
+218922.02 396.49689
+223568.99 414.95658
+228314.6 434.27569
+233160.94 454.49424
+238110.16 475.6541
+243164.43 497.79911
+248325.98 520.97512
+253597.1 545.23013
+258980.11 570.61438
+264477.38 597.18044
+270091.33 624.98334
+275824.46 654.08066
+281679.27 684.53266
+287658.37 716.40241
+293764.38 749.75592
+300000 784.66227
+306367.98 821.19375
+312871.13 859.42602
+319512.33 899.43828
+326294.49 941.31338
+333220.61 985.13806
+340293.76 1031.0031
+347517.04 1079.0034
+354893.65 1129.2385
+362426.83 1181.8124
+370119.92 1236.834
+377976.32 1294.4172
+385999.47 1354.6814
+394192.93 1417.7512
+402560.31 1483.7574
+411105.3 1552.8366
+419831.67 1625.1319
+428743.27 1700.7931
+437844.03 1779.9768
+447137.97 1862.8471
+456629.2 1949.5756
+466321.88 2040.3419
+476220.32 2135.334
+486328.86 2234.7486
+496651.97 2338.7917
+507194.2 2447.6787
+517960.22 2561.6351
+528954.75 2680.897
+540182.67 2805.7114
+551648.91 2936.3368
+563358.55 3073.0437
+575316.74 3216.1152
+587528.76 3365.8477
+600000 3522.5513
 &
 @target G3.S3
 @type xy
-75000 45436.605
-206250 401257.25
-337500 1158700.6
-468750 2350595
-600000 3999756.1
+75000 35.214744
+76591.995 36.848943
+78217.784 38.558979
+79878.082 40.348372
+81573.622 42.220805
+83305.153 44.180131
+85073.439 46.230383
+86879.26 48.375781
+88723.411 50.620739
+90606.708 52.969878
+92529.981 55.428033
+94494.079 58.000262
+96499.867 60.691861
+98548.232 63.508367
+100640.08 66.455578
+102776.32 69.539559
+104957.92 72.766657
+107185.82 76.143514
+109461.01 79.67708
+111784.49 83.374626
+114157.3 87.243764
+116580.47 91.292455
+119055.08 95.529032
+121582.21 99.962215
+124162.99 104.60113
+126798.55 109.45532
+129490.05 114.53477
+132238.69 119.84995
+135045.67 125.41178
+137912.23 131.23172
+140839.64 137.32175
+143829.18 143.69439
+146882.19 150.36277
+150000 157.3406
+153183.99 164.64225
+156435.57 172.28275
+159756.16 180.27781
+163147.24 188.6439
+166610.31 197.39823
+170146.88 206.55883
+173758.52 216.14453
+177446.82 226.17507
+181213.42 236.6711
+185059.96 247.65422
+188988.16 259.14702
+192999.73 271.17317
+197096.46 283.75741
+201280.15 296.92564
+205552.65 310.70496
+209915.83 325.12374
+214371.63 340.21165
+218922.02 355.99973
+223568.99 372.52049
+228314.6 389.80792
+233160.94 407.8976
+238110.16 426.82676
+243164.43 446.63436
+248325.98 467.36117
+253597.1 489.04984
+258980.11 511.74501
+264477.38 535.49338
+270091.33 560.34384
+275824.46 586.34752
+281679.27 613.55795
+287658.37 642.03112
+293764.38 671.82563
+300000 703.00281
+306367.98 735.62682
+312871.13 769.7648
+319512.33 805.48701
+326294.49 842.86697
+333220.61 881.9816
+340293.76 922.91142
+347517.04 965.74065
+354893.65 1010.5574
+362426.83 1057.454
+370119.92 1106.5269
+377976.32 1157.8772
+385999.47 1211.6104
+394192.93 1267.8371
+402560.31 1326.6732
+411105.3 1388.2397
+419831.67 1452.6632
+428743.27 1520.0765
+437844.03 1590.6181
+447137.97 1664.4334
+456629.2 1741.6742
+466321.88 1822.4995
+476220.32 1907.0756
+486328.86 1995.5766
+496651.97 2088.1846
+507194.2 2185.0903
+517960.22 2286.493
+528954.75 2392.6015
+540182.67 2503.6341
+551648.91 2619.8194
+563358.55 2741.3965
+575316.74 2868.6155
+587528.76 3001.7383
+600000 3141.039
 &
 @target G4.S0
 @type xy
-50000 3310.1661
-86400 5442.3597
-137200 9674.5472
-204800 19105.81
-291600 33196.46
-400000 61246.598
+50000 242.36328
+86400 293.16797
+137200 342.01562
+204800 434.92188
+291600 537.72266
+400000 716.91016
 &
 @target G4.S1
 @type xy
-75000 13269.193
-129600 34711.713
-205800 87490.76
-307200 214286.55
-437400 528928.91
-600000 1132881.2
+50000 239.35938
+86400 283.70312
+137200 322.23438
+204800 402.98438
+291600 499.78906
+400000 665.07422
 &
 @target G4.S2
 @type xy
-50000 2651.3594
-137500 11254.529
-225000 22750.297
-312500 36381.109
-400000 51771.619
+50000 245.32422
+86400 293.36328
+137200 341.19922
+204800 434.41406
+291600 537.39062
+400000 710.3125
 &
 @target G4.S3
 @type xy
-75000 11153.049
-206250 99006.723
-337500 286622.56
-468750 582436.94
-600000 992326.66
+50000 246.29297
+86400 294.17578
+137200 321.53906
+204800 411.24219
+291600 492.4375
+400000 671.48438
+&
+@target G5.S0
+@type xy
+75000 273.58203
+129600 332.72266
+205800 429.66406
+307200 548.47656
+437400 691.29688
+600000 909.65625
+&
+@target G5.S1
+@type xy
+75000 275.59766
+129600 317.78516
+205800 403.33984
+307200 509.25
+437400 676.22266
+600000 819.28906
+&
+@target G5.S2
+@type xy
+75000 288.71094
+129600 353.49609
+205800 457.30078
+307200 590.6875
+437400 800.84766
+600000 966.89453
+&
+@target G5.S3
+@type xy
+75000 288.86328
+129600 324.40625
+205800 410.54297
+307200 522.26953
+437400 705.91016
+600000 868.40234
 &

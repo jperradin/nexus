@@ -67,7 +67,8 @@ if __name__ == "__main__":
     # Load file paths and output names from the input files
     try:
         files, outputs, j = np.loadtxt(
-            "./nexus_inputs_critical_point",
+            "./nexus_inputs_all",
+            # "./nexus_inputs_critical_point",
             dtype="<U100",
             unpack=True,
             comments="#",

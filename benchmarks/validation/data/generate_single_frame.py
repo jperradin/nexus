@@ -1,49 +1,50 @@
-# This script generate percolation sites in a 100x100x100 orthohombic lattice
+# Single-frame variant of generate.py, useful for quick checks.
+#
+# Reproducibility: same deterministic seeding scheme as generate.py
+#   seed = 1_000_000 * L + 1000 * p_index + n
+# The seed is set with np.random.seed() *inside* the numba nopython function,
+# since numba keeps its own RNG state independent of NumPy's Python-level RNG.
 
 import numpy as np
 from numba import jit
-from typing import List
 import os
-from tqdm import tqdm
+
+PC_INDEX = 500  # reserved p_index slot for the critical point p_c = 0.3116
+PC_PROBABILITY = 0.3116
+
+
+def frame_seed(L: int, p_index: int, n: int) -> int:
+    """Deterministic, unique-per-frame seed. Stays below 2**32."""
+    return 1_000_000 * L + 1000 * p_index + n
 
 
 @jit(nopython=True, cache=True, fastmath=True)
-def generate_sites(probability: float, size: int) -> List[str]:
-    sites = []
+def generate_sites(probability: float, size: int, seed: int) -> np.ndarray:
+    np.random.seed(seed)
+    coords = np.empty((size * size * size, 3), dtype=np.int32)
+    count = 0
     for i in range(size):
         for j in range(size):
             for k in range(size):
                 this_probability = np.random.random()
-                # generate the lattice position of the sites
-                x = i % size
-                y = j % size
-                z = k % size
-
                 if this_probability < probability:
-                    sites.append(f"1 {x} {y} {z}")
-                # else:
-                #     sites.append(f"0 {x} {y} {z}")
-
-    return sites
+                    coords[count, 0] = i % size
+                    coords[count, 1] = j % size
+                    coords[count, 2] = k % size
+                    count += 1
+    return coords[:count]
 
 
 if __name__ == "__main__":
-    """
-    Generate standard percolation lattice data sets for benchmarking validation:
-        - At theoretical pc = 0.3116 for sizes from 20 to 50 with step 5
-        - From 0.2 to 0.4 with step 0.002 for sizes from 20 to 50 with step 5
-    """
+    """Generate a single percolation frame at p_c for L = 20."""
 
-    # Generate percolation sites at theoretical pc
-    j = 20
-    probability = 0.3116
-    for n in range(1):
-        sites = generate_sites(probability, j)
-        if not os.path.exists(f"./{j}"):
-            os.makedirs(f"./{j}")
-        with open(f"./{j}/percolation_sites_{probability:.4f}.xyz", "a") as f:
-            f.write(f"{len(sites)}\n")
-            f.write(f'Lattice="{j}.0 0.0 0.0 0.0 {j}.0 0.0 0.0 0.0 {j}.0"\n')
-            for site in sites:
-                f.write(site + "\n")
-        f.close()
+    L = 20
+    coords = generate_sites(PC_PROBABILITY, L, frame_seed(L, PC_INDEX))
+
+    os.makedirs(f"./{L}", exist_ok=True)
+    lattice = f'Lattice="{L}.0 0.0 0.0 0.0 {L}.0 0.0 0.0 0.0 {L}.0"'
+    with open(f"./{L}/percolation_sites_{PC_PROBABILITY:.4f}.xyz", "w") as f:
+        f.write(f"{len(coords)}\n")
+        f.write(f"{lattice}\n")
+        for x, y, z in coords:
+            f.write(f"1 {x} {y} {z}\n")

@@ -1,10 +1,13 @@
 import numpy as np
 import os
 from tqdm import tqdm
-from numba import njit, prange
 
 
-# @njit(parallel=True)
+def perf_seed(lattice_size: int, num_sites: int) -> int:
+    """Deterministic, hardcoded seed for reproducible performance datasets."""
+    return 1_000_000 * lattice_size + num_sites
+
+
 def generate_sites(num_sites, lattice_size):
     networking_sites = []
     bridge_sites = []
@@ -73,20 +76,20 @@ if __name__ == "__main__":
         (600000, 100),
     ]
 
-    lattice_size = 30  # Size of the cubic lattice
-    num_sites = 16200  # Total number of sites to generate, N < lattice_size^3
+    for num_sites, lattice_size in lattices:
+        # Seed the Python-level NumPy RNG (generate_sites runs in pure Python here,
+        # so the @njit decorator above is commented out and this seed applies).
+        np.random.seed(perf_seed(lattice_size, num_sites))
 
-    # for num_sites, lattice_size in lattices:
+        networking_sites, bridge_sites = generate_sites(num_sites, lattice_size)
 
-    networking_sites, bridge_sites = generate_sites(num_sites, lattice_size)
+        n_sites = len(networking_sites) + len(bridge_sites)
+        lattice_string = f'Lattice="{lattice_size} 0.0 0.0 0.0 {lattice_size} 0.0 0.0 0.0 {lattice_size}"'
 
-    n_sites = len(networking_sites) + len(bridge_sites)
-    lattice_string = f'Lattice="{lattice_size} 0.0 0.0 0.0 {lattice_size} 0.0 0.0 0.0 {lattice_size}"'
-
-    with open(f"./benchmark-{num_sites}-{lattice_size}.xyz", "w") as f:
-        f.write(f"{n_sites}\n")
-        f.write(f"{lattice_string}\n")
-        for site in networking_sites:
-            f.write(f"1 {site[0]} {site[1]} {site[2]}\n")
-        for site in bridge_sites:
-            f.write(f"2 {site[0]} {site[1]} {site[2]}\n")
+        with open(f"./benchmark-{num_sites}-{lattice_size}.xyz", "w") as f:
+            f.write(f"{n_sites}\n")
+            f.write(f"{lattice_string}\n")
+            for site in networking_sites:
+                f.write(f"1 {site[0]} {site[1]} {site[2]}\n")
+            for site in bridge_sites:
+                f.write(f"2 {site[0]} {site[1]} {site[2]}\n")

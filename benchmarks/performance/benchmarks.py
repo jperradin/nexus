@@ -239,18 +239,24 @@ def run_shared_strategy_benchmark(task):
 # --- Main Execution Block ---
 if __name__ == "__main__":
     benchmarks = [
-        # ('./data/universal_benchmark-50000-50.xyz', 'universal_benchmark-50000-50'),
-        # ('./data/universal_benchmark-75000-50.xyz', 'universal_benchmark-75000-50'),
-        # ('./data/universal_benchmark-86400-60.xyz', 'universal_benchmark-86400-60'),
-        # ('./data/universal_benchmark-129600-60.xyz', 'universal_benchmark-129600-60'),
-        ('./data/universal_benchmark-137200-70.xyz', 'universal_benchmark-137200-70'),
-        ('./data/universal_benchmark-205800-70.xyz', 'universal_benchmark-205800-70'),
-        # ('./data/universal_benchmark-204800-80.xyz', 'universal_benchmark-204800-80'),
-        # ('./data/universal_benchmark-307200-80.xyz', 'universal_benchmark-307200-80'),
-        ('./data/universal_benchmark-291600-90.xyz', 'universal_benchmark-291600-90'),
-        ('./data/universal_benchmark-437400-90.xyz', 'universal_benchmark-437400-90'),
-        # ('./data/universal_benchmark-400000-100.xyz', 'universal_benchmark-400000-100'),
-        # ('./data/universal_benchmark-600000-100.xyz', 'universal_benchmark-600000-100'),
+        # ('./data/benchmark-3200-20.xyz', 'benchmark-3200-20'),
+        # ('./data/benchmark-4800-20.xyz', 'benchmark-4800-20'),
+        # ('./data/benchmark-10800-30.xyz', 'benchmark-10800-30'),
+        # ('./data/benchmark-16200-30.xyz', 'benchmark-16200-30'),
+        # ('./data/benchmark-25600-40.xyz', 'benchmark-25600-40'),
+        # ('./data/benchmark-34800-40.xyz', 'benchmark-38400-40'),
+        # ('./data/benchmark-50000-50.xyz', 'benchmark-50000-50'),
+        # ('./data/benchmark-75000-50.xyz', 'benchmark-75000-50'),
+        # ('./data/benchmark-86400-60.xyz', 'benchmark-86400-60'),
+        # ('./data/benchmark-129600-60.xyz', 'benchmark-129600-60'),
+        ('./data/benchmark-137200-70.xyz', 'benchmark-137200-70'),
+        ('./data/benchmark-205800-70.xyz', 'benchmark-205800-70'),
+        ('./data/benchmark-204800-80.xyz', 'benchmark-204800-80'),
+        ('./data/benchmark-307200-80.xyz', 'benchmark-307200-80'),
+        ('./data/benchmark-291600-90.xyz', 'benchmark-291600-90'),
+        ('./data/benchmark-437400-90.xyz', 'benchmark-437400-90'),
+        ('./data/benchmark-400000-100.xyz', 'benchmark-400000-100'),
+        ('./data/benchmark-600000-100.xyz', 'benchmark-600000-100'),
     ]
 
     for benchmark in benchmarks:
